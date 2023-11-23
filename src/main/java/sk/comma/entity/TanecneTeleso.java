@@ -6,7 +6,6 @@ import lombok.Data;
 public class TanecneTeleso {
     private Long id;
     private String nazov;
-    private int dlzka;
     private String umiestnenie;
     private String hudba;
     private String klub;
@@ -14,4 +13,6 @@ public class TanecneTeleso {
     private long sutazId;
     private String email;
     private String telefonneCislo;
+    private String tanecnici;
+
 }

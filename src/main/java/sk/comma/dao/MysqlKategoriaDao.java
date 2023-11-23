@@ -5,12 +5,12 @@ import sk.comma.entity.Kategoria;
 
 import java.util.List;
 
-public class KategoriaDaoImpl implements KategoriaDao {
+public class MysqlKategoriaDao implements KategoriaDao {
 
     private JdbcTemplate jdbcTemplate;
     private KategoriaDao kategoriaDao = DaoFactory.INSTANCE.getKategoriaDao();
 
-    public KategoriaDaoImpl(JdbcTemplate jdbcTemplate) {
+    public MysqlKategoriaDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 

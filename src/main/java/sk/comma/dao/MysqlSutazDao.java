@@ -5,12 +5,12 @@ import sk.comma.entity.Sutaz;
 
 import java.util.List;
 
-public class SutazDaoImpl implements SutazDao {
+public class MysqlSutazDao implements SutazDao {
 
     private JdbcTemplate jdbcTemplate;
     private SutazDao sutazDao = DaoFactory.INSTANCE.getSutazDao();
 
-    public SutazDaoImpl(JdbcTemplate jdbcTemplate) {
+    public MysqlSutazDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 

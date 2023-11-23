@@ -5,12 +5,12 @@ import sk.comma.entity.Hodnotenie;
 
 import java.util.List;
 
-public class HodnotenieDaoImpl implements HodnotenieDao {
+public class MysqlHodnotenieDao implements HodnotenieDao {
 
     private JdbcTemplate jdbcTemplate;
     private HodnotenieDao hodnotenieDao = DaoFactory.INSTANCE.getHodnotenieDao();
 
-    public HodnotenieDaoImpl(JdbcTemplate jdbcTemplate) {
+    public MysqlHodnotenieDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 

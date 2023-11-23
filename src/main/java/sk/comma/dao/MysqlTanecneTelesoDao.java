@@ -5,11 +5,11 @@ import sk.comma.entity.TanecneTeleso;
 
 import java.util.List;
 
-public class TanecneTelesoDaoImpl implements TanecneTelesoDao {
+public class MysqlTanecneTelesoDao implements TanecneTelesoDao {
     private JdbcTemplate jdbcTemplate;
     private TanecneTelesoDao tanecneTelesoDao = DaoFactory.INSTANCE.getTanecneTelesoDao();
 
-    public TanecneTelesoDaoImpl(JdbcTemplate jdbcTemplate) {
+    public MysqlTanecneTelesoDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 

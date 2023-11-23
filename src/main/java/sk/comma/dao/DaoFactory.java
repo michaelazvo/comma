@@ -31,35 +31,35 @@ public enum DaoFactory {
 
     public HodnotenieDao getHodnotenieDao() {
         if (hodnotenieDao == null) {
-            hodnotenieDao = new HodnotenieDaoImpl(getJdbcTemplate());
+            hodnotenieDao = new MysqlHodnotenieDao(getJdbcTemplate());
         }
         return hodnotenieDao;
     }
 
     public KategoriaDao getKategoriaDao() {
         if (kategoriaDao == null) {
-            kategoriaDao = new KategoriaDaoImpl(getJdbcTemplate());
+            kategoriaDao = new MysqlKategoriaDao(getJdbcTemplate());
         }
         return kategoriaDao;
     }
 
     public PorotcaDao getPorotcaDao() {
         if (porotcaDao == null) {
-            porotcaDao = new PorotcaDaoImpl(getJdbcTemplate());
+            porotcaDao = new MysqlPorotcaDao(getJdbcTemplate());
         }
         return porotcaDao;
     }
 
     public SutazDao getSutazDao() {
         if (sutazDao == null) {
-            sutazDao = new SutazDaoImpl(getJdbcTemplate());
+            sutazDao = new MysqlSutazDao(getJdbcTemplate());
         }
         return sutazDao;
     }
 
     public TanecneTelesoDao getTanecneTelesoDao() {
         if (tanecneTelesoDao == null) {
-            tanecneTelesoDao = new TanecneTelesoDaoImpl(getJdbcTemplate());
+            tanecneTelesoDao = new MysqlTanecneTelesoDao(getJdbcTemplate());
         }
         return tanecneTelesoDao;
     }

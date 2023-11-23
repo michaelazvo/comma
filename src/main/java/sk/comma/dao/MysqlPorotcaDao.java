@@ -5,12 +5,12 @@ import sk.comma.entity.Porotca;
 
 import java.util.List;
 
-public class PorotcaDaoImpl implements PorotcaDao {
+public class MysqlPorotcaDao implements PorotcaDao {
 
     private JdbcTemplate jdbcTemplate;
     private PorotcaDao porotcaDao = DaoFactory.INSTANCE.getPorotcaDao();
 
-    public PorotcaDaoImpl(JdbcTemplate jdbcTemplate) {
+    public MysqlPorotcaDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
