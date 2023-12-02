@@ -9,7 +9,7 @@ public enum DaoFactory {
 
     public static final String DATABASE_CONNECTION_URL = "jdbc:mysql://localhost:3306/comma";
     public static final String DATABASE_USERNAME = "comma_user";
-    public static final String DATABASE_PASSWORD = "admin";
+    public static final String DATABASE_PASSWORD = "12345";
     private HodnotenieDao hodnotenieDao;
     private KategoriaDao kategoriaDao;
     private PorotcaDao porotcaDao;
@@ -20,8 +20,8 @@ public enum DaoFactory {
     private JdbcTemplate getJdbcTemplate() {
         if (jdbcTemplate == null) {
             MysqlDataSource dataSource = new MysqlDataSource();
-            dataSource.setUser(DATABASE_PASSWORD);
-            dataSource.setPassword(DATABASE_USERNAME);
+            dataSource.setUser(DATABASE_USERNAME);
+            dataSource.setPassword(DATABASE_PASSWORD);
             dataSource.setUrl(DATABASE_CONNECTION_URL);
 
             jdbcTemplate = new JdbcTemplate(dataSource);

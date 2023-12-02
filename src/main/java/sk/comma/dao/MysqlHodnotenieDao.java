@@ -8,7 +8,9 @@ import java.util.List;
 public class MysqlHodnotenieDao implements HodnotenieDao {
 
     private JdbcTemplate jdbcTemplate;
-    private HodnotenieDao hodnotenieDao = DaoFactory.INSTANCE.getHodnotenieDao();
+
+    // toto mi robilo chybu ako som pracovala so MysqlSutazDao, cize to asi nema byt
+    //private HodnotenieDao hodnotenieDao = DaoFactory.INSTANCE.getHodnotenieDao();
 
     public MysqlHodnotenieDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;

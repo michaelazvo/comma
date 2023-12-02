@@ -14,21 +14,21 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <Button layoutX="482.0" layoutY="93.0" mnemonicParsing="false" onAction="#porotaButtonClick" text="Porotca">
+      <Button fx:id="prihlaseniePorotcaButton" layoutX="482.0" layoutY="93.0" mnemonicParsing="false" text="Porotca">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <Button layoutX="32.0" layoutY="170.0" mnemonicParsing="false" onAction="#prihlasitTanecneTelesoButtonClick" text="Prihlásiť tanečné teleso">
+      <Button fx:id="prihlasitTanecneTelesoButton" layoutX="32.0" layoutY="170.0" mnemonicParsing="false" text="Prihlásiť tanečné teleso">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <Button layoutX="32.0" layoutY="108.0" mnemonicParsing="false" onAction="#zobrazitVysledkyButtonClick" text="Zobraziť priebežné výsledky">
+      <Button fx:id="zobrazitVysledkyButton" layoutX="32.0" layoutY="108.0" mnemonicParsing="false" text="Zobraziť priebežné výsledky">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <Button layoutX="473.0" layoutY="22.0" mnemonicParsing="false" onAction="#spravcaButtonClick" prefHeight="26.0" prefWidth="86.0" text="Správca" />
+      <Button layoutX="473.0" layoutY="22.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="86.0" text="Správca" />
    </children>
 </AnchorPane>
