@@ -14,7 +14,7 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <Button layoutX="482.0" layoutY="93.0" mnemonicParsing="false" onAction="#porotaButtonClick" text="Porotca">
+      <Button layoutX="482.0" layoutY="93.0" mnemonicParsing="false" onAction="#prihlasenieButtonClick" text="Prihlasenie">
          <font>
             <Font size="14.0" />
          </font>
@@ -29,6 +29,5 @@
             <Font size="14.0" />
          </font>
       </Button>
-      <Button layoutX="473.0" layoutY="22.0" mnemonicParsing="false" onAction="#spravcaButtonClick" prefHeight="26.0" prefWidth="86.0" text="Správca" />
    </children>
 </AnchorPane>
