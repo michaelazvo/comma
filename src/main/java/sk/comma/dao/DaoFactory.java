@@ -9,7 +9,7 @@ public enum DaoFactory {
 
     public static final String DATABASE_CONNECTION_URL = "jdbc:mysql://localhost:3306/comma";
     public static final String DATABASE_USERNAME = "comma_user";
-    public static final String DATABASE_PASSWORD = "12345";
+    public static final String DATABASE_PASSWORD = "admin";
     private HodnotenieDao hodnotenieDao;
     private KategoriaDao kategoriaDao;
     private PorotcaDao porotcaDao;
