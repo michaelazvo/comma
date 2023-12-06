@@ -7,9 +7,7 @@ import java.util.List;
 
 public class MysqlTanecneTelesoDao implements TanecneTelesoDao {
     private JdbcTemplate jdbcTemplate;
-
-    // toto mi robilo chybu ako som pracovala so MysqlSutazDao, cize to asi nema byt
-    // private TanecneTelesoDao tanecneTelesoDao = DaoFactory.INSTANCE.getTanecneTelesoDao();
+    private TanecneTelesoDao tanecneTelesoDao = DaoFactory.INSTANCE.getTanecneTelesoDao();
 
     public MysqlTanecneTelesoDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;

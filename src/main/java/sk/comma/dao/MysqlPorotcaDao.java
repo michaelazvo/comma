@@ -8,9 +8,7 @@ import java.util.List;
 public class MysqlPorotcaDao implements PorotcaDao {
 
     private JdbcTemplate jdbcTemplate;
-
-    // toto mi robilo chybu ako som pracovala so MysqlSutazDao, cize to asi nema byt
-    //private PorotcaDao porotcaDao = DaoFactory.INSTANCE.getPorotcaDao();
+    private PorotcaDao porotcaDao = DaoFactory.INSTANCE.getPorotcaDao();
 
     public MysqlPorotcaDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;

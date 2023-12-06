@@ -8,9 +8,7 @@ import java.util.List;
 public class MysqlKategoriaDao implements KategoriaDao {
 
     private JdbcTemplate jdbcTemplate;
-
-    // toto mi robilo chybu ako som pracovala so MysqlSutazDao, cize to asi nema byt
-    //private KategoriaDao kategoriaDao = DaoFactory.INSTANCE.getKategoriaDao();
+    private KategoriaDao kategoriaDao = DaoFactory.INSTANCE.getKategoriaDao();
 
     public MysqlKategoriaDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;

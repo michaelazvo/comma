@@ -1,19 +1,14 @@
 package sk.comma.dao;
 
-
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import sk.comma.entity.Sutaz;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.time.LocalDateTime;
 import java.util.List;
 
 public class MysqlSutazDao implements SutazDao {
 
     private JdbcTemplate jdbcTemplate;
-
+    private SutazDao sutazDao = DaoFactory.INSTANCE.getSutazDao();
 
     public MysqlSutazDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -25,57 +20,19 @@ public class MysqlSutazDao implements SutazDao {
         return null;
     }
 
-
-
-    public Sutaz save(Sutaz sutaz) {
-        if (sutaz.getId() == 0) {
-            // if ID == 0, then this is a new object to be inserted
-            insert(sutaz);
-        } else {
-            // if ID != 0, then this is an existing object to be updated
-            update(sutaz);
-        }
-        return sutaz;
-    }
-
     @Override
     public List<Sutaz> findAll() {
-        String query = "SELECT id, nazov, year(odDatum) FROM sutaz " + "ORDER BY odDatum DESC";
-        List<Sutaz> result = jdbcTemplate.query(query, new RowMapper<Sutaz>() {
-
-            @Override
-            public Sutaz mapRow(ResultSet rs, int rowNum) throws SQLException {
-                int id = rs.getInt("id");
-                String nazov = rs.getString("nazov");
-                // dala som to akoze iba rok vidno, neviem ci sa ti paci ale take no :D
-                String datum = rs.getString("year(odDatum)");
-                return new Sutaz(id,nazov, datum);
-            }
-        });
-        // TO DO
-        // teraz asi nesetujeme studentov / teda akoze tanecnikkov, az potom, len skusam ci ukaze nazvy sutazi
-        /*
-        for (Sutaz sutaz: result){
-            sutaz.setSutaz(sutazDao.getAllBySubjectId(subj.getId()));
-        }
-
-         */
-
-        return result;
+        return null;
     }
 
     @Override
     public Sutaz insert(Sutaz sutaz) {
-        String query = "INSERT INTO sutaz (nazov, odDatum) VALUES (?, ?)";
-        jdbcTemplate.update(query, sutaz.getNazov(), sutaz.getOdDatum());
-        return sutaz;
+        return null;
     }
 
     @Override
     public Sutaz update(Sutaz sutaz) {
-        String query = "UPDATE sutaz SET nazov = ?, odDatum = ? WHERE id = ?";
-        jdbcTemplate.update(query, sutaz.getNazov(), sutaz.getOdDatum(), sutaz.getId());
-        return sutaz;
+        return null;
     }
 
     @Override
