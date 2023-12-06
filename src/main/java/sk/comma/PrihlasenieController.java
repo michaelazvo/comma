@@ -41,7 +41,7 @@ public class PrihlasenieController {
         boolean existujeUzivatel = porotcaDao.existingUser(heslo,meno);
 
         if (existujeUzivatel) {
-            // Uživatel existuje, zkontrolovat správnost hesla
+            // uzivatel existuje, skontrolovat spravnost hesla
             boolean jeSpravneHeslo = porotcaDao.isPasswordCorrect(heslo, meno);
             boolean jeAdmin = porotcaDao.isAdmin(heslo, meno);
 
@@ -52,11 +52,11 @@ public class PrihlasenieController {
                 HodnoteniePorotaController controller = new HodnoteniePorotaController();
                 otvoritPorotcaOkno(controller);
             } else {
-                zobrazChybovyAlert("Chybné jméno nebo heslo. Zkuste to znovu.");
+                zobrazitChybovyAlert("Nesprávne heslo. Skúste to znova.");
             }
         } else {
-            // Uživatel neexistuje
-            zobrazChybovyAlert("Uživatel s tímto jménem neexistuje.");
+            // uzivatel neexistuje
+            zobrazitChybovyAlert("Užívateľ s týmto užívateľským menom neexistuje.");
         }
 
 
@@ -92,11 +92,11 @@ public class PrihlasenieController {
         }
     }
 
-    private void zobrazChybovyAlert(String chybovaZprava) {
+    private void zobrazitChybovyAlert(String chybovaSprava) {
         Alert alert = new Alert(AlertType.ERROR);
-        alert.setTitle("Chyba přihlášení");
+        alert.setTitle("Chyba prihlásenia");
         alert.setHeaderText(null);
-        alert.setContentText(chybovaZprava);
+        alert.setContentText(chybovaSprava);
         alert.showAndWait();
     }
 
