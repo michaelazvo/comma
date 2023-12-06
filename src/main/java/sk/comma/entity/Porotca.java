@@ -2,8 +2,6 @@ package sk.comma.entity;
 
 import lombok.Data;
 
-import java.util.Objects;
-
 @Data
 public class Porotca {
     private Long id;
@@ -12,15 +10,12 @@ public class Porotca {
     private String uzivatelskeMeno;
     private String heslo;
 
-    private boolean jeAdmin;
-
-    public Porotca(Long id, String meno, String priezvisko, String uzivatelskeMeno, String heslo, boolean jeAdmin) {
+    public Porotca(Long id, String meno, String priezvisko, String uzivatelskeMeno, String heslo) {
         this.id = id;
         this.meno = meno;
         this.priezvisko = priezvisko;
         this.uzivatelskeMeno = uzivatelskeMeno;
         this.heslo = heslo;
-        this.jeAdmin = jeAdmin;
     }
 
     public Long getId() {
@@ -61,18 +56,5 @@ public class Porotca {
 
     public void setHeslo(String heslo) {
         this.heslo = heslo;
-    }
-
-    public boolean isJeAdmin() {
-        return jeAdmin;
-    }
-
-    public void setJeAdmin(boolean jeAdmin) {
-        this.jeAdmin = jeAdmin;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, meno, priezvisko, uzivatelskeMeno, heslo);
     }
 }

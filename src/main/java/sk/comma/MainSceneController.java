@@ -4,33 +4,32 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.stage.Stage;
 import sk.comma.dao.DaoFactory;
 import sk.comma.dao.SutazDao;
 import sk.comma.entity.Sutaz;
 
-import java.io.IOException;
 import java.util.List;
 
 public class MainSceneController {
     @FXML
+    private Button prihlaseniePorotcaButton;
+    @FXML
+    private Button prihlasitTanecneTelesoButton;
+    @FXML
     private ComboBox<Sutaz> sutazCombobox;
-
+    @FXML
+    private Button zobrazitVysledkyButton;
 
     private SutazDao sutazDao = DaoFactory.INSTANCE.getSutazDao();
     private ObservableList<Sutaz> sutazModel;
-    private List<Sutaz> sutaze;
 
 
     @FXML
     void initialize() {
 
-        sutaze = sutazDao.findAll();
+        List<Sutaz> sutaze = sutazDao.findAll();
         sutazModel = FXCollections.observableList(sutaze);
         sutazCombobox.setItems(sutazModel);
         sutazCombobox.getSelectionModel().selectFirst();
@@ -39,47 +38,19 @@ public class MainSceneController {
 
 
     @FXML
-    void prihlasenieButtonClick(ActionEvent event) {
-        PrihlasenieController controller = new PrihlasenieController(sutaze);
-        otvoritPrihlasovanieOkno(controller);
-    }
+    void porotaButtonClick(ActionEvent event) {
 
-    private void otvoritPrihlasovanieOkno(PrihlasenieController controller){
-        try{
-            FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("Prihlasenie.fxml"));
-            loader.setController(controller);
-            Parent parent= loader.load();
-            Stage PrihlasovanieStage = new Stage();
-            PrihlasovanieStage.setScene(new Scene(parent));
-            PrihlasovanieStage.setTitle("Prihlasovanie");
-            PrihlasovanieStage.show();
-        }catch(IOException e){
-            e.printStackTrace();
-        }
     }
 
     @FXML
     void prihlasitTanecneTelesoButtonClick(ActionEvent event) {
-        TanecneTelesoController controller = new TanecneTelesoController();
-        otvoritTanecneTelesoOkno(controller);
+
     }
 
-    private void otvoritTanecneTelesoOkno(TanecneTelesoController controller){
-        try{
-            FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("TanecneTeleso.fxml"));
-            loader.setController(controller);
-            Parent parent= loader.load();
-            Stage TanecneTelesoStage = new Stage();
-            TanecneTelesoStage.setScene(new Scene(parent));
-            TanecneTelesoStage.setTitle("Tanecne teleso");
-            TanecneTelesoStage.show();
-        }catch(IOException e){
-            e.printStackTrace();
-        }
-    }
+    @FXML
+    void spravcaButtonClick(ActionEvent event) {
 
+    }
 
     @FXML
     void zobrazitVysledkyButtonClick(ActionEvent event) {
