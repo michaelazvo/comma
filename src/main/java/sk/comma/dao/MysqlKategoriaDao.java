@@ -8,7 +8,7 @@ import java.util.List;
 public class MysqlKategoriaDao implements KategoriaDao {
 
     private JdbcTemplate jdbcTemplate;
-    private KategoriaDao kategoriaDao = DaoFactory.INSTANCE.getKategoriaDao();
+
 
     public MysqlKategoriaDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;

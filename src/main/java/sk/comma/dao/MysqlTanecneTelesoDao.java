@@ -7,7 +7,7 @@ import java.util.List;
 
 public class MysqlTanecneTelesoDao implements TanecneTelesoDao {
     private JdbcTemplate jdbcTemplate;
-    private TanecneTelesoDao tanecneTelesoDao = DaoFactory.INSTANCE.getTanecneTelesoDao();
+
 
     public MysqlTanecneTelesoDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;

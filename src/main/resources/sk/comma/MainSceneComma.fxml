@@ -6,7 +6,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <ComboBox fx:id="sutazCombobox" layoutX="94.0" layoutY="49.0" prefHeight="26.0" prefWidth="223.0" />
@@ -15,17 +14,17 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <Button fx:id="prihlaseniePorotcaButton" layoutX="376.0" layoutY="47.0" mnemonicParsing="false" text="Prihlásiť sa ako porotca">
+      <Button layoutX="482.0" layoutY="93.0" mnemonicParsing="false" onAction="#prihlasenieButtonClick" text="Prihlasenie">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <Button fx:id="prihlasitTanecneTelesoButton" layoutX="33.0" layoutY="159.0" mnemonicParsing="false" text="Prihlásiť tanečné teleso">
+      <Button layoutX="32.0" layoutY="170.0" mnemonicParsing="false" onAction="#prihlasitTanecneTelesoButtonClick" text="Prihlásiť tanečné teleso">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <Button fx:id="zobrazitVysledkyButton" layoutX="32.0" layoutY="108.0" mnemonicParsing="false" text="Zobraziť priebežné výsledky">
+      <Button layoutX="32.0" layoutY="108.0" mnemonicParsing="false" onAction="#zobrazitVysledkyButtonClick" text="Zobraziť priebežné výsledky">
          <font>
             <Font size="14.0" />
          </font>

@@ -8,7 +8,7 @@ import java.util.List;
 public class MysqlHodnotenieDao implements HodnotenieDao {
 
     private JdbcTemplate jdbcTemplate;
-    private HodnotenieDao hodnotenieDao = DaoFactory.INSTANCE.getHodnotenieDao();
+
 
     public MysqlHodnotenieDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
