@@ -54,7 +54,7 @@
             <Font size="14.0" />
          </font>
       </Label>
-      <Button layoutX="513.0" layoutY="285.0" mnemonicParsing="false" onAction="#pridatPorotcuButtonClick" text="Pridať">
+      <Button fx:id="pridatPorotcuButton" layoutX="513.0" layoutY="285.0" mnemonicParsing="false" onAction="#pridatPorotcuButtonClick" text="Pridať">
          <font>
             <Font size="14.0" />
          </font>
@@ -64,7 +64,7 @@
             <Font size="14.0" />
          </font>
       </Button>
-      <Button layoutX="509.0" layoutY="13.0" mnemonicParsing="false" onAction="#ulozitSutazButtonClick" text="Uložiť">
+      <Button fx:id="ulozitButtonClick" layoutX="509.0" layoutY="13.0" mnemonicParsing="false" onAction="#ulozitSutazButtonClick" text="Uložiť">
          <font>
             <Font size="14.0" />
          </font>

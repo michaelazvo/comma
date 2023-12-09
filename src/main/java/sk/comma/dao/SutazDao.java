@@ -12,7 +12,8 @@ public interface SutazDao {
 
     Sutaz insert(Sutaz sutaz);
 
-    Sutaz update(Sutaz sutaz);
+
+    void update(Sutaz sutaz);
 
     boolean delete(Sutaz sutaz);
 }

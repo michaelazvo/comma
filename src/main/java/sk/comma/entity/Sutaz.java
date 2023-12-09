@@ -2,56 +2,38 @@ package sk.comma.entity;
 
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
 public class Sutaz {
     private int id;
     private String nazov;
-    // zmenila som z localdatetime na string
-    private String odDatum;
-    private String doDatum;
 
-    public Sutaz(int id, String nazov, String odDatum) {
-        this.id = id;
+    private LocalDate odDatum;
+    private LocalDate doDatum;
+
+    public Sutaz(String nazov, LocalDate odDatum, LocalDate doDatum) {
         this.nazov = nazov;
         this.odDatum = odDatum;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getNazov() {
-        return nazov;
-    }
-
-    public void setNazov(String nazov) {
-        this.nazov = nazov;
-    }
-
-    public String getOdDatum() {
-        return odDatum;
-    }
-
-    public void setOdDatum(String odDatum) {
-        this.odDatum = odDatum;
-    }
-
-    public String getDoDatum() {
-        return doDatum;
-    }
-
-    public void setDoDatum(String doDatum) {
         this.doDatum = doDatum;
+    }
+
+    public Sutaz(int id, String nazov, LocalDate odDatum, LocalDate doDatum) {
+        this.id = id;
+        this.nazov = nazov;
+        this.odDatum = odDatum;
+        this.doDatum = doDatum;
+    }
+
+    public Sutaz(int id, String nazov, LocalDate odDatum) {
+        this.id = id;
+        this.nazov = nazov;
+        this.odDatum = odDatum;
     }
 
     @Override
     public String toString() {
-        return id + ", " + nazov + ", " + odDatum;
+        return nazov + ", " + odDatum;
     }
 }

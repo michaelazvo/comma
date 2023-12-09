@@ -7,6 +7,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import sk.comma.dao.DaoFactory;
 import sk.comma.dao.PorotcaDao;
@@ -30,7 +32,12 @@ public class PrihlasenieController {
         this.sutaze = sutaze;
     }
 
-
+    @FXML
+    private void initialize() {
+        // Přidání posluchačů klávesnice při inicializaci controlleru
+        uzivatelskeMenoTextField.setOnKeyPressed(this::handleEnterKeyPressed);
+        hesloPasswordField.setOnKeyPressed(this::handleEnterKeyPressed);
+    }
 
 
     @FXML
@@ -98,6 +105,13 @@ public class PrihlasenieController {
         alert.setHeaderText(null);
         alert.setContentText(chybovaSprava);
         alert.showAndWait();
+    }
+
+    private void handleEnterKeyPressed(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            // Reakce na stisk klávesy Enter
+            prihlasenieButtonClick(new ActionEvent());
+        }
     }
 
 }

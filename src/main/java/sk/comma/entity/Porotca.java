@@ -14,6 +14,20 @@ public class Porotca {
 
     private boolean jeAdmin;
 
+
+    public Porotca(){
+
+    }
+
+    public Porotca(String meno, String priezvisko, String uzivatelskeMeno, String heslo, boolean jeAdmin) {
+        this.meno = meno;
+        this.priezvisko = priezvisko;
+        this.uzivatelskeMeno = uzivatelskeMeno;
+        this.heslo = heslo;
+        this.jeAdmin = jeAdmin;
+    }
+
+
     public Porotca(Long id, String meno, String priezvisko, String uzivatelskeMeno, String heslo, boolean jeAdmin) {
         this.id = id;
         this.meno = meno;
@@ -74,5 +88,10 @@ public class Porotca {
     @Override
     public int hashCode() {
         return Objects.hash(id, meno, priezvisko, uzivatelskeMeno, heslo);
+    }
+
+    @Override
+    public String toString() {
+        return meno + ", " + priezvisko;
     }
 }

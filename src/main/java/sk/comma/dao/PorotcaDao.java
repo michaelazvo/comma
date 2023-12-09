@@ -11,7 +11,12 @@ public interface PorotcaDao {
 
     Porotca insert(Porotca porotca);
 
-    Porotca update(Porotca porotca);
+    void pridajPorotcuDoSutaze(Long porotcaId, int sutazId);
+    List<Porotca> getPorotcoviaPreSutaz(int idSutaze);
+
+    void vymazPorotcuZoSutaze(Long porotcaId, int sutazId);
+
+    void update(Porotca porotca);
 
     boolean delete(Porotca porotca);
 
