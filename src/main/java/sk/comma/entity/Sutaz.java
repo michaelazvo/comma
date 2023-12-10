@@ -36,4 +36,5 @@ public class Sutaz {
     public String toString() {
         return nazov + ", " + odDatum;
     }
+
 }

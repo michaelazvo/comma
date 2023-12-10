@@ -15,4 +15,6 @@ public interface KategoriaDao {
     Kategoria update(Kategoria kategoria);
 
     boolean delete(Kategoria kategoria);
+
+
 }

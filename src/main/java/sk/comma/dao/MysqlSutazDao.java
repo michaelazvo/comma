@@ -27,7 +27,6 @@ public class MysqlSutazDao implements SutazDao {
     }
 
 
-
     public Sutaz save(Sutaz sutaz) {
         if (sutaz.getId() == 0) {
             // if ID == 0, then this is a new object to be inserted
@@ -50,7 +49,7 @@ public class MysqlSutazDao implements SutazDao {
                 String nazov = rs.getString("nazov");
                 LocalDate datumOd = rs.getDate("odDatum").toLocalDate();
                 LocalDate datumDo = rs.getDate("doDatum").toLocalDate();
-                return new Sutaz(id,nazov, datumOd, datumDo);
+                return new Sutaz(id, nazov, datumOd, datumDo);
             }
         });
         // TO DO

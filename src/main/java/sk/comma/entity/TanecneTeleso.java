@@ -15,16 +15,23 @@ public class TanecneTeleso {
     private String telefonneCislo;
     private String tanecnici;
 
-    public TanecneTeleso(Long id, String nazov, String hudba, String klub, long kategoriaId, long sutazId, String email, String tanecnici) {
+    public TanecneTeleso(){
+
+    }
+
+    public TanecneTeleso(Long id, String nazov, String umiestnenie, String hudba, String klub, long kategoriaId, long sutazId, String email, String telefonneCislo, String tanecnici) {
         this.id = id;
         this.nazov = nazov;
+        this.umiestnenie = umiestnenie;
         this.hudba = hudba;
         this.klub = klub;
         this.kategoriaId = kategoriaId;
         this.sutazId = sutazId;
         this.email = email;
+        this.telefonneCislo = telefonneCislo;
         this.tanecnici = tanecnici;
     }
+
 
     public Long getId() {
         return id;

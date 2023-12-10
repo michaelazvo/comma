@@ -43,17 +43,17 @@ public class MainSceneController {
         otvoritPrihlasovanieOkno(controller);
     }
 
-    private void otvoritPrihlasovanieOkno(PrihlasenieController controller){
-        try{
+    private void otvoritPrihlasovanieOkno(PrihlasenieController controller) {
+        try {
             FXMLLoader loader = new FXMLLoader(
                     getClass().getResource("Prihlasenie.fxml"));
             loader.setController(controller);
-            Parent parent= loader.load();
+            Parent parent = loader.load();
             Stage PrihlasovanieStage = new Stage();
             PrihlasovanieStage.setScene(new Scene(parent));
             PrihlasovanieStage.setTitle("Prihlasovanie");
             PrihlasovanieStage.show();
-        }catch(IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -61,20 +61,24 @@ public class MainSceneController {
     @FXML
     void prihlasitTanecneTelesoButtonClick(ActionEvent event) {
         TanecneTelesoController controller = new TanecneTelesoController();
-        otvoritTanecneTelesoOkno(controller);
+        otvoritTanecneTelesoOkno(controller); //sutazCombobox.getId());
+
+        // ulozenie zvolenej sutaze z comboboxu pre dalsi controller
+        controller.setSutazId(sutazCombobox.getValue());
     }
 
-    private void otvoritTanecneTelesoOkno(TanecneTelesoController controller){
-        try{
+    private void otvoritTanecneTelesoOkno(TanecneTelesoController controller) {
+        try {
             FXMLLoader loader = new FXMLLoader(
                     getClass().getResource("TanecneTeleso.fxml"));
             loader.setController(controller);
-            Parent parent= loader.load();
+            Parent parent = loader.load();
             Stage TanecneTelesoStage = new Stage();
             TanecneTelesoStage.setScene(new Scene(parent));
             TanecneTelesoStage.setTitle("Tanecne teleso");
             TanecneTelesoStage.show();
-        }catch(IOException e){
+
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
