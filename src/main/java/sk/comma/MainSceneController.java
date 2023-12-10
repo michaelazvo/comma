@@ -61,10 +61,11 @@ public class MainSceneController {
     @FXML
     void prihlasitTanecneTelesoButtonClick(ActionEvent event) {
         TanecneTelesoController controller = new TanecneTelesoController();
-        otvoritTanecneTelesoOkno(controller); //sutazCombobox.getId());
-
         // ulozenie zvolenej sutaze z comboboxu pre dalsi controller
         controller.setSutazId(sutazCombobox.getValue());
+        otvoritTanecneTelesoOkno(controller);
+
+
     }
 
     private void otvoritTanecneTelesoOkno(TanecneTelesoController controller) {
@@ -87,10 +88,10 @@ public class MainSceneController {
     @FXML
     void zobrazitVysledkyButtonClick(ActionEvent event) {
         VysledkyTabulkaController controller = new VysledkyTabulkaController();
-        otvoritVysledkyOkno(controller);
-
         // ulozenie zvolenej sutaze z comboboxu pre dalsi controller
         controller.setSutazId(sutazCombobox.getValue());
+        otvoritVysledkyOkno(controller);
+
     }
 
     private void otvoritVysledkyOkno(VysledkyTabulkaController controller) {

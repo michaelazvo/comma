@@ -14,6 +14,7 @@ import sk.comma.business.OverviewManagerImpl;
 import sk.comma.business.vysledkyOverview;
 import sk.comma.dao.DaoFactory;
 import sk.comma.dao.KategoriaDao;
+import sk.comma.dao.SutazDao;
 import sk.comma.entity.Kategoria;
 import sk.comma.entity.Sutaz;
 import sk.comma.entity.TanecneTeleso;
@@ -37,6 +38,8 @@ public class VysledkyTabulkaController {
     @FXML
     private TableView<vysledkyOverview> vysledkyTableView;
 
+    private SutazDao sutazDao = DaoFactory.INSTANCE.getSutazDao();
+    private List<Sutaz> sutaze;
     private KategoriaDao kategoriaDao = DaoFactory.INSTANCE.getKategoriaDao();
     private ObservableList<Kategoria> kategoriaModel;
     private List<Kategoria> kategorie;
@@ -49,6 +52,8 @@ public class VysledkyTabulkaController {
 
     // metoda pouzita v MainSceneController odkial si zapamatavame id sutaze
     public void setSutazId(Sutaz sutaz) {
+        System.out.println(sutaz);
+        System.out.println(sutaz.getId());
         this.sutazId = sutaz.getId();
     }
 
@@ -110,10 +115,13 @@ public class VysledkyTabulkaController {
         String selectedVelkostnaSkupina = velkostCombobox.getValue();
         String selectedVekovaSkupina = vekCombobox.getValue();
         long kategoriaId = getKategoriaId(selectedStyl, selectedVelkostnaSkupina, selectedVekovaSkupina);
-
+        System.out.println(sutazId);
         Kategoria kategoriaVyber = kategoriaDao.findById(kategoriaId);
+        Sutaz sutazVyber = sutazDao.findById(sutazId);
 
-        List<vysledkyOverview> overviews = overviewManager.getOverviews(kategoriaVyber);
+
+
+        List<vysledkyOverview> overviews = overviewManager.getOverviews(kategoriaVyber, sutazVyber);
         vysledkyTableView.setItems(FXCollections.observableArrayList(overviews));
     }
 

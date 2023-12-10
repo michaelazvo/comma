@@ -10,9 +10,12 @@ public interface TanecneTelesoDao {
 
     List<TanecneTeleso> findAll();
 
-    List<TanecneTeleso> findAllBySutazId(Long sutazId);
+    List<TanecneTeleso> findAllBySutazId(int sutazId);
 
     List<TanecneTeleso> findAllByKategoriaId(Long kategoriaId);
+
+    List<TanecneTeleso> findAllBySutazIdKategoriaId(int sutazId, Long kategoriaId);
+
 
     TanecneTeleso insert(TanecneTeleso tanecneTeleso);
 

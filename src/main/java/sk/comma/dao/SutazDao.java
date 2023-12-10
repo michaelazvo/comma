@@ -6,7 +6,7 @@ import sk.comma.entity.Sutaz;
 import java.util.List;
 
 public interface SutazDao {
-    Sutaz findById(long id);
+    Sutaz findById(int id);
 
     List<Sutaz> findAll();
 

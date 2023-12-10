@@ -20,10 +20,26 @@ public class MysqlSutazDao implements SutazDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    private RowMapper<Sutaz> sutazRM() {
+        return new RowMapper<Sutaz>() {
+            @Override
+            public Sutaz mapRow(ResultSet rs, int rowNum) throws SQLException {
+                int id = rs.getInt("id");
+                String nazov = rs.getString("nazov");
+                LocalDate datumOd = rs.getDate("odDatum").toLocalDate();
+                LocalDate datumDo = rs.getDate("doDatum").toLocalDate();
+
+                Sutaz sutaz = new Sutaz(id, nazov, datumOd, datumDo);
+                return sutaz;
+            }
+        };
+    }
 
     @Override
-    public Sutaz findById(long id) {
-        return null;
+    public Sutaz findById(int id) {
+        System.out.println("findbyid:" + id);
+        String sql = "SELECT id, nazov, odDatum, doDatum FROM sutaz" + " WHERE id = " + id;
+        return jdbcTemplate.queryForObject(sql, sutazRM());
     }
 
 
