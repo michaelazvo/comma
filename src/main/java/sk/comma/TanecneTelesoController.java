@@ -38,14 +38,15 @@ public class TanecneTelesoController {
     @FXML
     private TextField nazovTelesaTextField;
 
-    @FXML
-    private ComboBox<String> stylCombobox;
 
     @FXML
     private TextArea tanecniciTextField;
 
     @FXML
     private TextField telefonneCisloTextFied;
+
+    @FXML
+    private ComboBox<String> stylCombobox;
 
     @FXML
     private ComboBox<String> vekCombobox;

@@ -53,12 +53,54 @@ public class MysqlTanecneTelesoDao implements TanecneTelesoDao {
 
     @Override
     public List<TanecneTeleso> findAllBySutazId(Long sutazId) {
-        return null;
+        String query = "SELECT id, nazov, umiestnenie, hudba, klub, tanecnici FROM tanecne_teleso" + " WHERE sutaz_id = " + sutazId + " ORDER BY id";
+        List<TanecneTeleso> result = jdbcTemplate.query(query, new RowMapper<TanecneTeleso>() {
+
+            @Override
+            public TanecneTeleso mapRow(ResultSet rs, int rowNum) throws SQLException {
+                long id = rs.getInt("id");
+                String nazov = rs.getString("nazov");
+                String umiestnenie = rs.getString("umiestnenie");
+                String hudba = rs.getString("hudba");
+                String klub = rs.getString("klub");
+                String telefonne_cislo = rs.getString("telefonne_cislo");
+                String tanecnici = rs.getString("tanecnici");
+                String email = rs.getString("email");
+
+
+                long kategoria_id = rs.getLong("kategoria_id");
+                long sutaz_id = rs.getLong("sutaz_id");
+                return new TanecneTeleso(id, nazov, umiestnenie, hudba, klub, kategoria_id, sutaz_id, telefonne_cislo, email, tanecnici);
+            }
+        });
+
+        return result;
     }
 
     @Override
     public List<TanecneTeleso> findAllByKategoriaId(Long kategoriaId) {
-        return null;
+
+        String query = "SELECT id, nazov, umiestnenie, hudba, klub, telefonne_cislo, email, kategoria_id, sutaz_id, tanecnici FROM tanecne_teleso" + " WHERE kategoria_id = " + kategoriaId + " ORDER BY id";
+        List<TanecneTeleso> result = jdbcTemplate.query(query, new RowMapper<TanecneTeleso>() {
+
+            @Override
+            public TanecneTeleso mapRow(ResultSet rs, int rowNum) throws SQLException {
+                long id = rs.getInt("id");
+                String nazov = rs.getString("nazov");
+                String umiestnenie = rs.getString("umiestnenie");
+                String hudba = rs.getString("hudba");
+                String klub = rs.getString("klub");
+                String telefonne_cislo = rs.getString("telefonne_cislo");
+                String tanecnici = rs.getString("tanecnici");
+                String email = rs.getString("email");
+
+
+                long kategoria_id = rs.getLong("kategoria_id");
+                long sutaz_id = rs.getLong("sutaz_id");
+                return new TanecneTeleso(id, nazov, umiestnenie, hudba, klub, kategoria_id, sutaz_id, telefonne_cislo, email, tanecnici);
+            }
+        });
+        return result;
     }
 
 

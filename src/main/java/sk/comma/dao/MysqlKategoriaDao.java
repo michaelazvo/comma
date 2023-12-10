@@ -19,9 +19,27 @@ public class MysqlKategoriaDao implements KategoriaDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    private RowMapper<Kategoria> kategoriaRM() {
+        return new RowMapper<Kategoria>() {
+            @Override
+            public Kategoria mapRow(ResultSet rs, int rowNum) throws SQLException {
+                long id = rs.getInt("id");
+                String styl = rs.getString("styl");
+                String vekova_skupina = rs.getString("vekova_skupina");
+                String velkostna_skupina = rs.getString("velkostna_skupina");
+
+                Kategoria kategoria= new Kategoria(id, styl, vekova_skupina,velkostna_skupina);
+                return kategoria;
+            }
+        };
+    }
+
     @Override
     public Kategoria findById(long id) {
-        return null;
+
+        String sql = "SELECT id, styl, vekova_skupina, velkostna_skupina FROM kategoria" + " WHERE id = " + id;
+        return jdbcTemplate.queryForObject(sql, kategoriaRM());
+
     }
 
     @Override

@@ -86,8 +86,29 @@ public class MainSceneController {
 
     @FXML
     void zobrazitVysledkyButtonClick(ActionEvent event) {
+        VysledkyTabulkaController controller = new VysledkyTabulkaController();
+        otvoritVysledkyOkno(controller);
 
+        // ulozenie zvolenej sutaze z comboboxu pre dalsi controller
+        controller.setSutazId(sutazCombobox.getValue());
     }
+
+    private void otvoritVysledkyOkno(VysledkyTabulkaController controller) {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("VysledkyTabulka.fxml"));
+            loader.setController(controller);
+            Parent parent = loader.load();
+            Stage TanecneTelesoStage = new Stage();
+            TanecneTelesoStage.setScene(new Scene(parent));
+            TanecneTelesoStage.setTitle("Výsledky");
+            TanecneTelesoStage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 
 }
