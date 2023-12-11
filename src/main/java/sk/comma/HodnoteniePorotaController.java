@@ -56,31 +56,19 @@ public class HodnoteniePorotaController {
     }
 
     private void setHodnotenieByPorotcaIdTelesoId(long porotcaId, long tanecneTelesoId, int body) {
-        long hodnotenieId = 0;
-        boolean existing = false;
-        if (hodnotenia.isEmpty()) {
+        Hodnotenie existingHodnotenie = hodnotenieDao.findByPorotcaIdAndTelesoId(porotcaId, tanecneTelesoId);
+
+        if (existingHodnotenie != null) {
+            // Update existing Hodnotenie
+            existingHodnotenie.setHodnotenie(body);
+            savedHodnotenie = hodnotenieDao.update(existingHodnotenie);
+        } else {
+            // Create a new Hodnotenie
             Hodnotenie hodnotenie = new Hodnotenie();
             hodnotenie.setPorotcaId(porotcaId);
             hodnotenie.setTanecneTelesoId(tanecneTelesoId);
             hodnotenie.setHodnotenie(body);
             savedHodnotenie = hodnotenieDao.insert(hodnotenie);
-        }
-        for (Hodnotenie hodnotenie : hodnotenia) {
-            if (hodnotenie.getTanecneTelesoId() == tanecneTelesoId && hodnotenie.getPorotcaId() == porotcaId) {
-                existing = true;
-                hodnotenie.setHodnotenie(body);
-                savedHodnotenie = hodnotenieDao.update(hodnotenie);
-                break;
-            }
-        }
-        if (!existing) {
-            Hodnotenie hodnotenie = new Hodnotenie();
-            hodnotenie.setPorotcaId(porotcaId);
-            hodnotenie.setTanecneTelesoId(tanecneTelesoId);
-            hodnotenie.setHodnotenie(body);
-
-            savedHodnotenie = hodnotenieDao.insert(hodnotenie);
-
         }
     }
 
@@ -111,7 +99,6 @@ public class HodnoteniePorotaController {
 
     @FXML
     void ulozitHodnotenieButtonClick(ActionEvent event) {
-
         TanecneTeleso teleso = null;
 
         String telesoIdString = idTanecnehoTelesaTextField.getText();
@@ -129,7 +116,6 @@ public class HodnoteniePorotaController {
                 }
             }
         }
-
 
         if (!bodyString.isEmpty() && existujeTeleso) {
             int body = Integer.parseInt(bodyString);

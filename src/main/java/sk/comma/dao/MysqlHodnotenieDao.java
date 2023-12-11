@@ -1,14 +1,13 @@
 package sk.comma.dao;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import sk.comma.entity.Hodnotenie;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.List;
 import java.util.Objects;
 
@@ -30,6 +29,21 @@ public class MysqlHodnotenieDao implements HodnotenieDao {
     @Override
     public List<Hodnotenie> findAll() {
         return null;
+    }
+
+    private RowMapper<Hodnotenie> hodnotenieRowMapper() {
+        return new RowMapper<Hodnotenie>() {
+            @Override
+            public Hodnotenie mapRow(ResultSet rs, int rowNum) throws SQLException {
+                long id = rs.getLong("id");
+                int hodnotenie = rs.getInt("hodnotenie");
+                long porotcaId = rs.getLong("porotca_id");
+                long tanecneTelesoId = rs.getLong("tanecne_teleso_id");
+
+                Hodnotenie hodnotenieObject = new Hodnotenie(id, hodnotenie, porotcaId, tanecneTelesoId);
+                return hodnotenieObject;
+            }
+        };
     }
 
     @Override
@@ -58,11 +72,22 @@ public class MysqlHodnotenieDao implements HodnotenieDao {
 
     @Override
     public Hodnotenie update(Hodnotenie hodnotenie) {
-        String query = "UPDATE hodnotenie SET hodnotenie = WHERE id = ?";
+        String query = "UPDATE hodnotenie SET hodnotenie = ? WHERE id = ?";
 
         jdbcTemplate.update(query, hodnotenie.getHodnotenie(), hodnotenie.getId());
         return null;
     }
+
+    @Override
+    public Hodnotenie findByPorotcaIdAndTelesoId(long porotcaId, long tanecneTelesoId) {
+        String query = "SELECT * FROM hodnotenie WHERE porotca_id = ? AND tanecne_teleso_id = ?";
+        try {
+            return jdbcTemplate.queryForObject(query, new Object[]{porotcaId, tanecneTelesoId}, hodnotenieRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
 
     @Override
     public boolean delete(Hodnotenie hodnotenie) {

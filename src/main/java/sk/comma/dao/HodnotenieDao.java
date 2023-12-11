@@ -14,5 +14,8 @@ public interface HodnotenieDao {
 
     Hodnotenie update(Hodnotenie hodnotenie);
 
+    Hodnotenie findByPorotcaIdAndTelesoId(long porotcaId, long tanecneTelesoId);
+
+
     boolean delete(Hodnotenie hodnotenie);
 }
