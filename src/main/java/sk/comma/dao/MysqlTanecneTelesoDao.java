@@ -19,9 +19,36 @@ public class MysqlTanecneTelesoDao implements TanecneTelesoDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    private RowMapper<TanecneTeleso> tanecneTelesoRM() {
+        return new RowMapper<TanecneTeleso>() {
+            @Override
+            public TanecneTeleso mapRow(ResultSet rs, int rowNum) throws SQLException {
+                long id = rs.getInt("id");
+                String nazov = rs.getString("nazov");
+                String umiestnenie = rs.getString("umiestnenie");
+                String hudba = rs.getString("hudba");
+                String klub = rs.getString("klub");
+                String telefonne_cislo = rs.getString("telefonne_cislo");
+                String tanecnici = rs.getString("tanecnici");
+                String email = rs.getString("email");
+
+
+                long kategoria_id = rs.getLong("kategoria_id");
+                long sutaz_id = rs.getLong("sutaz_id");
+
+                TanecneTeleso teleso = new TanecneTeleso(id, nazov, umiestnenie, hudba, klub, kategoria_id, sutaz_id, telefonne_cislo, email, tanecnici);
+                ;
+                return teleso;
+            }
+        };
+    }
+
     @Override
     public TanecneTeleso findById(long id) {
-        return null;
+
+        String sql = "SELECT id, nazov, umiestnenie, hudba, klub, telefonne_cislo, tanecnici, email, kategoria_id, sutaz_id FROM tanecne_teleso " + " WHERE id = " + id;
+        return jdbcTemplate.queryForObject(sql, tanecneTelesoRM());
+
     }
 
     @Override
@@ -53,7 +80,7 @@ public class MysqlTanecneTelesoDao implements TanecneTelesoDao {
 
     @Override
     public List<TanecneTeleso> findAllBySutazId(int sutazId) {
-        String query = "SELECT id, nazov, umiestnenie, hudba, klub, tanecnici FROM tanecne_teleso" + " WHERE sutaz_id = " + sutazId + " ORDER BY id";
+        String query = "SELECT id, nazov, umiestnenie, hudba, klub, telefonne_cislo, tanecnici, email, kategoria_id, sutaz_id FROM tanecne_teleso " + " WHERE sutaz_id = " + sutazId + " ORDER BY id";
         List<TanecneTeleso> result = jdbcTemplate.query(query, new RowMapper<TanecneTeleso>() {
 
             @Override

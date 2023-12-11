@@ -18,26 +18,36 @@
             <Font size="16.0" />
          </font>
       </Label>
-      <Label layoutX="102.0" layoutY="201.0" prefHeight="30.0" prefWidth="112.0" text="Počet bodov : ">
+      <Label layoutX="50.0" layoutY="291.0" prefHeight="30.0" prefWidth="112.0" text="Počet bodov : ">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <Button layoutX="432.0" layoutY="291.0" mnemonicParsing="false" onAction="#ulozitHodnotenieButtonClick" prefHeight="42.0" prefWidth="92.0" text="Uložiť">
+      <Button layoutX="264.0" layoutY="285.0" mnemonicParsing="false" onAction="#ulozitHodnotenieButtonClick" prefHeight="42.0" prefWidth="92.0" text="Uložiť">
          <font>
             <Font size="16.0" />
          </font>
       </Button>
-      <TextField fx:id="pocetBodovTextField" layoutX="237.0" layoutY="204.0" />
-      <TextField fx:id="idTanecnehoTelesaTextField" layoutX="231.0" layoutY="115.0" prefHeight="26.0" prefWidth="60.0" />
-      <Label layoutX="332.0" layoutY="114.0" prefHeight="26.0" prefWidth="72.0" text="Názov : ">
+      <TextField fx:id="pocetBodovTextField" layoutX="162.0" layoutY="293.0" prefHeight="26.0" prefWidth="79.0" />
+      <TextField fx:id="idTanecnehoTelesaTextField" layoutX="236.0" layoutY="114.0" prefHeight="26.0" prefWidth="79.0" />
+      <Label layoutX="166.0" layoutY="155.0" prefHeight="26.0" prefWidth="72.0" text="Názov : ">
          <font>
-            <Font size="14.0" />
+            <Font size="15.0" />
          </font>
       </Label>
-      <Label fx:id="nazovTelesaLabel" layoutX="394.0" layoutY="117.0" prefHeight="18.0" prefWidth="129.0" text="sunshine">
+      <Label fx:id="nazovTelesaLabel" layoutX="232.0" layoutY="156.0" prefHeight="26.0" prefWidth="222.0">
          <font>
-            <Font size="14.0" />
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <Button layoutX="340.0" layoutY="109.0" mnemonicParsing="false" onAction="#overitNazovButtonClick" text="Overiť názov">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Button>
+      <Label fx:id="upozornenieLabel" layoutX="236.0" layoutY="200.0" prefHeight="67.0" prefWidth="222.0" wrapText="true">
+         <font>
+            <Font size="16.0" />
          </font>
       </Label>
    </children>

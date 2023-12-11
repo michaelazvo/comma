@@ -40,6 +40,7 @@ public class MainSceneController {
     @FXML
     void prihlasenieButtonClick(ActionEvent event) {
         PrihlasenieController controller = new PrihlasenieController(sutaze);
+        controller.setSutazId(sutazCombobox.getValue());
         otvoritPrihlasovanieOkno(controller);
     }
 

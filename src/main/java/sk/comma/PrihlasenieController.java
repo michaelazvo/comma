@@ -12,10 +12,13 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import sk.comma.dao.DaoFactory;
 import sk.comma.dao.PorotcaDao;
+import sk.comma.entity.Porotca;
 import sk.comma.entity.Sutaz;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PrihlasenieController {
@@ -27,6 +30,14 @@ public class PrihlasenieController {
     private PasswordField hesloPasswordField;
 
     private List<Sutaz> sutaze;
+
+    // aktualna sutaz
+    private int sutazId;
+
+    // metoda pouzita v MainSceneController odkial si zapamatavame id sutaze
+    public void setSutazId(Sutaz sutaz) {
+        this.sutazId = sutaz.getId();
+    }
 
     public PrihlasenieController(List<Sutaz> sutaze) {
         this.sutaze = sutaze;
@@ -42,12 +53,16 @@ public class PrihlasenieController {
 
     @FXML
     void prihlasenieButtonClick(ActionEvent event) {
-       String meno = uzivatelskeMenoTextField.getText();
-       String heslo = hesloPasswordField.getText();
-       PorotcaDao porotcaDao = DaoFactory.INSTANCE.getPorotcaDao();
-        boolean existujeUzivatel = porotcaDao.existingUser(heslo,meno);
-
-        if (existujeUzivatel) {
+        String meno = uzivatelskeMenoTextField.getText();
+        String heslo = hesloPasswordField.getText();
+        PorotcaDao porotcaDao = DaoFactory.INSTANCE.getPorotcaDao();
+        boolean existujeUzivatel = porotcaDao.existingUser(heslo, meno);
+        List<Porotca> porota = porotcaDao.getPorotcoviaPreSutaz(sutazId);
+        List<String> menaPorotcov = new ArrayList<>();
+        for (Porotca porotca : porota) {
+            menaPorotcov.add(porotca.getUzivatelskeMeno());
+        }
+        if (existujeUzivatel && menaPorotcov.contains(meno)) {
             // uzivatel existuje, skontrolovat spravnost hesla
             boolean jeSpravneHeslo = porotcaDao.isPasswordCorrect(heslo, meno);
             boolean jeAdmin = porotcaDao.isAdmin(heslo, meno);
@@ -57,6 +72,17 @@ public class PrihlasenieController {
                 otvoritAdminOkno(controller);
             } else if (!jeAdmin && jeSpravneHeslo) {
                 HodnoteniePorotaController controller = new HodnoteniePorotaController();
+                Porotca porotca = null;
+                for (Porotca p : porota) {
+                    if (p.getUzivatelskeMeno().equals(meno)) {
+                        porotca = p;
+                        break;
+                    }
+                }
+                if (porotca != null) {
+                    controller.setPorotcaId(porotca.getId());
+                }
+                controller.setSutazId(sutazId);
                 otvoritPorotcaOkno(controller);
             } else {
                 zobrazitChybovyAlert("Nesprávne heslo. Skúste to znova.");
@@ -69,32 +95,32 @@ public class PrihlasenieController {
 
     }
 
-    private void otvoritAdminOkno(SutazController controller){
-        try{
+    private void otvoritAdminOkno(SutazController controller) {
+        try {
             FXMLLoader loader = new FXMLLoader(
                     getClass().getResource("Sutaz.fxml"));
             loader.setController(controller);
-            Parent parent= loader.load();
+            Parent parent = loader.load();
             Stage PridanieSutazeStage = new Stage();
             PridanieSutazeStage.setScene(new Scene(parent));
             PridanieSutazeStage.setTitle("Sutaz");
             PridanieSutazeStage.show();
-        }catch(IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private void otvoritPorotcaOkno(HodnoteniePorotaController controller){
-        try{
+    private void otvoritPorotcaOkno(HodnoteniePorotaController controller) {
+        try {
             FXMLLoader loader = new FXMLLoader(
                     getClass().getResource("HodnoteniePorota.fxml"));
             loader.setController(controller);
-            Parent parent= loader.load();
+            Parent parent = loader.load();
             Stage HodnotenieStage = new Stage();
             HodnotenieStage.setScene(new Scene(parent));
             HodnotenieStage.setTitle("Hodnotenie");
             HodnotenieStage.show();
-        }catch(IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
