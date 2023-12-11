@@ -62,7 +62,7 @@ public class PrihlasenieController {
         for (Porotca porotca : porota) {
             menaPorotcov.add(porotca.getUzivatelskeMeno());
         }
-        if (existujeUzivatel && menaPorotcov.contains(meno)) {
+        if (existujeUzivatel) {
             // uzivatel existuje, skontrolovat spravnost hesla
             boolean jeSpravneHeslo = porotcaDao.isPasswordCorrect(heslo, meno);
             boolean jeAdmin = porotcaDao.isAdmin(heslo, meno);
@@ -70,7 +70,7 @@ public class PrihlasenieController {
             if (jeAdmin && jeSpravneHeslo) {
                 SutazController controller = new SutazController();
                 otvoritAdminOkno(controller);
-            } else if (!jeAdmin && jeSpravneHeslo) {
+            } else if (!jeAdmin && jeSpravneHeslo && menaPorotcov.contains(meno)) {
                 HodnoteniePorotaController controller = new HodnoteniePorotaController();
                 Porotca porotca = null;
                 for (Porotca p : porota) {
