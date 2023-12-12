@@ -19,13 +19,19 @@ public class OverviewManagerImpl implements OverviewManager {
 
     @Override
     public List<vysledkyOverview> getOverviews(Kategoria kategoria, Sutaz sutaz) {
-        Hodnotenie hodnotenie = new Hodnotenie();
+        HodnotenieDao hodnotenieDao = DaoFactory.INSTANCE.getHodnotenieDao();
         TanecneTelesoDao tanecneTelesoDao = DaoFactory.INSTANCE.getTanecneTelesoDao();
         List<TanecneTeleso> tanecneTelesa = tanecneTelesoDao.findAllBySutazIdKategoriaId(sutaz.getId(),kategoria.getId());
 
+
         List<vysledkyOverview> result = new ArrayList<vysledkyOverview>();
         for (TanecneTeleso teleso: tanecneTelesa) {
-            result.add(new vysledkyOverview(teleso.getUmiestnenie(), teleso.getId(), teleso.getNazov(), teleso.getHudba(), teleso.getKlub(), teleso.getTanecnici(),null));
+            List<Hodnotenie> hodnotenia = hodnotenieDao.findAllByTelesoId(teleso.getId());
+            int sucetBodov = 0;
+            for (Hodnotenie h:hodnotenia) {
+                sucetBodov+=h.getHodnotenie();
+            }
+            result.add(new vysledkyOverview(teleso.getUmiestnenie(), teleso.getId(), teleso.getNazov(), teleso.getHudba(), teleso.getKlub(), teleso.getTanecnici(),sucetBodov));
         }
         return result;
     }

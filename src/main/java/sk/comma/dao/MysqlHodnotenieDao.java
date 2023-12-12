@@ -8,8 +8,8 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import sk.comma.entity.Hodnotenie;
 
 import java.sql.*;
+import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 public class MysqlHodnotenieDao implements HodnotenieDao {
 
@@ -23,12 +23,34 @@ public class MysqlHodnotenieDao implements HodnotenieDao {
 
     @Override
     public Hodnotenie findById(long id) {
-        return null;
+        String query = "SELECT * FROM hodnotenie WHERE id = ?";
+        try {
+            return jdbcTemplate.queryForObject(query, new Object[]{id}, hodnotenieRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
+    @Override
+    public List<Hodnotenie> findBySutazIdAndKategoriaId(long sutazId, long kategoriaId) {
+        String query = "SELECT * FROM hodnotenie WHERE porotca_id = ? AND tanecne_teleso_id = ?";
+        try {
+            return jdbcTemplate.query(query, new Object[]{sutazId, kategoriaId}, hodnotenieRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            return Collections.emptyList(); // Return an empty list if no results are found
+        }
+    }
+
+    @Override
+    public List<Hodnotenie> findAllByTelesoId(long tanecneTelesoId) {
+        String query = "SELECT * FROM hodnotenie WHERE tanecne_teleso_id = ?";
+        return jdbcTemplate.query(query, new Object[]{tanecneTelesoId}, hodnotenieRowMapper());
     }
 
     @Override
     public List<Hodnotenie> findAll() {
-        return null;
+        String query = "SELECT * FROM hodnotenie";
+        return jdbcTemplate.query(query, hodnotenieRowMapper());
     }
 
     private RowMapper<Hodnotenie> hodnotenieRowMapper() {
@@ -91,6 +113,10 @@ public class MysqlHodnotenieDao implements HodnotenieDao {
 
     @Override
     public boolean delete(Hodnotenie hodnotenie) {
-        return false;
+        String query = "DELETE FROM hodnotenie WHERE id = ?";
+
+        int rowsAffected = jdbcTemplate.update(query, hodnotenie.getId());
+
+        return rowsAffected > 0;
     }
 }

@@ -1,4 +1,5 @@
 package sk.comma;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -13,8 +14,10 @@ import sk.comma.business.OverviewManager;
 import sk.comma.business.OverviewManagerImpl;
 import sk.comma.business.vysledkyOverview;
 import sk.comma.dao.DaoFactory;
+import sk.comma.dao.HodnotenieDao;
 import sk.comma.dao.KategoriaDao;
 import sk.comma.dao.SutazDao;
+import sk.comma.entity.Hodnotenie;
 import sk.comma.entity.Kategoria;
 import sk.comma.entity.Sutaz;
 import sk.comma.entity.TanecneTeleso;
@@ -37,6 +40,9 @@ public class VysledkyTabulkaController {
 
     @FXML
     private TableView<vysledkyOverview> vysledkyTableView;
+
+    private HodnotenieDao hodnotenieDao = DaoFactory.INSTANCE.getHodnotenieDao();
+    private List<Hodnotenie> hodnotenia;
 
     private SutazDao sutazDao = DaoFactory.INSTANCE.getSutazDao();
     private List<Sutaz> sutaze;
@@ -101,11 +107,10 @@ public class VysledkyTabulkaController {
         tanecniciCol.setCellValueFactory(new PropertyValueFactory<>("tanecnici"));
         vysledkyTableView.getColumns().add(tanecniciCol);
 
+
         TableColumn<vysledkyOverview, Integer> hodnotenieCol = new TableColumn<>("Hodnotenie");
         hodnotenieCol.setCellValueFactory(new PropertyValueFactory<>("hodnotenie"));
         vysledkyTableView.getColumns().add(hodnotenieCol);
-
-
 
 
     }
@@ -115,13 +120,20 @@ public class VysledkyTabulkaController {
         String selectedVelkostnaSkupina = velkostCombobox.getValue();
         String selectedVekovaSkupina = vekCombobox.getValue();
         long kategoriaId = getKategoriaId(selectedStyl, selectedVelkostnaSkupina, selectedVekovaSkupina);
-        System.out.println(sutazId);
         Kategoria kategoriaVyber = kategoriaDao.findById(kategoriaId);
         Sutaz sutazVyber = sutazDao.findById(sutazId);
 
 
-
         List<vysledkyOverview> overviews = overviewManager.getOverviews(kategoriaVyber, sutazVyber);
+        vysledkyTableView.setItems(FXCollections.observableArrayList(overviews));
+
+        overviews.sort((o1, o2) -> Integer.compare(o2.getHodnotenie(), o1.getHodnotenie()));
+
+        // Assign umiestnenie based on the sorted order
+        for (int i = 0; i < overviews.size(); i++) {
+            overviews.get(i).setUmiestnenie(Integer.toString(i + 1));
+        }
+
         vysledkyTableView.setItems(FXCollections.observableArrayList(overviews));
     }
 
