@@ -17,12 +17,11 @@ import sk.comma.dao.DaoFactory;
 import sk.comma.dao.HodnotenieDao;
 import sk.comma.dao.KategoriaDao;
 import sk.comma.dao.SutazDao;
-import sk.comma.entity.Hodnotenie;
-import sk.comma.entity.Kategoria;
-import sk.comma.entity.Sutaz;
-import sk.comma.entity.TanecneTeleso;
+import sk.comma.entity.*;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class VysledkyTabulkaController {
 
@@ -125,16 +124,47 @@ public class VysledkyTabulkaController {
 
 
         List<vysledkyOverview> overviews = overviewManager.getOverviews(kategoriaVyber, sutazVyber);
-        vysledkyTableView.setItems(FXCollections.observableArrayList(overviews));
 
-        overviews.sort((o1, o2) -> Integer.compare(o2.getHodnotenie(), o1.getHodnotenie()));
+        // Sort the list in descending order based on hodnotenie
+        overviews.sort(Comparator.comparingInt(vysledkyOverview::getHodnotenie).reversed());
 
-        // Assign umiestnenie based on the sorted order
+        // Retrieve all Porotcas for the current Sutaz
+        List<Porotca> allPorotcas = DaoFactory.INSTANCE.getPorotcaDao().getPorotcoviaPreSutaz(sutazVyber.getId());
+
+        // Iterate through TanecneTelesa and check if each one received all Hodnotenia
         for (int i = 0; i < overviews.size(); i++) {
-            overviews.get(i).setUmiestnenie(Integer.toString(i + 1));
+            vysledkyOverview teleso = overviews.get(i);
+            List<Hodnotenie> hodnotenia = DaoFactory.INSTANCE.getHodnotenieDao().findAllByTelesoId(teleso.getId());
+
+            // Check if all Porotcas provided Hodnotenie for this TanecneTeleso
+            if (checkAllPorotcasProvidedHodnotenie(hodnotenia, allPorotcas)) {
+                // Assign Umiestnenie only if all Porotcas provided Hodnotenie
+                teleso.setUmiestnenie(Integer.toString(i + 1)+".");
+            } else {
+                // Reset Umiestnenie to an empty string if not all Porotcas provided Hodnotenie
+                teleso.setUmiestnenie("");
+            }
         }
 
         vysledkyTableView.setItems(FXCollections.observableArrayList(overviews));
+    }
+
+    private boolean checkAllPorotcasProvidedHodnotenie(List<Hodnotenie> hodnotenia, List<Porotca> porotcas) {
+        for (Porotca porotca : porotcas) {
+            boolean porotcaProvidedHodnotenie = false;
+
+            for (Hodnotenie hodnotenie : hodnotenia) {
+                if (hodnotenie.getPorotcaId() == porotca.getId()) {
+                    porotcaProvidedHodnotenie = true;
+                    break;
+                }
+            }
+
+            if (!porotcaProvidedHodnotenie) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @FXML

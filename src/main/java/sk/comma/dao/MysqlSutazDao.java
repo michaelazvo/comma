@@ -5,6 +5,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
+import sk.comma.entity.Porotca;
 import sk.comma.entity.Sutaz;
 
 import java.sql.*;
@@ -33,6 +34,24 @@ public class MysqlSutazDao implements SutazDao {
                 return sutaz;
             }
         };
+    }
+
+    private List<Porotca> findPorotcoviaBySutazId(int sutazId) {
+        String query = "SELECT p.* FROM porotca p " +
+                "JOIN hodnotenie h ON p.id = h.porotca_id " +
+                "JOIN tanecne_teleso t ON h.tanecne_teleso_id = t.id " +
+                "WHERE t.sutaz_id = ?";
+
+        return jdbcTemplate.query(query, (rs, rowNum) -> {
+            Porotca porotca = new Porotca();
+            porotca.setId(rs.getLong("id"));
+            porotca.setMeno(rs.getString("meno"));
+            porotca.setPriezvisko(rs.getString("priezvisko"));
+            porotca.setUzivatelskeMeno(rs.getString("uzivatelske_meno"));
+            porotca.setHeslo(rs.getString("heslo"));
+            porotca.setJeAdmin(rs.getBoolean("jeAdmin"));
+            return porotca;
+        }, sutazId);
     }
 
     @Override
