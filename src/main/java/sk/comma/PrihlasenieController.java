@@ -12,6 +12,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import sk.comma.dao.DaoFactory;
 import sk.comma.dao.PorotcaDao;
+import sk.comma.dao.SutazDao;
 import sk.comma.entity.Porotca;
 import sk.comma.entity.Sutaz;
 import javafx.scene.control.Alert;
@@ -33,6 +34,8 @@ public class PrihlasenieController {
 
     // aktualna sutaz
     private int sutazId;
+
+    private SutazDao sutazDao = DaoFactory.INSTANCE.getSutazDao();
 
     // metoda pouzita v MainSceneController odkial si zapamatavame id sutaze
     public void setSutazId(Sutaz sutaz) {
@@ -70,7 +73,7 @@ public class PrihlasenieController {
             if (jeAdmin && jeSpravneHeslo) {
                 SutazController controller = new SutazController();
                 otvoritAdminOkno(controller);
-            } else if (!jeAdmin && jeSpravneHeslo  && menaPorotcov.contains(meno)) {
+            } else if (!jeAdmin && jeSpravneHeslo  && menaPorotcov.contains(meno) && sutazDao.findById(sutazId).jeSutazAktualna())  {
                 HodnoteniePorotaController controller = new HodnoteniePorotaController();
                 Porotca porotca = null;
                 for (Porotca p : porota) {
@@ -85,7 +88,11 @@ public class PrihlasenieController {
                 controller.setSutazId(sutazId);
                 otvoritPorotcaOkno(controller);
             } else {
-                zobrazitChybovyAlert("Nesprávne heslo. Skúste to znova.");
+                if(!sutazDao.findById(sutazId).jeSutazAktualna()){
+                    zobrazitChybovyAlert("Súťaž nie je aktuálna. Prihlasovanie porotcov nie je povolené");
+                } else {
+                    zobrazitChybovyAlert("Nesprávne heslo. Skúste to znova.");
+                }
             }
         } else {
             // uzivatel neexistuje

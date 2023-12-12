@@ -1,5 +1,7 @@
 package sk.comma;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -7,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.stage.Stage;
 import sk.comma.dao.DaoFactory;
@@ -14,6 +17,7 @@ import sk.comma.dao.SutazDao;
 import sk.comma.entity.Sutaz;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 
 public class MainSceneController {
@@ -25,6 +29,9 @@ public class MainSceneController {
     private ObservableList<Sutaz> sutazModel;
     private List<Sutaz> sutaze;
 
+    @FXML
+    private Button prihlasitTelesoButton;
+
 
     @FXML
     void initialize() {
@@ -34,7 +41,35 @@ public class MainSceneController {
         sutazCombobox.setItems(sutazModel);
         sutazCombobox.getSelectionModel().selectFirst();
 
+        sutazCombobox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Sutaz>() {
+            @Override
+            public void changed(ObservableValue<? extends Sutaz> observable, Sutaz oldValue, Sutaz newValue) {
+                // Ak bola vybraná nová súťaž, aktualizujte vlastnosť disable pre tlačidlo
+                updatePrihlasitButtonState(newValue);
+            }
+        });
+
+        updatePrihlasitButtonState(sutazCombobox.getValue());
+
     }
+
+    private void updatePrihlasitButtonState(Sutaz selectedSutaz) {
+        if (selectedSutaz != null) {
+            // Tu vložte logiku pre kontrolu dátumu a nastavenie vlastnosti disable
+            boolean isButtonDisabled = isPrihlasitButtonDisabled(selectedSutaz);
+            prihlasitTelesoButton.setDisable(isButtonDisabled);
+        }
+    }
+
+    private boolean isPrihlasitButtonDisabled(Sutaz sutaz) {
+        // Sem vložte logiku pre kontrolu dátumu
+        // Napríklad, ak je dátum súťaže pred aktuálnym dátumom, vráťte true
+        // Inak vráťte false
+        // Tu uvádzam falošný príklad:
+        return sutaz.getOdDatum().isBefore(LocalDate.now()) || sutaz.getDoDatum().isBefore(LocalDate.now());
+    }
+
+
 
 
     @FXML

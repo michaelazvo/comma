@@ -32,6 +32,11 @@ public class Sutaz {
         this.odDatum = odDatum;
     }
 
+    public boolean jeSutazAktualna() {
+        LocalDate currentDate = LocalDate.now();
+        return currentDate.isAfter(odDatum) && currentDate.isBefore(doDatum);
+    }
+
     @Override
     public String toString() {
         return nazov + ", " + odDatum;
