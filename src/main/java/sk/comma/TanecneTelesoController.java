@@ -5,6 +5,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -54,6 +55,12 @@ public class TanecneTelesoController {
     @FXML
     private ComboBox<String> velkostnaSkupinaCombobox;
 
+    @FXML
+    private Button ulozitTelesoButton;
+
+    @FXML
+    private Button prihlasitTelesoButton;
+
     private KategoriaDao kategoriaDao = DaoFactory.INSTANCE.getKategoriaDao();
     private ObservableList<Kategoria> kategoriaModel;
     private List<Kategoria> kategorie;
@@ -63,9 +70,23 @@ public class TanecneTelesoController {
     private TanecneTeleso savedTanecneTeleso;
     private Kategoria savedKategoria;
 
+    TanecneTeleso vybraneTeleso;
 
     // aktualna sutaz
     private int sutazId;
+    boolean adminMode;
+
+
+
+
+    public TanecneTelesoController(){
+
+    }
+
+    public TanecneTelesoController(TanecneTeleso vybraneTanecneTeleso, boolean adminMode){
+        this.vybraneTeleso = vybraneTanecneTeleso;
+        this.adminMode = adminMode;
+    }
 
     // metoda pouzita v MainSceneController odkial si zapamatavame id sutaze
     public void setSutazId(Sutaz sutaz) {
@@ -133,7 +154,7 @@ public class TanecneTelesoController {
 
             // Save the TanecneTeleso object to the database
             savedTanecneTeleso = tanecneTelesoDao.insert(teleso);
-            // Optionally, you can display a success message or update the UI
+            prihlasitTelesoButton.getScene().getWindow().hide();
         } catch (Exception e) {
             e.printStackTrace();
             // Handle any exceptions that may occur during the save operation
@@ -143,7 +164,19 @@ public class TanecneTelesoController {
 
     @FXML
     void ulozitTelesoButtonClick(ActionEvent event) {
+        vybraneTeleso.setNazov(nazovTelesaTextField.getText());
+        vybraneTeleso.setHudba(hudbaTextField.getText());
+        vybraneTeleso.setKlub(klubTextField.getText());
+        vybraneTeleso.setEmail(emailTextField.getText());
+        vybraneTeleso.setTelefonneCislo(telefonneCisloTextFied.getText());
+        vybraneTeleso.setTanecnici(tanecniciTextField.getText());
+        String selectedStyl = stylCombobox.getValue();
+        String selectedVelkostnaSkupina = velkostnaSkupinaCombobox.getValue();
+        String selectedVekovaSkupina = vekCombobox.getValue();
 
+        //pouzitie metody na vyhladanie id kategorie
+        vybraneTeleso.setKategoriaId(getKategoriaId(selectedStyl, selectedVelkostnaSkupina, selectedVekovaSkupina));
+        tanecneTelesoDao.update(vybraneTeleso);
     }
 
 // toto neviem ci vyuzijeme, mozno dakedy hej
@@ -153,18 +186,38 @@ public class TanecneTelesoController {
 
     @FXML
     void initialize() {
-        // Set items for each ComboBox using the predefined types in Kategoria
+        kategorie = kategoriaDao.findAll();
+
         stylCombobox.getItems().addAll(Kategoria.getStylTypes());
         vekCombobox.getItems().addAll(Kategoria.getVekovaSkupinaTypes());
         velkostnaSkupinaCombobox.getItems().addAll(Kategoria.getVelkostnaSkupinaTypes());
 
-        // Optionally, select default items if available
-        stylCombobox.getSelectionModel().selectFirst();
-        vekCombobox.getSelectionModel().selectFirst();
-        velkostnaSkupinaCombobox.getSelectionModel().selectFirst();
+        ulozitTelesoButton.setVisible(adminMode);
 
-        kategorie = kategoriaDao.findAll();
+        if(vybraneTeleso!=null){
+            prihlasitTelesoButton.setVisible(false);
+            nazovTelesaTextField.setText(vybraneTeleso.getNazov());
+            Long kategoriaId = vybraneTeleso.getKategoriaId();
+            Kategoria kategoria = kategoriaDao.findById(kategoriaId);
+            stylCombobox.setValue(kategoria.getStyl());
+            vekCombobox.setValue(kategoria.getVekovaSkupina());
+            velkostnaSkupinaCombobox.setValue(kategoria.getVelkostnaSkupina());
+            hudbaTextField.setText(vybraneTeleso.getHudba());
+            klubTextField.setText(vybraneTeleso.getKlub());
+            emailTextField.setText(vybraneTeleso.getEmail());
+            telefonneCisloTextFied.setText(vybraneTeleso.getTelefonneCislo());
+            tanecniciTextField.setText(vybraneTeleso.getTanecnici());
 
+        } else {
+
+
+            // Optionally, select default items if available
+            stylCombobox.getSelectionModel().selectFirst();
+            vekCombobox.getSelectionModel().selectFirst();
+            velkostnaSkupinaCombobox.getSelectionModel().selectFirst();
+
+
+        }
 
     }
 

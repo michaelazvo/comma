@@ -1,5 +1,6 @@
 package sk.comma.dao;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
@@ -45,9 +46,13 @@ public class MysqlTanecneTelesoDao implements TanecneTelesoDao {
 
     @Override
     public TanecneTeleso findById(long id) {
-
-        String sql = "SELECT id, nazov, umiestnenie, hudba, klub, telefonne_cislo, tanecnici, email, kategoria_id, sutaz_id FROM tanecne_teleso " + " WHERE id = " + id;
-        return jdbcTemplate.queryForObject(sql, tanecneTelesoRM());
+        String sql = "SELECT * FROM tanecne_teleso WHERE id = ?";
+        try {
+            return jdbcTemplate.queryForObject(sql, new Object[]{id}, tanecneTelesoRM());
+        } catch (EmptyResultDataAccessException ex) {
+            // Handle the case where no result is found (e.g., return null or throw a custom exception)
+            return null;
+        }
 
     }
 

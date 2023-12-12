@@ -70,7 +70,7 @@ public class PrihlasenieController {
             if (jeAdmin && jeSpravneHeslo) {
                 SutazController controller = new SutazController();
                 otvoritAdminOkno(controller);
-            } else if (!jeAdmin && jeSpravneHeslo && menaPorotcov.contains(meno)) {
+            } else if (!jeAdmin && jeSpravneHeslo  && menaPorotcov.contains(meno)) {
                 HodnoteniePorotaController controller = new HodnoteniePorotaController();
                 Porotca porotca = null;
                 for (Porotca p : porota) {

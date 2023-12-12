@@ -59,9 +59,9 @@ public class SutazEditController {
     private ObservableList<Porotca> porotcovia = FXCollections.observableArrayList();
 
     Sutaz vybrataSutaz;
-    //private BooleanProperty isButtonDisabled = new SimpleBooleanProperty(true);
+    private BooleanProperty isButtonDisabled = new SimpleBooleanProperty(true);
 
-    //private BooleanProperty jePridatButtonVypnuty = new SimpleBooleanProperty(true);
+    private BooleanProperty jePridatButtonVypnuty = new SimpleBooleanProperty(true);
 
     public SutazEditController(){
 
@@ -99,10 +99,11 @@ public class SutazEditController {
 
 
         /*
-        nazovSutazeTextField.textProperty().addListener((observable, oldValue, newValue) -> checkFields());
-        datumOdPicker.valueProperty().addListener((observable, oldValue, newValue) -> checkFields());
-        datumDoPicker.valueProperty().addListener((observable, oldValue, newValue) -> checkFields());
-        porotaListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> checkFields());
+
+            nazovSutazeTextField.textProperty().addListener((observable, oldValue, newValue) -> checkFields());
+            datumOdPicker.valueProperty().addListener((observable, oldValue, newValue) -> checkFields());
+            datumDoPicker.valueProperty().addListener((observable, oldValue, newValue) -> checkFields());
+            porotaListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> checkFields());
 
         menoPorotcuTextField.textProperty().addListener((observable, oldValue, newValue) -> checkFieldsForPridatPorotcu());
         priezviskoPorotcuTextField.textProperty().addListener((observable, oldValue, newValue) -> checkFieldsForPridatPorotcu());
@@ -111,8 +112,8 @@ public class SutazEditController {
 
         ulozitButtonClick.disableProperty().bind(isButtonDisabled);
         pridatPorotcuButton.disableProperty().bind(jePridatButtonVypnuty);
-        */
 
+    */
 
     }
     /*
@@ -135,6 +136,8 @@ public class SutazEditController {
 
         // Set the value of isButtonDisabled based on the condition
         if (vybrataSutaz != null) {
+            isButtonDisabled.set(false);
+        } else {
             isButtonDisabled.set(!ziadnePrazdnePole);
         }
     }
@@ -147,7 +150,7 @@ public class SutazEditController {
         String uzivatelskeMeno = uzivatelskeMenoTextField.getText().trim();
         String heslo = hesloTextField.getText().trim();
         Porotca porotca = new Porotca(meno, priezvisko, uzivatelskeMeno, heslo, false);
-        //checkFieldsForPridatPorotcu();
+
         porotcovia.add(porotca);
 
         // Aktualizovat ListView
@@ -172,7 +175,9 @@ public class SutazEditController {
 
         Sutaz sutaz =new Sutaz(nazov, datumOd, datumDo);
         if(vybrataSutaz!=null){
-            sutaz = vybrataSutaz;
+            vybrataSutaz.setNazov(nazov);
+            vybrataSutaz.setOdDatum(datumOd);
+            vybrataSutaz.setDoDatum(datumDo);
             sutazDao.update(vybrataSutaz);
         } else {
             sutazDao.insert(sutaz);

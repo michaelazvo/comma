@@ -22,4 +22,6 @@ public interface TanecneTelesoDao {
     TanecneTeleso update(TanecneTeleso tanecneTeleso);
 
     boolean delete(TanecneTeleso tanecneTeleso);
+
+
 }

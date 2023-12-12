@@ -112,4 +112,10 @@ public class TanecneTeleso {
     public void setTanecnici(String tanecnici) {
         this.tanecnici = tanecnici;
     }
+
+
+    @Override
+    public String toString() {
+        return nazov;
+    }
 }

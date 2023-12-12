@@ -41,7 +41,15 @@ public class MysqlPorotcaDao implements PorotcaDao {
 
     @Override
     public Porotca findById(long id) {
-        return null;
+        String query = "SELECT * FROM porotca WHERE id = ?";
+
+        try {
+            return jdbcTemplate.queryForObject(query, new Object[]{id}, new PorotcaRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            // If no result is found, return null or throw an exception as needed
+            return null;
+        }
+
     }
 
     @Override
