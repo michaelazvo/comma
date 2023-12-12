@@ -3,6 +3,8 @@ package sk.comma;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import sk.comma.dao.DaoFactory;
@@ -31,6 +33,9 @@ public class HodnoteniePorotaController {
 
     @FXML
     private TextField pocetBodovTextField;
+
+    @FXML
+    private Button ulozitHodnotenieButton;
 
     private TanecneTelesoDao tanecneTelesoDao = DaoFactory.INSTANCE.getTanecneTelesoDao();
     private List<TanecneTeleso> tanecneTelesa;
@@ -79,23 +84,29 @@ public class HodnoteniePorotaController {
 
 
         if (!s.isEmpty()) {
-            long l = Long.parseLong(s);
-            if (tanecneTelesoDao.findById(l) != null) {
-                TanecneTeleso teleso = tanecneTelesoDao.findById(l);
-                if (telesa.contains(teleso)) {
-                    nazovTelesaLabel.setText(teleso.getNazov());
+            try {
+                long l = Long.parseLong(s);
+                if (tanecneTelesoDao.findById(l) != null) {
+                    TanecneTeleso teleso = tanecneTelesoDao.findById(l);
+                    if (telesa.contains(teleso)) {
+                        nazovTelesaLabel.setText(teleso.getNazov());
+                    } else {
+                        showAlert(Alert.AlertType.WARNING, "Upozornenie", "Nesprávne zadané číslo", null);
+                    }
                 } else {
-                    upozornenieLabel.setText("Nesprávne zadané číslo");
+                    showAlert(Alert.AlertType.WARNING, "Upozornenie", "Nesprávne zadané číslo", null);
                 }
-            } else {
-                upozornenieLabel.setText("Nesprávne zadané číslo");
             }
-        } else {
-            upozornenieLabel.setText("Neuvedené číslo tanečného telesa");
-        }
+            catch(NumberFormatException e){
+                    showAlert(Alert.AlertType.ERROR, "Chyba", "Neplatné číslo", "Zadajte platné číslo.");
+                }
+            } else{
+                showAlert(Alert.AlertType.WARNING, "Upozornenie", "Neuvedené číslo tanečného telesa", null);
+            }
 
 
     }
+
 
     @FXML
     void ulozitHodnotenieButtonClick(ActionEvent event) {
@@ -116,12 +127,42 @@ public class HodnoteniePorotaController {
                 }
             }
         }
+        if(bodyString.isEmpty()){
+            showAlert("Zlé zadanie bodov", "Prosím, zadajte hodnotenie od 0 do 10.");
+        }
 
         if (!bodyString.isEmpty() && existujeTeleso) {
-            int body = Integer.parseInt(bodyString);
-            setHodnotenieByPorotcaIdTelesoId(porotcaId, teleso.getId(), body);
+
+                int body = Integer.parseInt(bodyString);
+                // Kontrola rozsahu hodnot
+                if (body < 0 || body > 10) {
+                    // Neplatný rozsah hodnôt
+                    showAlert("Zlé zadanie bodov", "Hodnotenie musí byť v rozmedzí od 0 do 10.");
+                } else {
+                    setHodnotenieByPorotcaIdTelesoId(porotcaId, teleso.getId(), body);
+                }
+
+            }
+
+            ulozitHodnotenieButton.getScene().getWindow().hide();
+
         }
+
+
+    private void showAlert(String title, String content) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
     }
 
+    private void showAlert(Alert.AlertType alertType, String title, String headerText, String contentText) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(headerText);
+        alert.setContentText(contentText);
+        alert.showAndWait();
+    }
 }
 

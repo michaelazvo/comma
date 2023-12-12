@@ -56,7 +56,6 @@ public class MysqlSutazDao implements SutazDao {
 
     @Override
     public Sutaz findById(int id) {
-        System.out.println("findbyid:" + id);
         String sql = "SELECT id, nazov, odDatum, doDatum FROM sutaz" + " WHERE id = " + id;
         return jdbcTemplate.queryForObject(sql, sutazRM());
     }

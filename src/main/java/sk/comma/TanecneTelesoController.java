@@ -160,6 +160,8 @@ public class TanecneTelesoController {
             // Handle any exceptions that may occur during the save operation
             // Optionally, you can display an error message to the user
         }
+
+
     }
 
     @FXML
@@ -177,6 +179,7 @@ public class TanecneTelesoController {
         //pouzitie metody na vyhladanie id kategorie
         vybraneTeleso.setKategoriaId(getKategoriaId(selectedStyl, selectedVelkostnaSkupina, selectedVekovaSkupina));
         tanecneTelesoDao.update(vybraneTeleso);
+        ulozitTelesoButton.getScene().getWindow().hide();
     }
 
 // toto neviem ci vyuzijeme, mozno dakedy hej

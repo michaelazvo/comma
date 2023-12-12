@@ -23,7 +23,7 @@
             <Font size="16.0" />
          </font>
       </Label>
-      <Button layoutX="264.0" layoutY="285.0" mnemonicParsing="false" onAction="#ulozitHodnotenieButtonClick" prefHeight="42.0" prefWidth="92.0" text="Uložiť">
+      <Button fx:id="ulozitHodnotenieButton" layoutX="264.0" layoutY="285.0" mnemonicParsing="false" onAction="#ulozitHodnotenieButtonClick" prefHeight="42.0" prefWidth="92.0" text="Uložiť">
          <font>
             <Font size="16.0" />
          </font>
