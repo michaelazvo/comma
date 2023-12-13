@@ -91,6 +91,14 @@ public class Porotca {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Porotca porotca = (Porotca) o;
+        return jeAdmin == porotca.jeAdmin && Objects.equals(id, porotca.id) && Objects.equals(meno, porotca.meno) && Objects.equals(priezvisko, porotca.priezvisko) && Objects.equals(uzivatelskeMeno, porotca.uzivatelskeMeno) && Objects.equals(heslo, porotca.heslo);
+    }
+
+    @Override
     public String toString() {
         return meno + ", " + priezvisko;
     }

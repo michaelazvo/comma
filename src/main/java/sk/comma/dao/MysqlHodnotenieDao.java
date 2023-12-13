@@ -30,7 +30,7 @@ public class MysqlHodnotenieDao implements HodnotenieDao {
             return null;
         }
     }
-
+    /*
     @Override
     public List<Hodnotenie> findBySutazIdAndKategoriaId(long sutazId, long kategoriaId) {
         String query = "SELECT * FROM hodnotenie WHERE porotca_id = ? AND tanecne_teleso_id = ?";
@@ -40,6 +40,8 @@ public class MysqlHodnotenieDao implements HodnotenieDao {
             return Collections.emptyList(); // Return an empty list if no results are found
         }
     }
+      */
+
 
     @Override
     public List<Hodnotenie> findAllByTelesoId(long tanecneTelesoId) {
@@ -96,8 +98,14 @@ public class MysqlHodnotenieDao implements HodnotenieDao {
     public Hodnotenie update(Hodnotenie hodnotenie) {
         String query = "UPDATE hodnotenie SET hodnotenie = ? WHERE id = ?";
 
-        jdbcTemplate.update(query, hodnotenie.getHodnotenie(), hodnotenie.getId());
-        return null;
+        int rowsAffected = jdbcTemplate.update(query, hodnotenie.getHodnotenie(), hodnotenie.getId());
+
+        if (rowsAffected > 0) {
+            return findById(hodnotenie.getId());
+        } else {
+            return null; // Alebo môžete vrátiť hodnotenie bez zmeny, ak chcete
+        }
+
     }
 
     @Override
@@ -106,6 +114,7 @@ public class MysqlHodnotenieDao implements HodnotenieDao {
         try {
             return jdbcTemplate.queryForObject(query, new Object[]{porotcaId, tanecneTelesoId}, hodnotenieRowMapper());
         } catch (EmptyResultDataAccessException e) {
+            // Handle the case when no result is found
             return null;
         }
     }

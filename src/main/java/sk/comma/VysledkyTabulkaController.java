@@ -57,8 +57,6 @@ public class VysledkyTabulkaController {
 
     // metoda pouzita v MainSceneController odkial si zapamatavame id sutaze
     public void setSutazId(Sutaz sutaz) {
-        System.out.println(sutaz);
-        System.out.println(sutaz.getId());
         this.sutazId = sutaz.getId();
     }
 

@@ -13,7 +13,7 @@ public interface HodnotenieDao {
     List<Hodnotenie> findAllByTelesoId(long tanecneTelesoId);
 
 
-    List<Hodnotenie> findBySutazIdAndKategoriaId(long sutazId, long kategoriaId);
+    //List<Hodnotenie> findBySutazIdAndKategoriaId(long sutazId, long kategoriaId);
 
 
     Hodnotenie insert(Hodnotenie hodnotenie);

@@ -13,6 +13,13 @@ public class Hodnotenie {
 
     }
 
+
+    public Hodnotenie(int hodnotenie, long porotcaId, long tanecneTelesoId) {
+        this.hodnotenie = hodnotenie;
+        this.porotcaId = porotcaId;
+        this.tanecneTelesoId = tanecneTelesoId;
+    }
+
     public Hodnotenie(long id, int hodnotenie, long porotcaId, long tanecneTelesoId) {
         this.id = id;
         this.hodnotenie = hodnotenie;
