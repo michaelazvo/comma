@@ -91,18 +91,21 @@ public class HodnoteniePorotaController {
                     if (telesa.contains(teleso)) {
                         nazovTelesaLabel.setText(teleso.getNazov());
                     } else {
+                        nazovTelesaLabel.setText(" ");
                         showAlert(Alert.AlertType.WARNING, "Upozornenie", "Nesprávne zadané číslo", null);
                     }
                 } else {
+                    nazovTelesaLabel.setText(" ");
                     showAlert(Alert.AlertType.WARNING, "Upozornenie", "Nesprávne zadané číslo", null);
                 }
+            } catch (NumberFormatException e) {
+                nazovTelesaLabel.setText(" ");
+                showAlert(Alert.AlertType.ERROR, "Chyba", "Neplatné číslo", "Zadajte platné číslo.");
             }
-            catch(NumberFormatException e){
-                    showAlert(Alert.AlertType.ERROR, "Chyba", "Neplatné číslo", "Zadajte platné číslo.");
-                }
-            } else{
-                showAlert(Alert.AlertType.WARNING, "Upozornenie", "Neuvedené číslo tanečného telesa", null);
-            }
+        } else {
+            nazovTelesaLabel.setText(" ");
+            showAlert(Alert.AlertType.WARNING, "Upozornenie", "Neuvedené číslo tanečného telesa", null);
+        }
 
 
     }
@@ -127,26 +130,26 @@ public class HodnoteniePorotaController {
                 }
             }
         }
-        if(bodyString.isEmpty()){
+        if (bodyString.isEmpty()) {
             showAlert("Zlé zadanie bodov", "Prosím, zadajte hodnotenie od 0 do 10.");
         }
 
         if (!bodyString.isEmpty() && existujeTeleso) {
 
-                int body = Integer.parseInt(bodyString);
-                // Kontrola rozsahu hodnot
-                if (body < 0 || body > 10) {
-                    // Neplatný rozsah hodnôt
-                    showAlert("Zlé zadanie bodov", "Hodnotenie musí byť v rozmedzí od 0 do 10.");
-                } else {
-                    setHodnotenieByPorotcaIdTelesoId(porotcaId, teleso.getId(), body);
-                }
-
+            int body = Integer.parseInt(bodyString);
+            // Kontrola rozsahu hodnot
+            if (body < 0 || body > 10) {
+                // Neplatný rozsah hodnôt
+                showAlert("Zlé zadanie bodov", "Hodnotenie musí byť v rozmedzí od 0 do 10.");
+            } else {
+                setHodnotenieByPorotcaIdTelesoId(porotcaId, teleso.getId(), body);
             }
 
-            ulozitHodnotenieButton.getScene().getWindow().hide();
-
         }
+
+        ulozitHodnotenieButton.getScene().getWindow().hide();
+
+    }
 
 
     private void showAlert(String title, String content) {

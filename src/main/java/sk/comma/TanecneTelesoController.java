@@ -5,10 +5,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import sk.comma.dao.DaoFactory;
 import sk.comma.dao.KategoriaDao;
 import sk.comma.dao.SutazDao;
@@ -146,6 +143,22 @@ public class TanecneTelesoController {
             String selectedVelkostnaSkupina = velkostnaSkupinaCombobox.getValue();
             String selectedVekovaSkupina = vekCombobox.getValue();
 
+            if (!isValidEmail(teleso.getEmail())) {
+                showAlert("Nesprávny formát emailu", "Prosím, zadajte platný email.");
+                return; // Stop further execution
+            }
+
+            String telefonneCislo = telefonneCisloTextFied.getText();
+            if (!isValidTelefonneCislo(telefonneCislo)) {
+                showAlert("Nesprávny formát telefónneho čísla", "Prosím, zadajte platné telefónne číslo.");
+                return; // Stop further execution
+            }
+
+            if (teleso.getNazov().isEmpty() || teleso.getHudba().isEmpty() || teleso.getKlub().isEmpty() || teleso.getEmail().isEmpty() || teleso.getTanecnici().isEmpty()) {
+                showAlert("Chýbajúce údaje", "Prosím, vyplňte všetky povinné údaje.");
+                return; // Stop further execution
+            }
+
             //pouzitie metody na vyhladanie id kategorie
             teleso.setKategoriaId(getKategoriaId(selectedStyl, selectedVelkostnaSkupina, selectedVekovaSkupina));
 
@@ -162,6 +175,24 @@ public class TanecneTelesoController {
         }
 
 
+    }
+
+    private boolean isValidTelefonneCislo(String telefonneCislo) {
+        return telefonneCislo.matches("(09\\d{8}|\\+421\\d{9})");
+    }
+
+    // Method to validate email format
+    private boolean isValidEmail(String email) {
+        return email.matches("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}");
+    }
+
+    // Method to show an alert
+    private void showAlert(String title, String content) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
     }
 
     @FXML
