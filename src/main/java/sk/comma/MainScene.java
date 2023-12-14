@@ -9,7 +9,6 @@ import javafx.stage.Stage;
 public class MainScene extends Application{
     @Override
     public void start(Stage primaryStage) throws Exception {
-        //vzinkne objekt tejto triedy
         MainSceneController controller = new MainSceneController();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("MainSceneComma.fxml"));
 

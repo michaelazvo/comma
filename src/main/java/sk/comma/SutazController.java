@@ -56,19 +56,11 @@ public class SutazController {
         });
     }
 
-    private void updateNazovTelesaLabel() {
-        String idTelesa = idTelesaTextField.getText();
-        try {
-            Long id = Long.parseLong(idTelesa);
-            TanecneTeleso tanecneTeleso = tanecneTelesoDao.findById(id);
-            if (tanecneTeleso != null) {
-                nazovTelesaLabel.setText(tanecneTeleso.getNazov());
-            }
-
-        } catch (NumberFormatException e) {
-            // Handle the case when the entered ID is not a valid number
-            nazovTelesaLabel.setText("Invalid ID");
-        }
+    @FXML
+    void editSutazeButtonClick(ActionEvent event) {
+        Sutaz selectedSutaz = sutazCombobox.getSelectionModel().getSelectedItem();
+        SutazEditController controller = new SutazEditController(selectedSutaz);
+        otvorenieEditacieSutaze(controller);
     }
 
     @FXML
@@ -77,27 +69,44 @@ public class SutazController {
         pridanieSutaze(sutazPridanie);
     }
 
+    @FXML
+    void editTelesaButtonClick(ActionEvent event) {
+        String idTelesa = idTelesaTextField.getText();
+        long id = Long.parseLong(idTelesa);
+        TanecneTeleso tanecneTeleso = tanecneTelesoDao.findById(id);
+        ;
+        TanecneTelesoController controller = new TanecneTelesoController(tanecneTeleso, true);
+        otvorenieEditacieTanecnehoTelesa(controller);
+    }
 
-    private void pridanieSutaze(SutazEditController controller){
-        try{
+
+    private void pridanieSutaze(SutazEditController controller) {
+        try {
             FXMLLoader loader = new FXMLLoader(
                     getClass().getResource("SutazEdit.fxml"));
             loader.setController(controller);
-            Parent parent= loader.load();
+            Parent parent = loader.load();
             Stage PridanieSutazeStage = new Stage();
             PridanieSutazeStage.setScene(new Scene(parent));
             PridanieSutazeStage.setTitle("Pridanie sutaze");
             PridanieSutazeStage.show();
-        }catch(IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    @FXML
-    void editSutazeButtonClick(ActionEvent event) {
-        Sutaz selectedSutaz = sutazCombobox.getSelectionModel().getSelectedItem();
-        SutazEditController controller = new SutazEditController(selectedSutaz);
-        otvorenieEditacieSutaze(controller);
+    private void updateNazovTelesaLabel() {
+        String idTelesa = idTelesaTextField.getText();
+        try {
+            long id = Long.parseLong(idTelesa);
+            TanecneTeleso tanecneTeleso = tanecneTelesoDao.findById(id);
+            if (tanecneTeleso != null) {
+                nazovTelesaLabel.setText(tanecneTeleso.getNazov());
+            }
+
+        } catch (NumberFormatException e) {
+            nazovTelesaLabel.setText("Nespravne ID");
+        }
     }
 
     private void otvorenieEditacieSutaze(SutazEditController controller) {
@@ -117,18 +126,8 @@ public class SutazController {
 
 
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
-    }
-
-    @FXML
-    void editTelesaButtonClick(ActionEvent event) {
-        String idTelesa = idTelesaTextField.getText();
-         Long id = Long.parseLong(idTelesa);
-        TanecneTeleso tanecneTeleso = tanecneTelesoDao.findById(id);;
-        TanecneTelesoController controller = new TanecneTelesoController(tanecneTeleso, true);
-        otvorenieEditacieTanecnehoTelesa(controller);
     }
 
     private void otvorenieEditacieTanecnehoTelesa(TanecneTelesoController controller) {
@@ -145,7 +144,6 @@ public class SutazController {
             stage.showAndWait();
 
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }

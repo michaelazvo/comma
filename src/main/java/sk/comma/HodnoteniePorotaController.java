@@ -27,10 +27,6 @@ public class HodnoteniePorotaController {
     @FXML
     private Label nazovTelesaLabel;
 
-
-    @FXML
-    private Label upozornenieLabel;
-
     @FXML
     private TextField pocetBodovTextField;
 
@@ -38,7 +34,6 @@ public class HodnoteniePorotaController {
     private Button ulozitHodnotenieButton;
 
     private TanecneTelesoDao tanecneTelesoDao = DaoFactory.INSTANCE.getTanecneTelesoDao();
-    private List<TanecneTeleso> tanecneTelesa;
 
     private HodnotenieDao hodnotenieDao = DaoFactory.INSTANCE.getHodnotenieDao();
     private List<Hodnotenie> hodnotenia = new ArrayList<>();
@@ -64,11 +59,9 @@ public class HodnoteniePorotaController {
         Hodnotenie existingHodnotenie = hodnotenieDao.findByPorotcaIdAndTelesoId(porotcaId, tanecneTelesoId);
 
         if (existingHodnotenie != null) {
-            // Update existing Hodnotenie
             existingHodnotenie.setHodnotenie(body);
             savedHodnotenie = hodnotenieDao.update(existingHodnotenie);
         } else {
-            // Create a new Hodnotenie
             Hodnotenie hodnotenie = new Hodnotenie();
             hodnotenie.setPorotcaId(porotcaId);
             hodnotenie.setTanecneTelesoId(tanecneTelesoId);

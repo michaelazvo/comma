@@ -14,7 +14,6 @@ public class MysqlPorotcaDaoTest extends TestCase {
 
     @Test
     public void testFindById() {
-        // Arrange
         long id = 6;
         Porotca result = porotcaDao.findById(id);
         Porotca expected = new Porotca(6L, "Peter", "Borovica", "peterborovica", "borovica", false);

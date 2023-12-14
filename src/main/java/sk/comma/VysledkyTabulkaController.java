@@ -3,7 +3,6 @@ package sk.comma;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -14,14 +13,12 @@ import sk.comma.business.OverviewManager;
 import sk.comma.business.OverviewManagerImpl;
 import sk.comma.business.vysledkyOverview;
 import sk.comma.dao.DaoFactory;
-import sk.comma.dao.HodnotenieDao;
 import sk.comma.dao.KategoriaDao;
 import sk.comma.dao.SutazDao;
 import sk.comma.entity.*;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class VysledkyTabulkaController {
 
@@ -40,13 +37,10 @@ public class VysledkyTabulkaController {
     @FXML
     private TableView<vysledkyOverview> vysledkyTableView;
 
-    private HodnotenieDao hodnotenieDao = DaoFactory.INSTANCE.getHodnotenieDao();
-    private List<Hodnotenie> hodnotenia;
-
     private SutazDao sutazDao = DaoFactory.INSTANCE.getSutazDao();
     private List<Sutaz> sutaze;
     private KategoriaDao kategoriaDao = DaoFactory.INSTANCE.getKategoriaDao();
-    private ObservableList<Kategoria> kategoriaModel;
+
     private List<Kategoria> kategorie;
 
     private OverviewManager overviewManager = new OverviewManagerImpl();
@@ -60,18 +54,13 @@ public class VysledkyTabulkaController {
         this.sutazId = sutaz.getId();
     }
 
-    private Kategoria savedKategoria;
-
 
     @FXML
     void initialize() {
-
-        // Set items for each ComboBox using the predefined types in Kategoria
         stylCombobox.getItems().addAll(Kategoria.getStylTypes());
         vekCombobox.getItems().addAll(Kategoria.getVekovaSkupinaTypes());
         velkostCombobox.getItems().addAll(Kategoria.getVelkostnaSkupinaTypes());
 
-        // Optionally, select default items if available
         stylCombobox.getSelectionModel().selectFirst();
         vekCombobox.getSelectionModel().selectFirst();
         velkostCombobox.getSelectionModel().selectFirst();
@@ -120,26 +109,19 @@ public class VysledkyTabulkaController {
         Kategoria kategoriaVyber = kategoriaDao.findById(kategoriaId);
         Sutaz sutazVyber = sutazDao.findById(sutazId);
 
-
         List<vysledkyOverview> overviews = overviewManager.getOverviews(kategoriaVyber, sutazVyber);
 
-        // Sort the list in descending order based on hodnotenie
         overviews.sort(Comparator.comparingInt(vysledkyOverview::getHodnotenie).reversed());
 
-        // Retrieve all Porotcas for the current Sutaz
         List<Porotca> allPorotcas = DaoFactory.INSTANCE.getPorotcaDao().getPorotcoviaPreSutaz(sutazVyber.getId());
 
-        // Iterate through TanecneTelesa and check if each one received all Hodnotenia
         for (int i = 0; i < overviews.size(); i++) {
             vysledkyOverview teleso = overviews.get(i);
             List<Hodnotenie> hodnotenia = DaoFactory.INSTANCE.getHodnotenieDao().findAllByTelesoId(teleso.getId());
 
-            // Check if all Porotcas provided Hodnotenie for this TanecneTeleso
             if (checkAllPorotcasProvidedHodnotenie(hodnotenia, allPorotcas)) {
-                // Assign Umiestnenie only if all Porotcas provided Hodnotenie
-                teleso.setUmiestnenie(Integer.toString(i + 1)+".");
+                teleso.setUmiestnenie(Integer.toString(i + 1) + ".");
             } else {
-                // Reset Umiestnenie to an empty string if not all Porotcas provided Hodnotenie
                 teleso.setUmiestnenie("");
             }
         }
@@ -157,7 +139,6 @@ public class VysledkyTabulkaController {
                     break;
                 }
             }
-
             if (!porotcaProvidedHodnotenie) {
                 return false;
             }
@@ -179,8 +160,6 @@ public class VysledkyTabulkaController {
             kategoriaNova.setVekovaSkupina(vekovaSkupina);
             kategoriaNova.setVelkostnaSkupina(velkostnaSkupina);
 
-            savedKategoria = kategoriaDao.insert(kategoriaNova);
-
             kategoriaId = kategoriaNova.getId();
             return kategoriaId;
         }
@@ -198,9 +177,6 @@ public class VysledkyTabulkaController {
             kategoriaNova.setStyl(styl);
             kategoriaNova.setVekovaSkupina(vekovaSkupina);
             kategoriaNova.setVelkostnaSkupina(velkostnaSkupina);
-
-            savedKategoria = kategoriaDao.insert(kategoriaNova);
-
             kategoriaId = kategoriaNova.getId();
         }
         return kategoriaId;

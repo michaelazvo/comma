@@ -1,6 +1,5 @@
 package sk.comma.dao;
 
-import junit.framework.TestCase;
 import org.junit.Assert;
 import org.junit.Test;
 import sk.comma.entity.Hodnotenie;
@@ -14,38 +13,29 @@ public class MysqlHodnotenieDaoTest {
 
     @Test
     public void testFindById() {
-        // Arrange
         long id = 1;
 
-        // Act
         Hodnotenie result = hodnotenieDao.findById(id);
         Hodnotenie expected = new Hodnotenie(1, 10, 5, 13);
 
-        // Assert
         Assert.assertEquals(expected, result);
     }
 
     @Test
     public void testFindById_invalidId_returnsNull() {
-        // Arrange
         long id = -1;
 
-        // Act
         Hodnotenie result = hodnotenieDao.findById(id);
 
-        // Assert
         Assert.assertNull(result);
     }
 
     @Test
     public void testFindById_noResultFound_returnsNull() {
-        // Arrange
         long id = 999;
 
-        // Act
         Hodnotenie result = hodnotenieDao.findById(id);
 
-        // Assert
         Assert.assertNull(result);
     }
 
@@ -136,7 +126,6 @@ public class MysqlHodnotenieDaoTest {
 
     @Test
     public void testUpdate() {
-        // Test case 1: Update the hodnotenie value
         Hodnotenie input1 = new Hodnotenie();
         input1.setId(3L);
         input1.setHodnotenie(6);
@@ -152,7 +141,6 @@ public class MysqlHodnotenieDaoTest {
         Hodnotenie result1 = hodnotenieDao.update(input1);
         Assert.assertEquals(expected1, result1);
 
-        // Test case 2: Update the hodnotenie value with a different id
         Hodnotenie input2 = new Hodnotenie();
         input2.setId(20L);
         input2.setHodnotenie(3);

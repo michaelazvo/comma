@@ -30,46 +30,15 @@ public class MysqlSutazDao implements SutazDao {
                 LocalDate datumOd = rs.getDate("odDatum").toLocalDate();
                 LocalDate datumDo = rs.getDate("doDatum").toLocalDate();
 
-                Sutaz sutaz = new Sutaz(id, nazov, datumOd, datumDo);
-                return sutaz;
+                return new Sutaz(id, nazov, datumOd, datumDo);
             }
         };
-    }
-
-    private List<Porotca> findPorotcoviaBySutazId(int sutazId) {
-        String query = "SELECT p.* FROM porotca p " +
-                "JOIN hodnotenie h ON p.id = h.porotca_id " +
-                "JOIN tanecne_teleso t ON h.tanecne_teleso_id = t.id " +
-                "WHERE t.sutaz_id = ?";
-
-        return jdbcTemplate.query(query, (rs, rowNum) -> {
-            Porotca porotca = new Porotca();
-            porotca.setId(rs.getLong("id"));
-            porotca.setMeno(rs.getString("meno"));
-            porotca.setPriezvisko(rs.getString("priezvisko"));
-            porotca.setUzivatelskeMeno(rs.getString("uzivatelske_meno"));
-            porotca.setHeslo(rs.getString("heslo"));
-            porotca.setJeAdmin(rs.getBoolean("jeAdmin"));
-            return porotca;
-        }, sutazId);
     }
 
     @Override
     public Sutaz findById(int id) {
         String sql = "SELECT id, nazov, odDatum, doDatum FROM sutaz" + " WHERE id = " + id;
         return jdbcTemplate.queryForObject(sql, sutazRM());
-    }
-
-
-    public Sutaz save(Sutaz sutaz) {
-        if (sutaz.getId() == 0) {
-            // if ID == 0, then this is a new object to be inserted
-            insert(sutaz);
-        } else {
-            // if ID != 0, then this is an existing object to be updated
-            update(sutaz);
-        }
-        return sutaz;
     }
 
     @Override
@@ -86,14 +55,6 @@ public class MysqlSutazDao implements SutazDao {
                 return new Sutaz(id, nazov, datumOd, datumDo);
             }
         });
-        // TO DO
-        // teraz asi nesetujeme studentov / teda akoze tanecnikkov, az potom, len skusam ci ukaze nazvy sutazi
-        /*
-        for (Sutaz sutaz: result){
-            sutaz.setSutaz(sutazDao.getAllBySubjectId(subj.getId()));
-        }
-
-         */
 
         return result;
     }
@@ -102,7 +63,6 @@ public class MysqlSutazDao implements SutazDao {
     public Sutaz insert(Sutaz sutaz) {
         String query = "INSERT INTO sutaz (nazov, odDatum, doDatum) VALUES (?, ?, ?)";
 
-        // Nastavení hodnot do databáze a získání přiděleného ID
         GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(new PreparedStatementCreator() {
             @Override
@@ -115,7 +75,6 @@ public class MysqlSutazDao implements SutazDao {
             }
         }, keyHolder);
 
-        // Nastavení ID na objekt Sutaz
         sutaz.setId(keyHolder.getKey().intValue());
 
         return sutaz;

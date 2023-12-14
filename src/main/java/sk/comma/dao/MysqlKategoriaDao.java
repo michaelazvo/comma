@@ -3,7 +3,6 @@ package sk.comma.dao;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import sk.comma.entity.Kategoria;
 
@@ -76,21 +75,9 @@ public class MysqlKategoriaDao implements KategoriaDao {
                 return statement;
             }
         }, keyHolder);
-
-        // Nastavení ID na objekt Kategoria
         kategoria.setId(keyHolder.getKey().longValue());
 
         return kategoria;
-    }
-
-    @Override
-    public Kategoria update(Kategoria kategoria) {
-        return null;
-    }
-
-    @Override
-    public boolean delete(Kategoria kategoria) {
-        return false;
     }
 
 

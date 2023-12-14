@@ -16,13 +16,11 @@ public class MysqlKategoriaDaoTest extends TestCase {
 
     @Test
     public void testFindById() {
-        // Testing for the case when id exists in the database
         long existingId = 11;
         Kategoria expectedKategoria = new Kategoria(11L, "Breakdance", "Deti", "Solo");
         Kategoria actualKategoria = kategoriaDao.findById(existingId);
         assertEquals(expectedKategoria, actualKategoria);
 
-        // Testing for the case when id does not exist in the database
         long nonExistingId = 999;
         assertThrows(EmptyResultDataAccessException.class, () -> kategoriaDao.findById(nonExistingId));
 

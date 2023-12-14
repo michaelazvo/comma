@@ -12,9 +12,4 @@ public interface KategoriaDao {
 
     Kategoria insert(Kategoria kategoria);
 
-    Kategoria update(Kategoria kategoria);
-
-    boolean delete(Kategoria kategoria);
-
-
 }

@@ -8,7 +8,6 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import sk.comma.entity.Hodnotenie;
 
 import java.sql.*;
-import java.util.Collections;
 import java.util.List;
 
 public class MysqlHodnotenieDao implements HodnotenieDao {
@@ -18,41 +17,6 @@ public class MysqlHodnotenieDao implements HodnotenieDao {
 
     public MysqlHodnotenieDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
-    }
-
-
-    @Override
-    public Hodnotenie findById(long id) {
-        String query = "SELECT * FROM hodnotenie WHERE id = ?";
-        try {
-            return jdbcTemplate.queryForObject(query, new Object[]{id}, hodnotenieRowMapper());
-        } catch (EmptyResultDataAccessException e) {
-            return null;
-        }
-    }
-    /*
-    @Override
-    public List<Hodnotenie> findBySutazIdAndKategoriaId(long sutazId, long kategoriaId) {
-        String query = "SELECT * FROM hodnotenie WHERE porotca_id = ? AND tanecne_teleso_id = ?";
-        try {
-            return jdbcTemplate.query(query, new Object[]{sutazId, kategoriaId}, hodnotenieRowMapper());
-        } catch (EmptyResultDataAccessException e) {
-            return Collections.emptyList(); // Return an empty list if no results are found
-        }
-    }
-      */
-
-
-    @Override
-    public List<Hodnotenie> findAllByTelesoId(long tanecneTelesoId) {
-        String query = "SELECT * FROM hodnotenie WHERE tanecne_teleso_id = ?";
-        return jdbcTemplate.query(query, new Object[]{tanecneTelesoId}, hodnotenieRowMapper());
-    }
-
-    @Override
-    public List<Hodnotenie> findAll() {
-        String query = "SELECT * FROM hodnotenie";
-        return jdbcTemplate.query(query, hodnotenieRowMapper());
     }
 
     private RowMapper<Hodnotenie> hodnotenieRowMapper() {
@@ -70,13 +34,35 @@ public class MysqlHodnotenieDao implements HodnotenieDao {
         };
     }
 
+
+    @Override
+    public Hodnotenie findById(long id) {
+        String query = "SELECT * FROM hodnotenie WHERE id = ?";
+        try {
+            return jdbcTemplate.queryForObject(query, new Object[]{id}, hodnotenieRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
+    @Override
+    public List<Hodnotenie> findAllByTelesoId(long tanecneTelesoId) {
+        String query = "SELECT * FROM hodnotenie WHERE tanecne_teleso_id = ?";
+        return jdbcTemplate.query(query, new Object[]{tanecneTelesoId}, hodnotenieRowMapper());
+    }
+
+    @Override
+    public List<Hodnotenie> findAll() {
+        String query = "SELECT * FROM hodnotenie";
+        return jdbcTemplate.query(query, hodnotenieRowMapper());
+    }
+
     @Override
     public Hodnotenie insert(Hodnotenie hodnotenie) {
         if (hodnotenie.getId() == null) { //insert
             String query = "INSERT INTO hodnotenie (hodnotenie, porotca_id, tanecne_teleso_id) "
                     + "VALUES (?,?,?)";
 
-            // tiez neviem ze co s tym
             GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
             jdbcTemplate.update(new PreparedStatementCreator() {
 
@@ -103,7 +89,7 @@ public class MysqlHodnotenieDao implements HodnotenieDao {
         if (rowsAffected > 0) {
             return findById(hodnotenie.getId());
         } else {
-            return null; // Alebo môžete vrátiť hodnotenie bez zmeny, ak chcete
+            return null;
         }
 
     }
@@ -114,7 +100,6 @@ public class MysqlHodnotenieDao implements HodnotenieDao {
         try {
             return jdbcTemplate.queryForObject(query, new Object[]{porotcaId, tanecneTelesoId}, hodnotenieRowMapper());
         } catch (EmptyResultDataAccessException e) {
-            // Handle the case when no result is found
             return null;
         }
     }

@@ -15,7 +15,6 @@ import java.util.Objects;
 public class MysqlTanecneTelesoDao implements TanecneTelesoDao {
     private JdbcTemplate jdbcTemplate;
 
-
     public MysqlTanecneTelesoDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
@@ -33,7 +32,6 @@ public class MysqlTanecneTelesoDao implements TanecneTelesoDao {
                 String tanecnici = rs.getString("tanecnici");
                 String email = rs.getString("email");
 
-
                 long kategoria_id = rs.getLong("kategoria_id");
                 long sutaz_id = rs.getLong("sutaz_id");
 
@@ -43,125 +41,6 @@ public class MysqlTanecneTelesoDao implements TanecneTelesoDao {
             }
         };
     }
-
-    @Override
-    public TanecneTeleso findById(long id) {
-        String sql = "SELECT * FROM tanecne_teleso WHERE id = ?";
-        try {
-            return jdbcTemplate.queryForObject(sql, new Object[]{id}, tanecneTelesoRM());
-        } catch (EmptyResultDataAccessException ex) {
-            // Handle the case where no result is found (e.g., return null or throw a custom exception)
-            return null;
-        }
-
-    }
-
-    @Override
-    public List<TanecneTeleso> findAll() {
-
-        String query = "SELECT id, nazov, umiestnenie, hudba, klub, telefonne_cislo, tanecnici, email, kategoria_id, sutaz_id FROM tanecne_teleso " + "ORDER BY umiestnenie DESC";
-        List<TanecneTeleso> result = jdbcTemplate.query(query, new RowMapper<TanecneTeleso>() {
-
-            @Override
-            public TanecneTeleso mapRow(ResultSet rs, int rowNum) throws SQLException {
-                long id = rs.getInt("id");
-                String nazov = rs.getString("nazov");
-                String umiestnenie = rs.getString("umiestnenie");
-                String hudba = rs.getString("hudba");
-                String klub = rs.getString("klub");
-                String telefonne_cislo = rs.getString("telefonne_cislo");
-                String tanecnici = rs.getString("tanecnici");
-                String email = rs.getString("email");
-
-
-                long kategoria_id = rs.getLong("kategoria_id");
-                long sutaz_id = rs.getLong("sutaz_id");
-                return new TanecneTeleso(id, nazov, umiestnenie, hudba, klub, kategoria_id, sutaz_id, telefonne_cislo, email, tanecnici);
-            }
-        });
-
-        return result;
-    }
-
-    @Override
-    public List<TanecneTeleso> findAllBySutazId(int sutazId) {
-        String query = "SELECT id, nazov, umiestnenie, hudba, klub, telefonne_cislo, tanecnici, email, kategoria_id, sutaz_id FROM tanecne_teleso " + " WHERE sutaz_id = " + sutazId + " ORDER BY id";
-        List<TanecneTeleso> result = jdbcTemplate.query(query, new RowMapper<TanecneTeleso>() {
-
-            @Override
-            public TanecneTeleso mapRow(ResultSet rs, int rowNum) throws SQLException {
-                long id = rs.getInt("id");
-                String nazov = rs.getString("nazov");
-                String umiestnenie = rs.getString("umiestnenie");
-                String hudba = rs.getString("hudba");
-                String klub = rs.getString("klub");
-                String telefonne_cislo = rs.getString("telefonne_cislo");
-                String tanecnici = rs.getString("tanecnici");
-                String email = rs.getString("email");
-
-
-                long kategoria_id = rs.getLong("kategoria_id");
-                long sutaz_id = rs.getLong("sutaz_id");
-                return new TanecneTeleso(id, nazov, umiestnenie, hudba, klub, kategoria_id, sutaz_id, telefonne_cislo, email, tanecnici);
-            }
-        });
-
-        return result;
-    }
-
-    @Override
-    public List<TanecneTeleso> findAllBySutazIdKategoriaId(int sutazId, Long kategoriaId) {
-        String query = "SELECT id, nazov, umiestnenie, hudba, klub, tanecnici, telefonne_cislo, email, kategoria_id," +
-                " sutaz_id FROM tanecne_teleso" + " WHERE sutaz_id = " + sutazId + " AND kategoria_id = " + kategoriaId + " ORDER BY id";
-        List<TanecneTeleso> result = jdbcTemplate.query(query, new RowMapper<TanecneTeleso>() {
-
-            @Override
-            public TanecneTeleso mapRow(ResultSet rs, int rowNum) throws SQLException {
-                long id = rs.getInt("id");
-                String nazov = rs.getString("nazov");
-                String umiestnenie = rs.getString("umiestnenie");
-                String hudba = rs.getString("hudba");
-                String klub = rs.getString("klub");
-                String telefonne_cislo = rs.getString("telefonne_cislo");
-                String tanecnici = rs.getString("tanecnici");
-                String email = rs.getString("email");
-
-
-                long kategoria_id = rs.getLong("kategoria_id");
-                long sutaz_id = rs.getLong("sutaz_id");
-                return new TanecneTeleso(id, nazov, umiestnenie, hudba, klub, kategoria_id, sutaz_id, telefonne_cislo, email, tanecnici);
-            }
-        });
-
-        return result;
-    }
-
-    @Override
-    public List<TanecneTeleso> findAllByKategoriaId(Long kategoriaId) {
-
-        String query = "SELECT id, nazov, umiestnenie, hudba, klub, telefonne_cislo, email, kategoria_id, sutaz_id, tanecnici FROM tanecne_teleso" + " WHERE kategoria_id = " + kategoriaId + " ORDER BY id";
-        List<TanecneTeleso> result = jdbcTemplate.query(query, new RowMapper<TanecneTeleso>() {
-
-            @Override
-            public TanecneTeleso mapRow(ResultSet rs, int rowNum) throws SQLException {
-                long id = rs.getInt("id");
-                String nazov = rs.getString("nazov");
-                String umiestnenie = rs.getString("umiestnenie");
-                String hudba = rs.getString("hudba");
-                String klub = rs.getString("klub");
-                String telefonne_cislo = rs.getString("telefonne_cislo");
-                String tanecnici = rs.getString("tanecnici");
-                String email = rs.getString("email");
-
-
-                long kategoria_id = rs.getLong("kategoria_id");
-                long sutaz_id = rs.getLong("sutaz_id");
-                return new TanecneTeleso(id, nazov, umiestnenie, hudba, klub, kategoria_id, sutaz_id, telefonne_cislo, email, tanecnici);
-            }
-        });
-        return result;
-    }
-
 
     @Override
     public TanecneTeleso insert(TanecneTeleso tanecneTeleso) {
@@ -200,16 +79,49 @@ public class MysqlTanecneTelesoDao implements TanecneTelesoDao {
             }
         }, keyHolder);
 
-        // Nastavení ID na objekt tanecne teleso
         tanecneTeleso.setId(Objects.requireNonNull(keyHolder.getKey()).longValue());
-
 
         return tanecneTeleso;
     }
 
     @Override
-    public TanecneTeleso update(TanecneTeleso tanecneTeleso) {
+    public TanecneTeleso findById(long id) {
+        String sql = "SELECT * FROM tanecne_teleso WHERE id = ?";
+        try {
+            return jdbcTemplate.queryForObject(sql, new Object[]{id}, tanecneTelesoRM());
+        } catch (EmptyResultDataAccessException ex) {
+            return null;
+        }
 
+    }
+
+    @Override
+    public List<TanecneTeleso> findAll() {
+        String query = "SELECT id, nazov, umiestnenie, hudba, klub, telefonne_cislo, tanecnici, email, kategoria_id, sutaz_id FROM tanecne_teleso " + "ORDER BY umiestnenie DESC";
+        List<TanecneTeleso> result = jdbcTemplate.query(query, tanecneTelesoRM());
+        return result;
+    }
+
+    @Override
+    public List<TanecneTeleso> findAllBySutazId(int sutazId) {
+        String query = "SELECT id, nazov, umiestnenie, hudba, klub, telefonne_cislo, tanecnici, email, kategoria_id, sutaz_id FROM tanecne_teleso " +
+                "WHERE sutaz_id = ? ORDER BY id";
+
+        List<TanecneTeleso> result = jdbcTemplate.query(query, new Object[]{sutazId}, tanecneTelesoRM());
+        return result;
+    }
+
+    @Override
+    public List<TanecneTeleso> findAllBySutazIdKategoriaId(int sutazId, Long kategoriaId) {
+        String query = "SELECT id, nazov, umiestnenie, hudba, klub, tanecnici, telefonne_cislo, email, kategoria_id, sutaz_id FROM tanecne_teleso " +
+                "WHERE sutaz_id = ? AND kategoria_id = ? ORDER BY id";
+
+        List<TanecneTeleso> result = jdbcTemplate.query(query, new Object[]{sutazId, kategoriaId}, tanecneTelesoRM());
+        return result;
+    }
+
+    @Override
+    public TanecneTeleso update(TanecneTeleso tanecneTeleso) {
         String query = "UPDATE tanecne_teleso SET nazov = ?, umiestnenie = ?, hudba = ?, klub = ?, email = ?, telefonne_cislo = ?, tanecnici = ?, " +
                 "kategoria_id = ?, sutaz_id = ? WHERE id = ?";
 
@@ -218,17 +130,6 @@ public class MysqlTanecneTelesoDao implements TanecneTelesoDao {
                 tanecneTeleso.getId());
 
         return null;
-    }
-
-    public TanecneTeleso save(TanecneTeleso tanecneTeleso) {
-        if (tanecneTeleso.getId() == 0) {
-            // if ID == 0, then this is a new object to be inserted
-            insert(tanecneTeleso);
-        } else {
-            // if ID != 0, then this is an existing object to be updated
-            update(tanecneTeleso);
-        }
-        return tanecneTeleso;
     }
 
     @Override

@@ -36,10 +36,10 @@ public class PrihlasenieController {
 
     private List<Sutaz> sutaze;
 
+    private SutazDao sutazDao = DaoFactory.INSTANCE.getSutazDao();
+
     // aktualna sutaz
     private int sutazId;
-
-    private SutazDao sutazDao = DaoFactory.INSTANCE.getSutazDao();
 
     // metoda pouzita v MainSceneController odkial si zapamatavame id sutaze
     public void setSutazId(Sutaz sutaz) {
@@ -77,7 +77,7 @@ public class PrihlasenieController {
             if (jeAdmin && jeSpravneHeslo) {
                 SutazController controller = new SutazController();
                 otvoritAdminOkno(controller);
-            } else if (!jeAdmin && jeSpravneHeslo  && menaPorotcov.contains(meno) && sutazDao.findById(sutazId).jeSutazAktualna())  {
+            } else if (!jeAdmin && jeSpravneHeslo && menaPorotcov.contains(meno) && sutazDao.findById(sutazId).jeSutazAktualna()) {
                 HodnoteniePorotaController controller = new HodnoteniePorotaController();
                 Porotca porotca = null;
                 for (Porotca p : porota) {
@@ -92,7 +92,7 @@ public class PrihlasenieController {
                 controller.setSutazId(sutazId);
                 otvoritPorotcaOkno(controller);
             } else {
-                if(!sutazDao.findById(sutazId).jeSutazAktualna()){
+                if (!sutazDao.findById(sutazId).jeSutazAktualna()) {
                     zobrazitChybovyAlert("Súťaž nie je aktuálna. Prihlasovanie porotcov nie je povolené");
                 } else {
                     zobrazitChybovyAlert("Nesprávne heslo. Skúste to znova.");
@@ -146,7 +146,6 @@ public class PrihlasenieController {
 
     private void handleEnterKeyPressed(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            // Reakce na stisk klávesy Enter
             prihlasenieButtonClick(new ActionEvent());
         }
     }

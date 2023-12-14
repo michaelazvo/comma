@@ -13,7 +13,6 @@ public class Hodnotenie {
 
     }
 
-
     public Hodnotenie(int hodnotenie, long porotcaId, long tanecneTelesoId) {
         this.hodnotenie = hodnotenie;
         this.porotcaId = porotcaId;

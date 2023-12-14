@@ -12,16 +12,11 @@ public interface HodnotenieDao {
 
     List<Hodnotenie> findAllByTelesoId(long tanecneTelesoId);
 
-
-    //List<Hodnotenie> findBySutazIdAndKategoriaId(long sutazId, long kategoriaId);
-
-
     Hodnotenie insert(Hodnotenie hodnotenie);
 
     Hodnotenie update(Hodnotenie hodnotenie);
 
     Hodnotenie findByPorotcaIdAndTelesoId(long porotcaId, long tanecneTelesoId);
-
 
     boolean delete(Hodnotenie hodnotenie);
 }

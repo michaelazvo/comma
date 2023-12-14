@@ -63,7 +63,7 @@ public class SutazEditController {
 
     private BooleanProperty jePridatButtonVypnuty = new SimpleBooleanProperty(true);
 
-    public SutazEditController(){
+    public SutazEditController() {
 
     }
 
@@ -73,21 +73,18 @@ public class SutazEditController {
 
     @FXML
     public void initialize() {
-        if(vybrataSutaz!=null){
+        if (vybrataSutaz != null) {
             ulozitButtonClick.setDisable(false);
             nazovSutazeTextField.setText(vybrataSutaz.getNazov());
             datumOdPicker.setValue(vybrataSutaz.getOdDatum());
             datumDoPicker.setValue(vybrataSutaz.getDoDatum());
             List<Porotca> porotcovia = porotcaDao.getPorotcoviaPreSutaz(vybrataSutaz.getId());
 
-
-            // Přidání porotců do ListView
             porotaListView.getItems().addAll(porotcovia);
 
             porotaListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Porotca>() {
                 @Override
                 public void changed(ObservableValue<? extends Porotca> observable, Porotca oldValue, Porotca newValue) {
-                    // Zde můžete aktualizovat textová pole podle vybraného porotce
                     if (newValue != null) {
                         menoPorotcuTextField.setText(newValue.getMeno());
                         priezviskoPorotcuTextField.setText(newValue.getPriezvisko());
@@ -110,10 +107,7 @@ public class SutazEditController {
         uzivatelskeMenoTextField.textProperty().addListener((observable, oldValue, newValue) -> checkFieldsForPridatPorotcu());
         hesloTextField.textProperty().addListener((observable, oldValue, newValue) -> checkFieldsForPridatPorotcu());
 
-
         pridatPorotcuButton.disableProperty().bind(jePridatButtonVypnuty);
-
-
 
     }
 
@@ -123,7 +117,6 @@ public class SutazEditController {
                 !uzivatelskeMenoTextField.getText().trim().isEmpty() &&
                 !hesloTextField.getText().trim().isEmpty();
 
-        // Set the value of isButtonDisabled based on the condition
         jePridatButtonVypnuty.set(!ziadnePrazdnePole);
     }
 
@@ -132,10 +125,9 @@ public class SutazEditController {
         LocalDate datumDo = datumDoPicker.getValue();
         boolean ziadnePrazdnePole = !nazovSutazeTextField.getText().trim().isEmpty() &&
                 datumOd != null && datumDo != null &&
-                !porotaListView.getItems().isEmpty(); // Kontrola, či je ListView s porotcami vyplnený
+                !porotaListView.getItems().isEmpty(); // kontrola, či je ListView s porotcami vyplnený
 
-
-       isButtonDisabled.set(!ziadnePrazdnePole);
+        isButtonDisabled.set(!ziadnePrazdnePole);
 
     }
 
@@ -150,17 +142,13 @@ public class SutazEditController {
 
         porotcovia.add(porotca);
 
-        // Aktualizovat ListView
         porotaListView.getItems().add(porotca);
         porotcaDao.insert(porotca);
-        //porotcaDao.pridajPorotcuDoSutaze(porotca.getId(),nazovSutazeTextField.getText());
-        // Nyní můžete provést další operace, např. vyčistit pole pro zadávání nového porotce
         menoPorotcuTextField.clear();
         priezviskoPorotcuTextField.clear();
         uzivatelskeMenoTextField.clear();
         hesloTextField.clear();
     }
-
 
 
     @FXML
@@ -171,22 +159,21 @@ public class SutazEditController {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
 
-        Sutaz sutaz =new Sutaz(nazov, datumOd, datumDo);
-        if(vybrataSutaz!=null){
+        Sutaz sutaz = new Sutaz(nazov, datumOd, datumDo);
+        if (vybrataSutaz != null) {
             vybrataSutaz.setNazov(nazov);
             vybrataSutaz.setOdDatum(datumOd);
             vybrataSutaz.setDoDatum(datumDo);
             sutazDao.update(vybrataSutaz);
             for (Porotca porotca : porotcovia) {
-                porotcaDao.pridajPorotcuDoSutaze(porotca.getId(),vybrataSutaz.getId());
+                porotcaDao.pridajPorotcuDoSutaze(porotca.getId(), vybrataSutaz.getId());
             }
         } else {
             sutazDao.insert(sutaz);
             for (Porotca porotca : porotcovia) {
-                porotcaDao.pridajPorotcuDoSutaze(porotca.getId(),sutaz.getId());
+                porotcaDao.pridajPorotcuDoSutaze(porotca.getId(), sutaz.getId());
             }
         }
-
 
         ulozitButtonClick.getScene().getWindow().hide();
     }

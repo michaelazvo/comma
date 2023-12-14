@@ -3,7 +3,7 @@ package sk.comma.entity;
 import lombok.Data;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+
 
 @Data
 public class Sutaz {

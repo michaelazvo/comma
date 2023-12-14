@@ -20,8 +20,6 @@ import java.util.List;
 import java.util.Map;
 
 
-// NEVIEM CI TO NEMA BYT TANECNETELESOEDIT ? NETUSIM AKO TO JE KED V JEDNO OKNE TO JE PRAZDNE A V DRUHOM VYPLNENE
-
 public class TanecneTelesoController {
 
     @FXML
@@ -63,7 +61,6 @@ public class TanecneTelesoController {
     private List<Kategoria> kategorie;
 
     private TanecneTelesoDao tanecneTelesoDao = DaoFactory.INSTANCE.getTanecneTelesoDao();
-    private TanecneTelesoFxModel tanecneTelesoModel;
     private TanecneTeleso savedTanecneTeleso;
     private Kategoria savedKategoria;
 
@@ -74,13 +71,11 @@ public class TanecneTelesoController {
     boolean adminMode;
 
 
-
-
-    public TanecneTelesoController(){
+    public TanecneTelesoController() {
 
     }
 
-    public TanecneTelesoController(TanecneTeleso vybraneTanecneTeleso, boolean adminMode){
+    public TanecneTelesoController(TanecneTeleso vybraneTanecneTeleso, boolean adminMode) {
         this.vybraneTeleso = vybraneTanecneTeleso;
         this.adminMode = adminMode;
     }
@@ -131,7 +126,6 @@ public class TanecneTelesoController {
     @FXML
     void prihlasitTelesoButtonClick(ActionEvent event) {
         try {
-            // Create a TanecneTeleso object from the input fields
             TanecneTeleso teleso = new TanecneTeleso();
             teleso.setNazov(nazovTelesaTextField.getText());
             teleso.setHudba(hudbaTextField.getText());
@@ -145,18 +139,18 @@ public class TanecneTelesoController {
 
             if (!isValidEmail(teleso.getEmail())) {
                 showAlert("Nesprávny formát emailu", "Prosím, zadajte platný email.");
-                return; // Stop further execution
+                return;
             }
 
             String telefonneCislo = telefonneCisloTextFied.getText();
             if (!isValidTelefonneCislo(telefonneCislo)) {
                 showAlert("Nesprávny formát telefónneho čísla", "Prosím, zadajte platné telefónne číslo.");
-                return; // Stop further execution
+                return;
             }
 
             if (teleso.getNazov().isEmpty() || teleso.getHudba().isEmpty() || teleso.getKlub().isEmpty() || teleso.getEmail().isEmpty() || teleso.getTanecnici().isEmpty()) {
                 showAlert("Chýbajúce údaje", "Prosím, vyplňte všetky povinné údaje.");
-                return; // Stop further execution
+                return;
             }
 
             //pouzitie metody na vyhladanie id kategorie
@@ -165,13 +159,10 @@ public class TanecneTelesoController {
             //priradenie Id aktualnej sutaze
             teleso.setSutazId(sutazId);
 
-            // Save the TanecneTeleso object to the database
             savedTanecneTeleso = tanecneTelesoDao.insert(teleso);
             prihlasitTelesoButton.getScene().getWindow().hide();
         } catch (Exception e) {
             e.printStackTrace();
-            // Handle any exceptions that may occur during the save operation
-            // Optionally, you can display an error message to the user
         }
 
 
@@ -181,12 +172,10 @@ public class TanecneTelesoController {
         return telefonneCislo.matches("(09\\d{8}|\\+421\\d{9})");
     }
 
-    // Method to validate email format
     private boolean isValidEmail(String email) {
         return email.matches("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}");
     }
 
-    // Method to show an alert
     private void showAlert(String title, String content) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
@@ -213,11 +202,6 @@ public class TanecneTelesoController {
         ulozitTelesoButton.getScene().getWindow().hide();
     }
 
-// toto neviem ci vyuzijeme, mozno dakedy hej
-//    public TanecneTelesoController(TanecneTeleso tanecneTeleso){
-//        tanecneTelesoModel=new TanecneTelesoFxModel();
-//    }
-
     @FXML
     void initialize() {
         kategorie = kategoriaDao.findAll();
@@ -228,10 +212,10 @@ public class TanecneTelesoController {
 
         ulozitTelesoButton.setVisible(adminMode);
 
-        if(vybraneTeleso!=null){
+        if (vybraneTeleso != null) {
             prihlasitTelesoButton.setVisible(false);
             nazovTelesaTextField.setText(vybraneTeleso.getNazov());
-            Long kategoriaId = vybraneTeleso.getKategoriaId();
+            long kategoriaId = vybraneTeleso.getKategoriaId();
             Kategoria kategoria = kategoriaDao.findById(kategoriaId);
             stylCombobox.setValue(kategoria.getStyl());
             vekCombobox.setValue(kategoria.getVekovaSkupina());
@@ -243,17 +227,9 @@ public class TanecneTelesoController {
             tanecniciTextField.setText(vybraneTeleso.getTanecnici());
 
         } else {
-
-
-            // Optionally, select default items if available
             stylCombobox.getSelectionModel().selectFirst();
             vekCombobox.getSelectionModel().selectFirst();
             velkostnaSkupinaCombobox.getSelectionModel().selectFirst();
-
-
         }
-
     }
-
-
 }

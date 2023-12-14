@@ -2,9 +2,6 @@ package sk.comma.business;
 
 import lombok.Data;
 
-import java.util.List;
-
-
 @Data
 public class vysledkyOverview {
     private String umiestnenie;

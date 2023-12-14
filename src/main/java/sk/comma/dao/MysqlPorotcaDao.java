@@ -15,8 +15,6 @@ public class MysqlPorotcaDao implements PorotcaDao {
 
     private JdbcTemplate jdbcTemplate;
 
-    // toto mi robilo chybu ako som pracovala so MysqlSutazDao, cize to asi nema byt
-    //private PorotcaDao porotcaDao = DaoFactory.INSTANCE.getPorotcaDao();
 
     public MysqlPorotcaDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -34,7 +32,6 @@ public class MysqlPorotcaDao implements PorotcaDao {
             porotca.setUzivatelskeMeno(rs.getString("uzivatelske_meno"));
             porotca.setHeslo(rs.getString("heslo"));
             porotca.setJeAdmin(rs.getBoolean("jeAdmin"));
-
             return porotca;
         }
     }
@@ -46,7 +43,6 @@ public class MysqlPorotcaDao implements PorotcaDao {
         try {
             return jdbcTemplate.queryForObject(query, new Object[]{id}, new PorotcaRowMapper());
         } catch (EmptyResultDataAccessException e) {
-            // If no result is found, return null or throw an exception as needed
             return null;
         }
 
@@ -59,16 +55,15 @@ public class MysqlPorotcaDao implements PorotcaDao {
 
     @Override
     public Porotca insert(Porotca porotca) {
-        Objects.requireNonNull(porotca, "Student cannoot be null");
-        Objects.requireNonNull(porotca.getMeno(), "Surname cannot be null"); //podla databazy
-        Objects.requireNonNull(porotca.getPriezvisko(), "Surname cannot be null");
-        Objects.requireNonNull(porotca.getUzivatelskeMeno(), "Surname cannot be null");
-        Objects.requireNonNull(porotca.getHeslo(), "Surname cannot be null");
+        Objects.requireNonNull(porotca, "Porotca cannoot be null");
+        Objects.requireNonNull(porotca.getMeno(), "Meno cannot be null");
+        Objects.requireNonNull(porotca.getPriezvisko(), "Priezvisko cannot be null");
+        Objects.requireNonNull(porotca.getUzivatelskeMeno(), "UzivatelskeMeno cannot be null");
+        Objects.requireNonNull(porotca.getHeslo(), "Heslo cannot be null");
         if (porotca.getId() == null) { //insert
             String query = "INSERT INTO porotca (meno, priezvisko, uzivatelske_meno, heslo, jeAdmin) "
                     + "VALUES (?,?,?,?,?)";
 
-            // tiez neviem ze co s tym
             GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
             jdbcTemplate.update(new PreparedStatementCreator() {
 
@@ -83,10 +78,9 @@ public class MysqlPorotcaDao implements PorotcaDao {
                     return statement;
                 }
             }, keyHolder);
-            //neviem ci treba dvakrat abo co :D ale ide to
-                    porotca.setId(keyHolder.getKey().longValue());
-            }
-            return porotca;
+            porotca.setId(keyHolder.getKey().longValue());
+        }
+        return porotca;
     }
 
     public List<Porotca> getPorotcoviaPreSutaz(int idSutaze) {
@@ -100,7 +94,6 @@ public class MysqlPorotcaDao implements PorotcaDao {
     @Override
     public void vymazPorotcuZoSutaze(Long porotcaId, int sutazId) {
         String query = "DELETE FROM sutaz_porotca WHERE porotca_id = ? AND sutaz_id = ?";
-
         jdbcTemplate.update(query, porotcaId, sutazId);
     }
 
@@ -113,19 +106,13 @@ public class MysqlPorotcaDao implements PorotcaDao {
     @Override
     public void update(Porotca porotca) {
         String query = "UPDATE porotca SET meno = ?, priezvisko = ?, uzivatelske_meno = ?, heslo = ? WHERE id = ?";
-
         jdbcTemplate.update(query, porotca.getMeno(), porotca.getPriezvisko(), porotca.getUzivatelskeMeno(), porotca.getHeslo(), porotca.getId());
     }
-
 
     @Override
     public boolean delete(Porotca porotca) {
         String query = "DELETE FROM porotca WHERE id = ?";
-
-        // Vrátí počet ovlivněných řádků (měl by být 1, pokud ID existuje)
         int affectedRows = jdbcTemplate.update(query, porotca.getId());
-
-        // Pokud byl smazán právě jeden záznam, vracíme true, jinak false
         return affectedRows == 1;
     }
 
@@ -133,11 +120,7 @@ public class MysqlPorotcaDao implements PorotcaDao {
     public boolean isPasswordCorrect(String pouzivatelHeslo, String pouzivatelMeno) {
         String sql = "SELECT heslo from porotca where uzivatelske_meno = ?";
         String heslo = jdbcTemplate.queryForObject(sql, String.class, pouzivatelMeno);
-        if(heslo.equals(pouzivatelHeslo)){
-            return true;
-        }
-
-        return false;
+        return heslo.equals(pouzivatelHeslo);
     }
 
     @Override
@@ -145,13 +128,12 @@ public class MysqlPorotcaDao implements PorotcaDao {
         String sql = "SELECT COUNT(*) FROM porotca WHERE uzivatelske_meno = ?";
 
         try {
-            // Zkontrolovat existenci uživatele ve vaší databázi
             int pocet = jdbcTemplate.queryForObject(sql,
                     Integer.class, meno);
 
-            return pocet==1; // Uživatel existuje
+            return pocet == 1;
         } catch (EmptyResultDataAccessException e) {
-            return false; // Uživatel neexistuje
+            return false;
         }
     }
 
@@ -159,12 +141,8 @@ public class MysqlPorotcaDao implements PorotcaDao {
     public boolean isAdmin(String pouzivatelHeslo, String pouzivatelMeno) {
         String sql = "SELECT jeAdmin from porotca where uzivatelske_meno = ?";
         int admin = jdbcTemplate.queryForObject(sql, Integer.class, pouzivatelMeno);
-        if(admin == 1) {
-            return true;
-        } else {
-            return false;
-        }
-     }
+        return admin == 1;
+    }
 
 
 }

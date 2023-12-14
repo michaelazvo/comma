@@ -24,7 +24,6 @@ public class MainSceneController {
     @FXML
     private ComboBox<Sutaz> sutazCombobox;
 
-
     private SutazDao sutazDao = DaoFactory.INSTANCE.getSutazDao();
     private ObservableList<Sutaz> sutazModel;
     private List<Sutaz> sutaze;
@@ -32,10 +31,8 @@ public class MainSceneController {
     @FXML
     private Button prihlasitTelesoButton;
 
-
     @FXML
     void initialize() {
-
         sutaze = sutazDao.findAll();
         sutazModel = FXCollections.observableList(sutaze);
         sutazCombobox.setItems(sutazModel);
@@ -53,31 +50,41 @@ public class MainSceneController {
 
     }
 
-    private void updatePrihlasitButtonState(Sutaz selectedSutaz) {
-        if (selectedSutaz != null) {
-            // Tu vložte logiku pre kontrolu dátumu a nastavenie vlastnosti disable
-            boolean isButtonDisabled = isPrihlasitButtonDisabled(selectedSutaz);
-            prihlasitTelesoButton.setDisable(isButtonDisabled);
-        }
-    }
-
-    private boolean isPrihlasitButtonDisabled(Sutaz sutaz) {
-        // Sem vložte logiku pre kontrolu dátumu
-        // Napríklad, ak je dátum súťaže pred aktuálnym dátumom, vráťte true
-        // Inak vráťte false
-        // Tu uvádzam falošný príklad:
-        return sutaz.getOdDatum().isBefore(LocalDate.now()) || sutaz.getDoDatum().isBefore(LocalDate.now());
-    }
-
-
-
-
     @FXML
     void prihlasenieButtonClick(ActionEvent event) {
         PrihlasenieController controller = new PrihlasenieController(sutaze);
         controller.setSutazId(sutazCombobox.getValue());
         otvoritPrihlasovanieOkno(controller);
     }
+
+    @FXML
+    void prihlasitTanecneTelesoButtonClick(ActionEvent event) {
+        TanecneTelesoController controller = new TanecneTelesoController();
+        // ulozenie zvolenej sutaze z comboboxu pre dalsi controller
+        controller.setSutazId(sutazCombobox.getValue());
+        otvoritTanecneTelesoOkno(controller);
+    }
+
+    @FXML
+    void zobrazitVysledkyButtonClick(ActionEvent event) {
+        VysledkyTabulkaController controller = new VysledkyTabulkaController();
+        // ulozenie zvolenej sutaze z comboboxu pre dalsi controller
+        controller.setSutazId(sutazCombobox.getValue());
+        otvoritVysledkyOkno(controller);
+
+    }
+
+    private void updatePrihlasitButtonState(Sutaz selectedSutaz) {
+        if (selectedSutaz != null) {
+            boolean isButtonDisabled = isPrihlasitButtonDisabled(selectedSutaz);
+            prihlasitTelesoButton.setDisable(isButtonDisabled);
+        }
+    }
+
+    private boolean isPrihlasitButtonDisabled(Sutaz sutaz) {
+        return sutaz.getOdDatum().isBefore(LocalDate.now()) || sutaz.getDoDatum().isBefore(LocalDate.now());
+    }
+
 
     private void otvoritPrihlasovanieOkno(PrihlasenieController controller) {
         try {
@@ -94,15 +101,6 @@ public class MainSceneController {
         }
     }
 
-    @FXML
-    void prihlasitTanecneTelesoButtonClick(ActionEvent event) {
-        TanecneTelesoController controller = new TanecneTelesoController();
-        // ulozenie zvolenej sutaze z comboboxu pre dalsi controller
-        controller.setSutazId(sutazCombobox.getValue());
-        otvoritTanecneTelesoOkno(controller);
-
-
-    }
 
     private void otvoritTanecneTelesoOkno(TanecneTelesoController controller) {
         try {
@@ -120,16 +118,6 @@ public class MainSceneController {
         }
     }
 
-
-    @FXML
-    void zobrazitVysledkyButtonClick(ActionEvent event) {
-        VysledkyTabulkaController controller = new VysledkyTabulkaController();
-        // ulozenie zvolenej sutaze z comboboxu pre dalsi controller
-        controller.setSutazId(sutazCombobox.getValue());
-        otvoritVysledkyOkno(controller);
-
-    }
-
     private void otvoritVysledkyOkno(VysledkyTabulkaController controller) {
         try {
             FXMLLoader loader = new FXMLLoader(
@@ -145,7 +133,5 @@ public class MainSceneController {
             e.printStackTrace();
         }
     }
-
-
 
 }
