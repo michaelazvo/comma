@@ -134,7 +134,10 @@ public class MysqlTanecneTelesoDao implements TanecneTelesoDao {
 
     @Override
     public boolean delete(TanecneTeleso tanecneTeleso) {
-        return false;
+        String deleteQuery = "DELETE FROM tanecne_teleso WHERE id = ?";
+        jdbcTemplate.update(deleteQuery, tanecneTeleso.getId());
+
+        return true;
     }
 
 

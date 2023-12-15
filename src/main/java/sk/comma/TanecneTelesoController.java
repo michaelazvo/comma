@@ -86,6 +86,37 @@ public class TanecneTelesoController {
     }
 
 
+    @FXML
+    void initialize() {
+        kategorie = kategoriaDao.findAll();
+
+        stylCombobox.getItems().addAll(Kategoria.getStylTypes());
+        vekCombobox.getItems().addAll(Kategoria.getVekovaSkupinaTypes());
+        velkostnaSkupinaCombobox.getItems().addAll(Kategoria.getVelkostnaSkupinaTypes());
+
+        ulozitTelesoButton.setVisible(adminMode);
+
+        if (vybraneTeleso != null) {
+            prihlasitTelesoButton.setVisible(false);
+            nazovTelesaTextField.setText(vybraneTeleso.getNazov());
+            long kategoriaId = vybraneTeleso.getKategoriaId();
+            Kategoria kategoria = kategoriaDao.findById(kategoriaId);
+            stylCombobox.setValue(kategoria.getStyl());
+            vekCombobox.setValue(kategoria.getVekovaSkupina());
+            velkostnaSkupinaCombobox.setValue(kategoria.getVelkostnaSkupina());
+            hudbaTextField.setText(vybraneTeleso.getHudba());
+            klubTextField.setText(vybraneTeleso.getKlub());
+            emailTextField.setText(vybraneTeleso.getEmail());
+            telefonneCisloTextFied.setText(vybraneTeleso.getTelefonneCislo());
+            tanecniciTextField.setText(vybraneTeleso.getTanecnici());
+
+        } else {
+            stylCombobox.getSelectionModel().selectFirst();
+            vekCombobox.getSelectionModel().selectFirst();
+            velkostnaSkupinaCombobox.getSelectionModel().selectFirst();
+        }
+    }
+
     // ak kategoria existuje, vrati jej id, ak nie, vyvtori sa nova kategoria a vrati jej id
     private long getKategoriaId(String styl, String velkostnaSkupina, String vekovaSkupina) {
         long kategoriaId = 0;
@@ -202,34 +233,5 @@ public class TanecneTelesoController {
         ulozitTelesoButton.getScene().getWindow().hide();
     }
 
-    @FXML
-    void initialize() {
-        kategorie = kategoriaDao.findAll();
 
-        stylCombobox.getItems().addAll(Kategoria.getStylTypes());
-        vekCombobox.getItems().addAll(Kategoria.getVekovaSkupinaTypes());
-        velkostnaSkupinaCombobox.getItems().addAll(Kategoria.getVelkostnaSkupinaTypes());
-
-        ulozitTelesoButton.setVisible(adminMode);
-
-        if (vybraneTeleso != null) {
-            prihlasitTelesoButton.setVisible(false);
-            nazovTelesaTextField.setText(vybraneTeleso.getNazov());
-            long kategoriaId = vybraneTeleso.getKategoriaId();
-            Kategoria kategoria = kategoriaDao.findById(kategoriaId);
-            stylCombobox.setValue(kategoria.getStyl());
-            vekCombobox.setValue(kategoria.getVekovaSkupina());
-            velkostnaSkupinaCombobox.setValue(kategoria.getVelkostnaSkupina());
-            hudbaTextField.setText(vybraneTeleso.getHudba());
-            klubTextField.setText(vybraneTeleso.getKlub());
-            emailTextField.setText(vybraneTeleso.getEmail());
-            telefonneCisloTextFied.setText(vybraneTeleso.getTelefonneCislo());
-            tanecniciTextField.setText(vybraneTeleso.getTanecnici());
-
-        } else {
-            stylCombobox.getSelectionModel().selectFirst();
-            vekCombobox.getSelectionModel().selectFirst();
-            velkostnaSkupinaCombobox.getSelectionModel().selectFirst();
-        }
-    }
 }

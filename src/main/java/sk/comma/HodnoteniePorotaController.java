@@ -136,6 +136,7 @@ public class HodnoteniePorotaController {
                 showAlert("Zlé zadanie bodov", "Hodnotenie musí byť v rozmedzí od 0 do 10.");
             } else {
                 setHodnotenieByPorotcaIdTelesoId(porotcaId, teleso.getId(), body);
+                showAlert(Alert.AlertType.INFORMATION, "Úspech", "Bodovanie úspešne uložené", "Bodovanie bolo úspešne pripísané k tanečnému telesu.");
             }
 
         }

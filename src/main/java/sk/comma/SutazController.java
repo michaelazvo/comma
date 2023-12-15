@@ -9,12 +9,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import sk.comma.dao.DaoFactory;
+import sk.comma.dao.HodnotenieDao;
 import sk.comma.dao.SutazDao;
 import sk.comma.dao.TanecneTelesoDao;
 import sk.comma.entity.Sutaz;
@@ -22,6 +21,7 @@ import sk.comma.entity.TanecneTeleso;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 public class SutazController {
 
@@ -33,6 +33,8 @@ public class SutazController {
 
     @FXML
     private ComboBox<Sutaz> sutazCombobox;
+
+    private HodnotenieDao hodnotenieDao = DaoFactory.INSTANCE.getHodnotenieDao();
 
     private SutazDao sutazDao = DaoFactory.INSTANCE.getSutazDao();
 
@@ -151,6 +153,55 @@ public class SutazController {
 
     @FXML
     void zmazanieTelesaButtonClick(ActionEvent event) {
+        String idTelesa = idTelesaTextField.getText();
 
+        try {
+            long id = Long.parseLong(idTelesa);
+
+            TanecneTeleso telesoToDelete = tanecneTelesoDao.findById(id);
+
+            if (telesoToDelete != null) {
+                Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+                confirmationAlert.setTitle("Potvrdenie vymazania");
+                confirmationAlert.setHeaderText(null);
+                confirmationAlert.setContentText("Ste si istý, že chcete dané teleso vymazať?");
+
+                Optional<ButtonType> result = confirmationAlert.showAndWait();
+
+                if (result.isPresent() && result.get() == ButtonType.OK) {
+                    hodnotenieDao.deleteByTanecneTelesoId(telesoToDelete.getId());
+
+                    boolean deletionSuccess = tanecneTelesoDao.delete(telesoToDelete);
+
+                    if (deletionSuccess) {
+                        Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+                        successAlert.setTitle("Vymazanie úspešné");
+                        successAlert.setHeaderText(null);
+                        successAlert.setContentText("Teleso bolo úspešne vymazané z databázy.");
+                        idTelesaTextField.setText("");
+                        nazovTelesaLabel.setText("");
+                        successAlert.showAndWait();
+                    } else {
+                        Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                        errorAlert.setTitle("Chyba pri vymazávaní");
+                        errorAlert.setHeaderText(null);
+                        errorAlert.setContentText("Nastala chyba pri vymazávaní telesa z databázy.");
+                        errorAlert.showAndWait();
+                    }
+                }
+            } else {
+                Alert notFoundAlert = new Alert(Alert.AlertType.WARNING);
+                notFoundAlert.setTitle("Teleso nenájdené");
+                notFoundAlert.setHeaderText(null);
+                notFoundAlert.setContentText("Teleso s daným ID nebolo nájdené.");
+                notFoundAlert.showAndWait();
+            }
+        } catch (NumberFormatException e) {
+            Alert invalidIdAlert = new Alert(Alert.AlertType.ERROR);
+            invalidIdAlert.setTitle("Neplatné ID");
+            invalidIdAlert.setHeaderText(null);
+            invalidIdAlert.setContentText("Zadajte platné ID telesa na vymazanie.");
+            invalidIdAlert.showAndWait();
+        }
     }
 }

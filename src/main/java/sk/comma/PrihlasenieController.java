@@ -46,13 +46,16 @@ public class PrihlasenieController {
         this.sutazId = sutaz.getId();
     }
 
+    private boolean errorOccurred = false;
+
     public PrihlasenieController(List<Sutaz> sutaze) {
         this.sutaze = sutaze;
     }
 
     @FXML
     private void initialize() {
-        // Přidání posluchačů klávesnice při inicializaci controlleru
+        errorOccurred = false;
+
         uzivatelskeMenoTextField.setOnKeyPressed(this::handleEnterKeyPressed);
         hesloPasswordField.setOnKeyPressed(this::handleEnterKeyPressed);
     }
@@ -102,8 +105,10 @@ public class PrihlasenieController {
             // uzivatel neexistuje
             zobrazitChybovyAlert("Užívateľ s týmto užívateľským menom neexistuje.");
         }
-
-        prihlasenieButton.getScene().getWindow().hide();
+        if (!errorOccurred) {
+            Stage stage = (Stage) prihlasenieButton.getScene().getWindow();
+            stage.hide();
+        }
     }
 
     private void otvoritAdminOkno(SutazController controller) {
@@ -142,6 +147,8 @@ public class PrihlasenieController {
         alert.setHeaderText(null);
         alert.setContentText(chybovaSprava);
         alert.showAndWait();
+
+        errorOccurred = true;
     }
 
     private void handleEnterKeyPressed(KeyEvent event) {

@@ -1,5 +1,6 @@
 package sk.comma.dao;
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -112,5 +113,17 @@ public class MysqlHodnotenieDao implements HodnotenieDao {
         int rowsAffected = jdbcTemplate.update(query, hodnotenie.getId());
 
         return rowsAffected > 0;
+    }
+
+    @Override
+    public boolean deleteByTanecneTelesoId(long telesoId) {
+        try {
+            String deleteQuery = "DELETE FROM hodnotenie WHERE tanecne_teleso_id = ?";
+            jdbcTemplate.update(deleteQuery, telesoId);
+            return true;
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }
