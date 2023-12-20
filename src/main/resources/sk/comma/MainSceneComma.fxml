@@ -3,31 +3,78 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="750.0" style="-fx-background-color: DEEEFE;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <ComboBox fx:id="sutazCombobox" layoutX="94.0" layoutY="49.0" prefHeight="26.0" prefWidth="223.0" />
-      <Label layoutX="33.0" layoutY="46.0" text="Súťaž:">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Label>
-      <Button layoutX="482.0" layoutY="93.0" mnemonicParsing="false" onAction="#prihlasenieButtonClick" text="Prihlásenie">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Button>
-      <Button fx:id="prihlasitTelesoButton" layoutX="32.0" layoutY="170.0" mnemonicParsing="false" onAction="#prihlasitTanecneTelesoButtonClick" text="Prihlásiť tanečné teleso">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Button>
-      <Button layoutX="32.0" layoutY="108.0" mnemonicParsing="false" onAction="#zobrazitVysledkyButtonClick" text="Zobraziť priebežné výsledky">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Button>
+      <Pane layoutX="10.0" layoutY="10.0" prefHeight="530.0" prefWidth="730.0" styleClass="roundedBlock" stylesheets="@style.css">
+         <children>
+            <ComboBox fx:id="sutazCombobox" layoutX="38.0" layoutY="200.0" prefHeight="26.0" prefWidth="301.0" />
+            <Label layoutX="37.0" layoutY="138.0" text="1. Vyberte sútaž">
+               <font>
+                  <Font name="Calibri" size="18.0" />
+               </font>
+            </Label>
+            <Button layoutX="388.0" layoutY="195.0" mnemonicParsing="false" onAction="#prihlasenieButtonClick" prefHeight="35.0" prefWidth="192.0" styleClass="primaryButton" text="Prihlásiť sa ako porotca">
+               <font>
+                  <Font name="Calibri" size="16.0" />
+               </font>
+            </Button>
+            <Button fx:id="prihlasitTelesoButton" layoutX="388.0" layoutY="278.0" mnemonicParsing="false" onAction="#prihlasitTanecneTelesoButtonClick" styleClass="primaryButton" text="Prihlásiť tanečné teleso">
+               <font>
+                  <Font name="Calibri" size="16.0" />
+               </font>
+            </Button>
+            <Button layoutX="387.0" layoutY="361.0" mnemonicParsing="false" onAction="#zobrazitVysledkyButtonClick" styleClass="primaryButton" text="Zobraziť priebežné výsledky">
+               <font>
+                  <Font name="Calibri" size="16.0" />
+               </font>
+            </Button>
+            <Label layoutX="38.0" layoutY="176.0" text="Súťaž">
+               <font>
+                  <Font name="Calibri" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="387.0" layoutY="138.0" text="2. Vyberte akciu">
+               <font>
+                  <Font name="Calibri" size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="388.0" layoutY="175.0" text="Prihlásenie pre porotcov">
+               <font>
+                  <Font name="Calibri" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="388.0" layoutY="258.0" text="Prihlásenie nového tanečného telesa do súťaže">
+               <font>
+                  <Font name="Calibri" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="388.0" layoutY="340.0" text="Zobrazenie výsledkov zvolenej súťaže">
+               <font>
+                  <Font name="Calibri" size="14.0" />
+               </font>
+            </Label>
+            <Pane prefHeight="74.0" prefWidth="730.0" styleClass="semiRoundedBlock">
+               <children>
+                  <Text fill="WHITE" layoutX="303.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hlavné okno">
+                     <font>
+                        <Font name="Calibri" size="24.0" />
+                     </font>
+                  </Text>
+               </children>
+            </Pane>
+            <ImageView fitHeight="231.0" fitWidth="165.0" layoutX="37.0" layoutY="296.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@dancer_1.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
    </children>
 </AnchorPane>

@@ -11,6 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import sk.comma.dao.DaoFactory;
 import sk.comma.dao.SutazDao;
@@ -19,6 +20,7 @@ import sk.comma.entity.Sutaz;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 public class MainSceneController {
     @FXML
@@ -93,6 +95,7 @@ public class MainSceneController {
             loader.setController(controller);
             Parent parent = loader.load();
             Stage PrihlasovanieStage = new Stage();
+            PrihlasovanieStage.getIcons().add(new Image(Objects.requireNonNull(MainSceneController.class.getResourceAsStream("comma_logo.png"))));
             PrihlasovanieStage.setScene(new Scene(parent));
             PrihlasovanieStage.setTitle("Prihlasovanie");
             PrihlasovanieStage.show();
@@ -109,6 +112,7 @@ public class MainSceneController {
             loader.setController(controller);
             Parent parent = loader.load();
             Stage TanecneTelesoStage = new Stage();
+            TanecneTelesoStage.getIcons().add(new Image(Objects.requireNonNull(MainSceneController.class.getResourceAsStream("comma_logo.png"))));
             TanecneTelesoStage.setScene(new Scene(parent));
             TanecneTelesoStage.setTitle("Tanecne teleso");
             TanecneTelesoStage.show();
@@ -124,10 +128,11 @@ public class MainSceneController {
                     getClass().getResource("VysledkyTabulka.fxml"));
             loader.setController(controller);
             Parent parent = loader.load();
-            Stage TanecneTelesoStage = new Stage();
-            TanecneTelesoStage.setScene(new Scene(parent));
-            TanecneTelesoStage.setTitle("Výsledky");
-            TanecneTelesoStage.show();
+            Stage VysledkyStage = new Stage();
+            VysledkyStage.getIcons().add(new Image(Objects.requireNonNull(MainSceneController.class.getResourceAsStream("comma_logo.png"))));
+            VysledkyStage.setScene(new Scene(parent));
+            VysledkyStage.setTitle("Výsledky");
+            VysledkyStage.show();
 
         } catch (IOException e) {
             e.printStackTrace();

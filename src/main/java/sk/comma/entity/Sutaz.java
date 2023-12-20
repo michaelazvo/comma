@@ -3,6 +3,7 @@ package sk.comma.entity;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 
 @Data
@@ -12,6 +13,9 @@ public class Sutaz {
 
     private LocalDate odDatum;
     private LocalDate doDatum;
+
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+
 
     public Sutaz(String nazov, LocalDate odDatum, LocalDate doDatum) {
         this.nazov = nazov;
@@ -39,7 +43,10 @@ public class Sutaz {
 
     @Override
     public String toString() {
-        return nazov + ", " + odDatum;
+        String formattedOdDatum = (odDatum != null) ? odDatum.format(DATE_FORMATTER) : "";
+        String formattedDoDatum = (doDatum != null) ? doDatum.format(DATE_FORMATTER) : "";
+
+        return nazov + ", " + formattedOdDatum + " - " + formattedDoDatum;
     }
 
 }

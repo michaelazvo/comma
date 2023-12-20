@@ -10,6 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import sk.comma.dao.DaoFactory;
@@ -21,6 +22,7 @@ import sk.comma.entity.TanecneTeleso;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 public class SutazController {
@@ -74,11 +76,37 @@ public class SutazController {
     @FXML
     void editTelesaButtonClick(ActionEvent event) {
         String idTelesa = idTelesaTextField.getText();
-        long id = Long.parseLong(idTelesa);
-        TanecneTeleso tanecneTeleso = tanecneTelesoDao.findById(id);
-        ;
-        TanecneTelesoController controller = new TanecneTelesoController(tanecneTeleso, true);
-        otvorenieEditacieTanecnehoTelesa(controller);
+
+        if (idTelesa.trim().isEmpty()) {
+            Alert emptyIdAlert = new Alert(Alert.AlertType.WARNING);
+            emptyIdAlert.setTitle("Prázdne ID");
+            emptyIdAlert.setHeaderText(null);
+            emptyIdAlert.setContentText("Nebolo zadané ID telesa.");
+            emptyIdAlert.showAndWait();
+            return;
+        }
+
+        try {
+            long id = Long.parseLong(idTelesa);
+            TanecneTeleso tanecneTeleso = tanecneTelesoDao.findById(id);
+
+            if (tanecneTeleso != null) {
+                TanecneTelesoController controller = new TanecneTelesoController(tanecneTeleso, true);
+                otvorenieEditacieTanecnehoTelesa(controller);
+            } else {
+                Alert notFoundAlert = new Alert(Alert.AlertType.WARNING);
+                notFoundAlert.setTitle("Teleso nenájdené");
+                notFoundAlert.setHeaderText(null);
+                notFoundAlert.setContentText("Teleso s daným ID nebolo nájdené.");
+                notFoundAlert.showAndWait();
+            }
+        } catch (NumberFormatException e) {
+            Alert invalidIdAlert = new Alert(Alert.AlertType.ERROR);
+            invalidIdAlert.setTitle("Neplatné ID");
+            invalidIdAlert.setHeaderText(null);
+            invalidIdAlert.setContentText("Zadajte platné ID telesa.");
+            invalidIdAlert.showAndWait();
+        }
     }
 
 
@@ -119,6 +147,7 @@ public class SutazController {
             Parent parent = loader.load();
             Scene scene = new Scene(parent);
             Stage stage = new Stage();
+            stage.getIcons().add(new Image(Objects.requireNonNull(SutazController.class.getResourceAsStream("comma_logo.png"))));
             stage.setScene(scene);
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setTitle("Editacia Sutaze");
@@ -140,6 +169,7 @@ public class SutazController {
             Parent parent = loader.load();
             Scene scene = new Scene(parent);
             Stage stage = new Stage();
+            stage.getIcons().add(new Image(Objects.requireNonNull(SutazController.class.getResourceAsStream("comma_logo.png"))));
             stage.setScene(scene);
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setTitle("Editacia tanecneho telesa");
@@ -154,6 +184,15 @@ public class SutazController {
     @FXML
     void zmazanieTelesaButtonClick(ActionEvent event) {
         String idTelesa = idTelesaTextField.getText();
+
+        if (idTelesa.trim().isEmpty()) {
+            Alert emptyIdAlert = new Alert(Alert.AlertType.WARNING);
+            emptyIdAlert.setTitle("Prázdne ID");
+            emptyIdAlert.setHeaderText(null);
+            emptyIdAlert.setContentText("Nebolo zadané ID telesa.");
+            emptyIdAlert.showAndWait();
+            return;
+        }
 
         try {
             long id = Long.parseLong(idTelesa);

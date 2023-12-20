@@ -72,31 +72,38 @@ public class VysledkyTabulkaController {
         TableColumn<vysledkyOverview, String> umiestnenieCol = new TableColumn<>("Umiestnenie");
         umiestnenieCol.setCellValueFactory(new PropertyValueFactory<>("umiestnenie"));
         vysledkyTableView.getColumns().add(umiestnenieCol);
+        umiestnenieCol.setPrefWidth(92);
 
         TableColumn<vysledkyOverview, Long> idCol = new TableColumn<>("P. č.");
         idCol.setCellValueFactory(new PropertyValueFactory<>("id"));
         vysledkyTableView.getColumns().add(idCol);
+        idCol.setPrefWidth(72);
 
         TableColumn<vysledkyOverview, String> nazovCol = new TableColumn<>("Názov");
         nazovCol.setCellValueFactory(new PropertyValueFactory<>("nazov"));
         vysledkyTableView.getColumns().add(nazovCol);
+        nazovCol.setPrefWidth(102);
 
         TableColumn<vysledkyOverview, String> hudbaCol = new TableColumn<>("Hudba");
         hudbaCol.setCellValueFactory(new PropertyValueFactory<>("hudba"));
         vysledkyTableView.getColumns().add(hudbaCol);
+        hudbaCol.setPrefWidth(92);
 
         TableColumn<vysledkyOverview, String> klubCol = new TableColumn<>("Klub");
         klubCol.setCellValueFactory(new PropertyValueFactory<>("klub"));
         vysledkyTableView.getColumns().add(klubCol);
+        klubCol.setPrefWidth(92);
 
         TableColumn<vysledkyOverview, String> tanecniciCol = new TableColumn<>("Tanečníci");
         tanecniciCol.setCellValueFactory(new PropertyValueFactory<>("tanecnici"));
         vysledkyTableView.getColumns().add(tanecniciCol);
+        tanecniciCol.setPrefWidth(102);
 
 
         TableColumn<vysledkyOverview, Integer> hodnotenieCol = new TableColumn<>("Hodnotenie");
         hodnotenieCol.setCellValueFactory(new PropertyValueFactory<>("hodnotenie"));
         vysledkyTableView.getColumns().add(hodnotenieCol);
+        hodnotenieCol.setPrefWidth(86);
 
 
     }

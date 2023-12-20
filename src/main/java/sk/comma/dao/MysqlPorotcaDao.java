@@ -1,5 +1,6 @@
 package sk.comma.dao;
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -111,10 +112,23 @@ public class MysqlPorotcaDao implements PorotcaDao {
 
     @Override
     public boolean delete(Porotca porotca) {
-        String query = "DELETE FROM porotca WHERE id = ?";
-        int affectedRows = jdbcTemplate.update(query, porotca.getId());
-        return affectedRows == 1;
+        try {
+            String deleteSutazPorotcaQuery = "DELETE FROM sutaz_porotca WHERE porotca_id = ?";
+            jdbcTemplate.update(deleteSutazPorotcaQuery, porotca.getId());
+
+            String deleteHodnotenieQuery = "DELETE FROM hodnotenie WHERE porotca_id = ?";
+            jdbcTemplate.update(deleteHodnotenieQuery, porotca.getId());
+
+            String deletePorotcaQuery = "DELETE FROM porotca WHERE id = ?";
+            int affectedRows = jdbcTemplate.update(deletePorotcaQuery, porotca.getId());
+
+            return affectedRows == 1;
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
+
 
     @Override
     public boolean isPasswordCorrect(String pouzivatelHeslo, String pouzivatelMeno) {

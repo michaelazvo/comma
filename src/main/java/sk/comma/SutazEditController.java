@@ -156,8 +156,12 @@ public class SutazEditController {
         String nazov = nazovSutazeTextField.getText().trim();
         LocalDate datumOd = datumOdPicker.getValue();
         LocalDate datumDo = datumDoPicker.getValue();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
+        if (datumOd != null && datumDo != null && (datumOd.isBefore(LocalDate.now()) || datumDo.isBefore(LocalDate.now()))) {
+            showAlert("Neplatné dátumy", "Vyberte dátumy z budúcnosti.");
+            return;
+        }
 
         Sutaz sutaz = new Sutaz(nazov, datumOd, datumDo);
         if (vybrataSutaz != null) {
@@ -178,36 +182,43 @@ public class SutazEditController {
         ulozitButtonClick.getScene().getWindow().hide();
     }
 
+    private void showAlert(String title, String content) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
+
     @FXML
     void zmazatPorotcuButtonClick(ActionEvent event) {
         Porotca vybranyPorotca = porotaListView.getSelectionModel().getSelectedItem();
 
         if (vybranyPorotca != null) {
-            // Vytvořit Alert s výběrem možností
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Potvrdenie zmazania");
-            alert.setHeaderText("Chcete zmazať porotcu?");
-            alert.setContentText("Vyberte možnosť:");
+            Alert confirmDeleteAlert = new Alert(Alert.AlertType.CONFIRMATION);
+            confirmDeleteAlert.setTitle("Potvrdenie zmazania");
+            confirmDeleteAlert.setHeaderText("Ste si istý/á, že chcete vymazať porotcu?");
+            confirmDeleteAlert.setContentText("Vyberte možnosť:");
 
-            // Přidat tlačítka pro výběr možnosti
-            ButtonType vymazatCelkovoButton = new ButtonType("Vymazať úplne zo záznamu");
-            ButtonType vymazatZoSutazeButton = new ButtonType("Vymazať zo súťaže");
+            ButtonType deleteButton = new ButtonType("Vymazať");
             ButtonType cancelButton = new ButtonType("Zrušit", ButtonBar.ButtonData.CANCEL_CLOSE);
-            alert.getButtonTypes().setAll(vymazatCelkovoButton, vymazatZoSutazeButton, cancelButton);
+            confirmDeleteAlert.getButtonTypes().setAll(deleteButton, cancelButton);
 
-            // Zobrazit alert a zpracovat výsledek
-            alert.showAndWait().ifPresent(buttonType -> {
-                if (buttonType == vymazatCelkovoButton) {
+            confirmDeleteAlert.showAndWait().ifPresent(buttonType -> {
+                if (buttonType == deleteButton) {
                     porotcovia.remove(vybranyPorotca);
                     porotcaDao.delete(vybranyPorotca);
                     porotaListView.getItems().remove(vybranyPorotca);
-                } else if (buttonType == vymazatZoSutazeButton) {
-                    porotcovia.remove(vybranyPorotca);
-                    porotcaDao.vymazPorotcuZoSutaze(vybranyPorotca.getId(), vybrataSutaz.getId());
-                    porotaListView.getItems().remove(vybranyPorotca);
+
+                    Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+                    successAlert.setTitle("Vymazanie úspešné");
+                    successAlert.setHeaderText(null);
+                    successAlert.setContentText("Porotca bol úspešne vymazaný.");
+                    successAlert.showAndWait();
                 }
             });
         }
     }
+
 
 }

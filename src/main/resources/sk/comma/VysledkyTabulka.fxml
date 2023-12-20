@@ -5,34 +5,48 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="750.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <TableView fx:id="vysledkyTableView" layoutX="20.0" layoutY="83.0" prefHeight="303.0" prefWidth="562.0" />
-      <ComboBox fx:id="stylCombobox" layoutX="20.0" layoutY="42.0" prefHeight="25.0" prefWidth="137.0" />
-      <ComboBox fx:id="vekCombobox" layoutX="173.0" layoutY="42.0" prefHeight="25.0" prefWidth="137.0" />
-      <ComboBox fx:id="velkostCombobox" layoutX="326.0" layoutY="42.0" prefWidth="150.0" />
-      <Label layoutX="20.0" layoutY="14.0" text="Štýl:">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Label>
-      <Label layoutX="173.0" layoutY="16.0" text="Veková skupina:">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Label>
-      <Label layoutX="326.0" layoutY="16.0" text="Veľkostná skupina">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Label>
-      <Button layoutX="497.0" layoutY="39.0" mnemonicParsing="false" onAction="#hladatVysledkyButton" prefHeight="30.0" prefWidth="84.0" text="Hľadať">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Button>
+      <Pane layoutX="10.0" layoutY="10.0" prefHeight="530.0" prefWidth="730.0" styleClass="roundedBlock">
+         <children>
+            <TableView fx:id="vysledkyTableView" layoutX="43.0" layoutY="189.0" prefHeight="303.0" prefWidth="644.0" />
+            <ComboBox fx:id="stylCombobox" layoutX="44.0" layoutY="143.0" prefHeight="25.0" prefWidth="137.0" />
+            <ComboBox fx:id="vekCombobox" layoutX="197.0" layoutY="143.0" prefHeight="25.0" prefWidth="137.0" />
+            <ComboBox fx:id="velkostCombobox" layoutX="350.0" layoutY="143.0" prefWidth="150.0" />
+            <Label layoutX="44.0" layoutY="122.0" text="Štýl">
+               <font>
+                  <Font name="Calibri" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="197.0" layoutY="122.0" text="Veková skupina">
+               <font>
+                  <Font name="Calibri" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="350.0" layoutY="122.0" text="Veľkostná skupina">
+               <font>
+                  <Font name="Calibri" size="14.0" />
+               </font>
+            </Label>
+            <Button layoutX="603.0" layoutY="137.0" mnemonicParsing="false" onAction="#hladatVysledkyButton" prefHeight="30.0" prefWidth="84.0" styleClass="primaryButton" text="Hľadať">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Pane prefHeight="200.0" prefWidth="200.0" styleClass="semiRoundedBlock">
+               <children>
+                  <Text fill="WHITE" layoutX="288.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Výsledky súťaže">
+                     <font>
+                        <Font name="Calibri" size="24.0" />
+                     </font>
+                  </Text>
+               </children>
+            </Pane>
+         </children>
+      </Pane>
    </children>
 </AnchorPane>

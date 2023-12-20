@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
@@ -22,6 +23,7 @@ import javafx.scene.control.Alert.AlertType;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class PrihlasenieController {
 
@@ -118,6 +120,7 @@ public class PrihlasenieController {
             loader.setController(controller);
             Parent parent = loader.load();
             Stage PridanieSutazeStage = new Stage();
+            PridanieSutazeStage.getIcons().add(new Image(Objects.requireNonNull(PrihlasenieController.class.getResourceAsStream("comma_logo.png"))));
             PridanieSutazeStage.setScene(new Scene(parent));
             PridanieSutazeStage.setTitle("Sutaz");
             PridanieSutazeStage.show();
@@ -133,6 +136,7 @@ public class PrihlasenieController {
             loader.setController(controller);
             Parent parent = loader.load();
             Stage HodnotenieStage = new Stage();
+            HodnotenieStage.getIcons().add(new Image(Objects.requireNonNull(PrihlasenieController.class.getResourceAsStream("comma_logo.png"))));
             HodnotenieStage.setScene(new Scene(parent));
             HodnotenieStage.setTitle("Hodnotenie");
             HodnotenieStage.show();
