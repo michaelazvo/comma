@@ -13,6 +13,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+
 import sk.comma.dao.DaoFactory;
 import sk.comma.dao.PorotcaDao;
 import sk.comma.dao.SutazDao;
@@ -32,6 +33,8 @@ public class MainSceneController {
     private ObservableList<Sutaz> sutazModel;
     private List<Sutaz> sutaze;
 
+    private PorotcaDao porotcaDao = DaoFactory.INSTANCE.getPorotcaDao();
+
     @FXML
     private Button prihlasitTelesoButton;
 
@@ -45,7 +48,6 @@ public class MainSceneController {
         sutazCombobox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Sutaz>() {
             @Override
             public void changed(ObservableValue<? extends Sutaz> observable, Sutaz oldValue, Sutaz newValue) {
-                // Ak bola vybraná nová súťaž, aktualizujte vlastnosť disable pre tlačidlo
                 updatePrihlasitButtonState(newValue);
             }
         });
@@ -140,5 +142,6 @@ public class MainSceneController {
             e.printStackTrace();
         }
     }
+
 
 }

@@ -119,6 +119,8 @@ public class SutazController {
             loader.setController(controller);
             Parent parent = loader.load();
             Stage PridanieSutazeStage = new Stage();
+            PridanieSutazeStage.getIcons().add(new Image(Objects.requireNonNull(SutazController.class.getResourceAsStream("comma_logo.png"))));
+
             PridanieSutazeStage.setScene(new Scene(parent));
             PridanieSutazeStage.setTitle("Pridanie sutaze");
             PridanieSutazeStage.show();

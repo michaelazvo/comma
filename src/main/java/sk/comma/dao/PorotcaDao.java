@@ -12,6 +12,7 @@ public interface PorotcaDao {
     Porotca insert(Porotca porotca);
 
     void pridajPorotcuDoSutaze(Long porotcaId, int sutazId);
+
     List<Porotca> getPorotcoviaPreSutaz(int idSutaze);
 
     void vymazPorotcuZoSutaze(Long porotcaId, int sutazId);
@@ -27,6 +28,5 @@ public interface PorotcaDao {
     boolean isAdmin(String heslo, String meno);
 
     String getSalt(String uzivatelskeMeno);
-
 
 }
