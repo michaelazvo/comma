@@ -9,25 +9,25 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="750.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="750.0" stylesheets="@styleSutaz.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Pane layoutX="10.0" layoutY="10.0" prefHeight="530.0" prefWidth="730.0" styleClass="roundedBlock">
+      <Pane layoutX="10.0" layoutY="10.0" prefHeight="530.0" prefWidth="730.0" styleClass="roundedBlock" stylesheets="@style.css">
          <children>
             <TableView fx:id="vysledkyTableView" layoutX="43.0" layoutY="189.0" prefHeight="303.0" prefWidth="644.0" />
-            <ComboBox fx:id="stylCombobox" layoutX="44.0" layoutY="143.0" prefHeight="25.0" prefWidth="137.0" />
-            <ComboBox fx:id="vekCombobox" layoutX="197.0" layoutY="143.0" prefHeight="25.0" prefWidth="137.0" />
-            <ComboBox fx:id="velkostCombobox" layoutX="350.0" layoutY="143.0" prefWidth="150.0" />
+            <ComboBox fx:id="stylCombobox" layoutX="44.0" layoutY="143.0" prefHeight="31.0" prefWidth="222.0" />
+            <ComboBox fx:id="vekCombobox" layoutX="273.0" layoutY="143.0" prefHeight="31.0" prefWidth="150.0" />
+            <ComboBox fx:id="velkostCombobox" layoutX="430.0" layoutY="143.0" prefWidth="150.0" />
             <Label layoutX="44.0" layoutY="122.0" text="Štýl">
                <font>
                   <Font name="Calibri" size="14.0" />
                </font>
             </Label>
-            <Label layoutX="197.0" layoutY="122.0" text="Veková skupina">
+            <Label layoutX="273.0" layoutY="122.0" text="Veková skupina">
                <font>
                   <Font name="Calibri" size="14.0" />
                </font>
             </Label>
-            <Label layoutX="350.0" layoutY="122.0" text="Veľkostná skupina">
+            <Label layoutX="430.0" layoutY="122.0" text="Veľkostná skupina">
                <font>
                   <Font name="Calibri" size="14.0" />
                </font>
