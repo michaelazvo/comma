@@ -22,8 +22,11 @@ public interface PorotcaDao {
 
     boolean isPasswordCorrect(String heslo, String meno);
 
-    boolean existingUser(String heslo, String meno);
+    boolean existingUser(String meno);
 
     boolean isAdmin(String heslo, String meno);
+
+    String getSalt(String uzivatelskeMeno);
+
 
 }

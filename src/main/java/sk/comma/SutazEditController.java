@@ -9,6 +9,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import sk.comma.dao.DaoFactory;
 import sk.comma.dao.PorotcaDao;
 import sk.comma.dao.SutazDao;
@@ -138,7 +139,8 @@ public class SutazEditController {
         String priezvisko = priezviskoPorotcuTextField.getText().trim();
         String uzivatelskeMeno = uzivatelskeMenoTextField.getText().trim();
         String heslo = hesloTextField.getText().trim();
-        Porotca porotca = new Porotca(meno, priezvisko, uzivatelskeMeno, heslo, false);
+        String sol = BCrypt.gensalt();
+        Porotca porotca = new Porotca(meno, priezvisko, uzivatelskeMeno, Hashovanie.hashovanie(heslo, sol), false, sol);
 
         porotcovia.add(porotca);
 

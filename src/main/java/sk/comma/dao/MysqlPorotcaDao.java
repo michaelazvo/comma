@@ -6,10 +6,12 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import sk.comma.entity.Porotca;
 
 import java.sql.*;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class MysqlPorotcaDao implements PorotcaDao {
@@ -62,8 +64,8 @@ public class MysqlPorotcaDao implements PorotcaDao {
         Objects.requireNonNull(porotca.getUzivatelskeMeno(), "UzivatelskeMeno cannot be null");
         Objects.requireNonNull(porotca.getHeslo(), "Heslo cannot be null");
         if (porotca.getId() == null) { //insert
-            String query = "INSERT INTO porotca (meno, priezvisko, uzivatelske_meno, heslo, jeAdmin) "
-                    + "VALUES (?,?,?,?,?)";
+            String query = "INSERT INTO porotca (meno, priezvisko, uzivatelske_meno, heslo, jeAdmin, sol) "
+                    + "VALUES (?,?,?,?,?,?)";
 
             GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
             jdbcTemplate.update(new PreparedStatementCreator() {
@@ -76,6 +78,7 @@ public class MysqlPorotcaDao implements PorotcaDao {
                     statement.setString(3, porotca.getUzivatelskeMeno());
                     statement.setString(4, porotca.getHeslo());
                     statement.setBoolean(5, porotca.isJeAdmin());
+                    statement.setString(6, porotca.getSol());
                     return statement;
                 }
             }, keyHolder);
@@ -83,6 +86,7 @@ public class MysqlPorotcaDao implements PorotcaDao {
         }
         return porotca;
     }
+
 
     public List<Porotca> getPorotcoviaPreSutaz(int idSutaze) {
         String query = "SELECT porotca.* FROM porotca " +
@@ -131,14 +135,14 @@ public class MysqlPorotcaDao implements PorotcaDao {
 
 
     @Override
-    public boolean isPasswordCorrect(String pouzivatelHeslo, String pouzivatelMeno) {
+    public boolean isPasswordCorrect(String hashovane, String pouzivatelMeno) {
         String sql = "SELECT heslo from porotca where uzivatelske_meno = ?";
         String heslo = jdbcTemplate.queryForObject(sql, String.class, pouzivatelMeno);
-        return heslo.equals(pouzivatelHeslo);
+        return heslo.equals(hashovane);
     }
 
     @Override
-    public boolean existingUser(String heslo, String meno) {
+    public boolean existingUser(String meno) {
         String sql = "SELECT COUNT(*) FROM porotca WHERE uzivatelske_meno = ?";
 
         try {
@@ -156,6 +160,12 @@ public class MysqlPorotcaDao implements PorotcaDao {
         String sql = "SELECT jeAdmin from porotca where uzivatelske_meno = ?";
         int admin = jdbcTemplate.queryForObject(sql, Integer.class, pouzivatelMeno);
         return admin == 1;
+    }
+
+    @Override
+    public String getSalt(String uzivatelskeMeno) {
+        String sql = "SELECT sol from porotca where uzivatelske_meno = ?";
+        return jdbcTemplate.queryForObject(sql, String.class, uzivatelskeMeno);
     }
 
 

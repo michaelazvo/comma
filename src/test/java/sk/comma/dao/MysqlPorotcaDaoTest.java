@@ -35,7 +35,7 @@ public class MysqlPorotcaDaoTest extends TestCase {
 
     public void testExistingUser() {
         String username = "peterborovica";
-        boolean result = porotcaDao.existingUser("borovica", "peterborovica");
+        boolean result = porotcaDao.existingUser("peterborovica");
         assertTrue(result);
     }
 

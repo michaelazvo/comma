@@ -14,6 +14,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import sk.comma.dao.DaoFactory;
+import sk.comma.dao.PorotcaDao;
 import sk.comma.dao.SutazDao;
 import sk.comma.entity.Sutaz;
 
@@ -27,6 +28,7 @@ public class MainSceneController {
     private ComboBox<Sutaz> sutazCombobox;
 
     private SutazDao sutazDao = DaoFactory.INSTANCE.getSutazDao();
+
     private ObservableList<Sutaz> sutazModel;
     private List<Sutaz> sutaze;
 

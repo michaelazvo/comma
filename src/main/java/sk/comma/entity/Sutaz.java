@@ -38,7 +38,7 @@ public class Sutaz {
 
     public boolean jeSutazAktualna() {
         LocalDate currentDate = LocalDate.now();
-        return currentDate.isAfter(odDatum) && currentDate.isBefore(doDatum);
+        return (currentDate.isAfter(odDatum) && currentDate.isBefore(doDatum)) || currentDate.isEqual(doDatum) || currentDate.isEqual(odDatum);
     }
 
     @Override

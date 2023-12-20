@@ -63,12 +63,15 @@ public class PrihlasenieController {
     }
 
 
+
+
     @FXML
     void prihlasenieButtonClick(ActionEvent event) {
         String meno = uzivatelskeMenoTextField.getText();
         String heslo = hesloPasswordField.getText();
         PorotcaDao porotcaDao = DaoFactory.INSTANCE.getPorotcaDao();
-        boolean existujeUzivatel = porotcaDao.existingUser(heslo, meno);
+        boolean existujeUzivatel = porotcaDao.existingUser(meno);
+        String sol = porotcaDao.getSalt(meno);
         List<Porotca> porota = porotcaDao.getPorotcoviaPreSutaz(sutazId);
         List<String> menaPorotcov = new ArrayList<>();
         for (Porotca porotca : porota) {
@@ -76,7 +79,7 @@ public class PrihlasenieController {
         }
         if (existujeUzivatel) {
             // uzivatel existuje, skontrolovat spravnost hesla
-            boolean jeSpravneHeslo = porotcaDao.isPasswordCorrect(heslo, meno);
+            boolean jeSpravneHeslo = porotcaDao.isPasswordCorrect(Hashovanie.hashovanie(heslo, sol), meno);
             boolean jeAdmin = porotcaDao.isAdmin(heslo, meno);
 
             if (jeAdmin && jeSpravneHeslo) {
@@ -96,6 +99,7 @@ public class PrihlasenieController {
                 }
                 controller.setSutazId(sutazId);
                 otvoritPorotcaOkno(controller);
+                prihlasenieButton.getScene().getWindow().hide();
             } else {
                 if (!sutazDao.findById(sutazId).jeSutazAktualna()) {
                     zobrazitChybovyAlert("Súťaž nie je aktuálna. Prihlasovanie porotcov nie je povolené");

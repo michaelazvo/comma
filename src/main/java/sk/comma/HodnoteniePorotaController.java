@@ -137,11 +137,12 @@ public class HodnoteniePorotaController {
             } else {
                 setHodnotenieByPorotcaIdTelesoId(porotcaId, teleso.getId(), body);
                 showAlert(Alert.AlertType.INFORMATION, "Úspech", "Bodovanie úspešne uložené", "Bodovanie bolo úspešne pripísané k tanečnému telesu.");
+
             }
 
         }
 
-        ulozitHodnotenieButton.getScene().getWindow().hide();
+
 
     }
 

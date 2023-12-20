@@ -13,6 +13,8 @@ public class Porotca {
     private String heslo;
     private boolean jeAdmin;
 
+    private String sol;
+
     public Porotca() {
 
     }
@@ -33,6 +35,15 @@ public class Porotca {
         this.uzivatelskeMeno = uzivatelskeMeno;
         this.heslo = heslo;
         this.jeAdmin = jeAdmin;
+    }
+
+    public Porotca(String meno, String priezvisko, String uzivatelskeMeno, String heslo, boolean jeAdmin, String sol) {
+        this.meno = meno;
+        this.priezvisko = priezvisko;
+        this.uzivatelskeMeno = uzivatelskeMeno;
+        this.heslo = heslo;
+        this.jeAdmin = jeAdmin;
+        this.sol = sol;
     }
 
     @Override

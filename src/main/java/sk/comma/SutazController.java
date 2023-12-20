@@ -58,6 +58,8 @@ public class SutazController {
                 updateNazovTelesaLabel();
             }
         });
+
+
     }
 
     @FXML
