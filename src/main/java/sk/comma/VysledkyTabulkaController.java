@@ -177,6 +177,7 @@ public class VysledkyTabulkaController {
             kategoriaNova.setStyl(styl);
             kategoriaNova.setVekovaSkupina(vekovaSkupina);
             kategoriaNova.setVelkostnaSkupina(velkostnaSkupina);
+            kategoriaDao.insert(kategoriaNova);
             kategoriaId = kategoriaNova.getId();
         }
         return kategoriaId;
