@@ -106,7 +106,8 @@ public class PrihlasenieController {
                 } else {
                     zobrazitChybovyAlert("Nesprávne heslo. Skúste to znova.");
                 }
-            }
+
+           }
         } else {
             // uzivatel neexistuje
             zobrazitChybovyAlert("Užívateľ s týmto užívateľským menom neexistuje.");

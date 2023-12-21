@@ -58,18 +58,18 @@ public class MysqlKategoriaDaoTest {
         Kategoria kategoria4 = new Kategoria(4L,	"Disco Dance", "Deti",	"Formacia");
         Kategoria kategoria5 = new Kategoria(5L,	"Show Dance", "Deti",	"Formacia");
         List<Kategoria> expected = new ArrayList<>();
+        expected.add(kategoria5);
         expected.add(kategoria4);
         expected.add(kategoria3);
         expected.add(kategoria2);
         expected.add(kategoria1);
-        expected.add(kategoria5);
+
         List<Kategoria> result = kategoriaDao.findAll();
         assertEquals(expected, result);
     }
     @Test
     public void testInsert() {
         Kategoria kategoria = new Kategoria();
-        kategoria.setId(7L);
         kategoria.setStyl("Contemporary");
         kategoria.setVekovaSkupina("Juniori");
         kategoria.setVelkostnaSkupina("Skupina");

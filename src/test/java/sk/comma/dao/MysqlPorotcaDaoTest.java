@@ -15,16 +15,21 @@ import java.util.List;
 public class MysqlPorotcaDaoTest extends TestCase {
 
 
-    private PorotcaDao porotcaDao = DaoFactory.INSTANCE.getPorotcaDao();
+    private PorotcaDao porotcaDao;
 
+
+    public MysqlPorotcaDaoTest() {
+        DaoFactory.INSTANCE.setTestovaciaDatabaza(true);
+        porotcaDao = DaoFactory.INSTANCE.getPorotcaDao();
+    }
     @Test
     public void testFindById() {
-        long id = 6;
+        long id = 2;
         Porotca result = porotcaDao.findById(id);
-        Porotca expected = new Porotca(6L, "Peter", "Borovica", "peterborovica", "borovica", false);
+        Porotca expected = new Porotca(2L, "Miska", "Hneda", "miskahneda", "$2a$10$nZOPRNyh9Y4YTbloqAMuo.6R6RO.1.ZkJowyCygzifT0GcdGWfsJW", false, "$2a$10$nZOPRNyh9Y4YTbloqAMuo.");
         assertEquals(expected, result);
     }
-    public void testFindById_invalidId_returnsNull() {
+    public void testFindById_invalidId() {
         long id = 999;
         Porotca result = porotcaDao.findById(id);
         Porotca expected = null;

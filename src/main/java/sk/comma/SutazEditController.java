@@ -181,10 +181,7 @@ public class SutazEditController {
                 porotcaDao.pridajPorotcuDoSutaze(porotca.getId(), vybrataSutaz.getId());
             }
         } else {
-            if (datumOd != null && datumDo != null && (datumOd.isBefore(LocalDate.now()) || datumDo.isBefore(LocalDate.now()))) {
-                showAlert("Neplatné dátumy", "Vyberte dátumy z budúcnosti.");
-                return;
-            }
+
             sutazDao.insert(sutaz);
             for (Porotca porotca : porotcovia) {
                 porotcaDao.insert(porotca);

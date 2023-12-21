@@ -87,9 +87,11 @@ public class MainSceneController {
         }
     }
 
+
     private boolean isPrihlasitButtonDisabled(Sutaz sutaz) {
         return sutaz.getOdDatum().isBefore(LocalDate.now()) || sutaz.getDoDatum().isBefore(LocalDate.now());
     }
+
 
 
     private void otvoritPrihlasovanieOkno(PrihlasenieController controller) {

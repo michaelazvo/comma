@@ -46,6 +46,18 @@ public class Porotca {
         this.sol = sol;
     }
 
+    public Porotca(Long id, String meno, String priezvisko, String uzivatelskeMeno, String heslo, boolean jeAdmin, String sol) {
+        this.id = id;
+        this.meno = meno;
+        this.priezvisko = priezvisko;
+        this.uzivatelskeMeno = uzivatelskeMeno;
+        this.heslo = heslo;
+        this.jeAdmin = jeAdmin;
+        this.sol = sol;
+    }
+
+
+
     @Override
     public String toString() {
         return meno + ", " + priezvisko;

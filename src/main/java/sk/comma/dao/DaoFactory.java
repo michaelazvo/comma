@@ -26,9 +26,7 @@ public enum DaoFactory {
     private JdbcTemplate getJdbcTemplate() {
         if (jdbcTemplate == null) {
             MysqlDataSource dataSource = new MysqlDataSource();
-            System.out.println(testovaciaDatabaza);
             if(testovaciaDatabaza) {
-
                 dataSource.setUser("comma_test_user");
                 dataSource.setPassword("12345");
                 dataSource.setUrl("jdbc:mysql://localhost:3306/comma_test");
