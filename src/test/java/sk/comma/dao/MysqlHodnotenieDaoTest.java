@@ -1,6 +1,8 @@
 package sk.comma.dao;
 
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import sk.comma.entity.Hodnotenie;
 
@@ -10,6 +12,16 @@ import java.util.List;
 public class MysqlHodnotenieDaoTest {
 
     private HodnotenieDao hodnotenieDao = DaoFactory.INSTANCE.getHodnotenieDao();
+
+    @Before
+    public void setUp() {
+        DaoFactory.INSTANCE.setTestovaciaDatabaza(true);
+    }
+
+    @After
+    public void tearDown() {
+        DaoFactory.INSTANCE.setTestovaciaDatabaza(false);
+    }
 
     @Test
     public void testFindById() {

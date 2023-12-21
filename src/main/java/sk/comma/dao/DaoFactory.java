@@ -17,13 +17,26 @@ public enum DaoFactory {
     private TanecneTelesoDao tanecneTelesoDao;
     private JdbcTemplate jdbcTemplate;
 
+    private boolean testovaciaDatabaza = false;
+
+    public void setTestovaciaDatabaza(boolean hodnota) {
+        this.testovaciaDatabaza = hodnota;
+    }
+
     private JdbcTemplate getJdbcTemplate() {
         if (jdbcTemplate == null) {
             MysqlDataSource dataSource = new MysqlDataSource();
-            dataSource.setUser(DATABASE_USERNAME);
-            dataSource.setPassword(DATABASE_PASSWORD);
-            dataSource.setUrl(DATABASE_CONNECTION_URL);
+            System.out.println(testovaciaDatabaza);
+            if(testovaciaDatabaza) {
 
+                dataSource.setUser("comma_test_user");
+                dataSource.setPassword("12345");
+                dataSource.setUrl("jdbc:mysql://localhost:3306/comma_test");
+            } else {
+                dataSource.setUser(DATABASE_USERNAME);
+                dataSource.setPassword(DATABASE_PASSWORD);
+                dataSource.setUrl(DATABASE_CONNECTION_URL);
+            }
             jdbcTemplate = new JdbcTemplate(dataSource);
         }
         return jdbcTemplate;

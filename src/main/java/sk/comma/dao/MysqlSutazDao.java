@@ -43,7 +43,7 @@ public class MysqlSutazDao implements SutazDao {
 
     @Override
     public List<Sutaz> findAll() {
-        String query = "SELECT id, nazov, odDatum, doDatum FROM sutaz " + "ORDER BY odDatum DESC";
+        String query = "SELECT id, nazov, odDatum, doDatum FROM sutaz " + "ORDER BY odDatum";
         List<Sutaz> result = jdbcTemplate.query(query, new RowMapper<Sutaz>() {
 
             @Override

@@ -1,54 +1,85 @@
 package sk.comma.dao;
 
 import junit.framework.TestCase;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.dao.EmptyResultDataAccessException;
+import sk.comma.entity.Hodnotenie;
 import sk.comma.entity.Kategoria;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertThrows;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 
-public class MysqlKategoriaDaoTest extends TestCase {
+import org.junit.jupiter.api.function.Executable;
 
-    private KategoriaDao kategoriaDao = DaoFactory.INSTANCE.getKategoriaDao();
+import static org.junit.Assert.*;
 
-    @Test
-    public void testFindById() {
-        long existingId = 11;
-        Kategoria expectedKategoria = new Kategoria(11L, "Breakdance", "Deti", "Solo");
-        Kategoria actualKategoria = kategoriaDao.findById(existingId);
-        assertEquals(expectedKategoria, actualKategoria);
+public class MysqlKategoriaDaoTest {
 
-        long nonExistingId = 999;
-        assertThrows(EmptyResultDataAccessException.class, () -> kategoriaDao.findById(nonExistingId));
+    private KategoriaDao kategoriaDao;
+
+
+    public MysqlKategoriaDaoTest() {
+        DaoFactory.INSTANCE.setTestovaciaDatabaza(true);
+        kategoriaDao = DaoFactory.INSTANCE.getKategoriaDao();
+    }
+
+    @BeforeEach
+    public void setUp() {
 
     }
 
+    @AfterEach
+    public void tearDown() {
+        DaoFactory.INSTANCE.setTestovaciaDatabaza(false);
+    }
+    @Test
+    public void testFindById() {
+
+        long existingId = 3;
+        Kategoria expectedKategoria = new Kategoria(3L, "Breakdance", "Deti", "Skupina");
+        Kategoria actualKategoria = kategoriaDao.findById(existingId);
+        assertEquals(expectedKategoria, actualKategoria);
+
+
+    }
+
+
     @Test
     public void testFindAll() {
-        Kategoria kategoria1 = new Kategoria(11L, "Breakdance", "Deti", "Solo");
-        Kategoria kategoria2 = new Kategoria(12L,	"Breakdance",	"Juniori",	"Skupina");
-        Kategoria kategoria3 = new Kategoria(13L, 	"Breakdance",	"Deti",	"Skupina");
-        Kategoria kategoria4 = new Kategoria(14L,	"Disco Dance", "Deti",	"Formacia");
+        Kategoria kategoria1 = new Kategoria(1L, "Breakdance", "Deti", "Solo");
+        Kategoria kategoria2 = new Kategoria(2L,	"Breakdance",	"Juniori",	"Skupina");
+        Kategoria kategoria3 = new Kategoria(3L, 	"Breakdance",	"Deti",	"Skupina");
+        Kategoria kategoria4 = new Kategoria(4L,	"Disco Dance", "Deti",	"Formacia");
+        Kategoria kategoria5 = new Kategoria(5L,	"Show Dance", "Deti",	"Formacia");
         List<Kategoria> expected = new ArrayList<>();
         expected.add(kategoria4);
         expected.add(kategoria3);
         expected.add(kategoria2);
         expected.add(kategoria1);
-
+        expected.add(kategoria5);
         List<Kategoria> result = kategoriaDao.findAll();
         assertEquals(expected, result);
     }
     @Test
     public void testInsert() {
-    }
-    @Test
-    public void testUpdate() {
+        Kategoria kategoria = new Kategoria();
+        kategoria.setId(7L);
+        kategoria.setStyl("Contemporary");
+        kategoria.setVekovaSkupina("Juniori");
+        kategoria.setVelkostnaSkupina("Skupina");
 
+        Kategoria result = kategoriaDao.insert(kategoria);
+
+        assertEquals(kategoria.getId(), result.getId());
+        assertEquals(kategoria.getStyl(), result.getStyl());
+        assertEquals(kategoria.getVekovaSkupina(), result.getVekovaSkupina());
+        assertEquals(kategoria.getVelkostnaSkupina(), result.getVelkostnaSkupina());
     }
-    @Test
-    public void testDelete() {
-    }
+
 }

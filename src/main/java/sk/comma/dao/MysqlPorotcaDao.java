@@ -110,8 +110,8 @@ public class MysqlPorotcaDao implements PorotcaDao {
 
     @Override
     public void update(Porotca porotca) {
-        String query = "UPDATE porotca SET meno = ?, priezvisko = ?, uzivatelske_meno = ?, heslo = ? WHERE id = ?";
-        jdbcTemplate.update(query, porotca.getMeno(), porotca.getPriezvisko(), porotca.getUzivatelskeMeno(), porotca.getHeslo(), porotca.getId());
+        String query = "UPDATE porotca SET meno = ?, priezvisko = ?, uzivatelske_meno = ?, heslo = ?, sol = ? WHERE id = ?";
+        jdbcTemplate.update(query, porotca.getMeno(), porotca.getPriezvisko(), porotca.getUzivatelskeMeno(), porotca.getHeslo(),porotca.getSol(), porotca.getId());
     }
 
     @Override
@@ -166,6 +166,29 @@ public class MysqlPorotcaDao implements PorotcaDao {
     public String getSalt(String uzivatelskeMeno) {
         String sql = "SELECT sol from porotca where uzivatelske_meno = ?";
         return jdbcTemplate.queryForObject(sql, String.class, uzivatelskeMeno);
+    }
+
+    public void aktualizujHesloASolPreAdmina() {
+        String adminMeno = "admin";
+        String sql = "SELECT id, heslo FROM porotca WHERE uzivatelske_meno = ?";
+
+        try {
+            Map<String, Object> result = jdbcTemplate.queryForMap(sql, adminMeno);
+            Long adminId = 1L;
+            String existujuceHeslo = "admin";
+
+            // Vygenerujte novú sol
+            String novaSol = BCrypt.gensalt();
+
+            // Znovu hashujte existujúce heslo s novou solou
+            String noveHeslo = BCrypt.hashpw(existujuceHeslo, novaSol);
+
+            // Aktualizujte údaje v databáze so zmeneným heslom a novou solou
+            String updateSql = "UPDATE porotca SET heslo = ?, sol = ? WHERE id = ?";
+            jdbcTemplate.update(updateSql, noveHeslo, novaSol, adminId);
+        } catch (EmptyResultDataAccessException e) {
+            // Spracujte prípad, keď admin nie je v databáze
+        }
     }
 
 

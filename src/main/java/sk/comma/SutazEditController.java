@@ -100,7 +100,6 @@ public class SutazEditController {
             nazovSutazeTextField.textProperty().addListener((observable, oldValue, newValue) -> checkFields());
             datumOdPicker.valueProperty().addListener((observable, oldValue, newValue) -> checkFields());
             datumDoPicker.valueProperty().addListener((observable, oldValue, newValue) -> checkFields());
-            porotaListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> checkFields());
             ulozitButtonClick.disableProperty().bind(isButtonDisabled);
         }
         menoPorotcuTextField.textProperty().addListener((observable, oldValue, newValue) -> checkFieldsForPridatPorotcu());
@@ -142,14 +141,23 @@ public class SutazEditController {
         String sol = BCrypt.gensalt();
         Porotca porotca = new Porotca(meno, priezvisko, uzivatelskeMeno, Hashovanie.hashovanie(heslo, sol), false, sol);
 
-        porotcovia.add(porotca);
+        if ((porotcovia.contains(porotca) || porotcaDao.existingUser(uzivatelskeMeno))) {
+            porotcaDao.update(porotca);
+            return;
+        } else {
+            porotcaDao.insert(porotca);
+            porotcovia.add(porotca);
 
-        porotaListView.getItems().add(porotca);
-        porotcaDao.insert(porotca);
+            porotaListView.getItems().add(porotca);
+        }
+
+
+
         menoPorotcuTextField.clear();
         priezviskoPorotcuTextField.clear();
         uzivatelskeMenoTextField.clear();
         hesloTextField.clear();
+        checkFields();
     }
 
 
@@ -160,10 +168,7 @@ public class SutazEditController {
         LocalDate datumDo = datumDoPicker.getValue();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
-        if (datumOd != null && datumDo != null && (datumOd.isBefore(LocalDate.now()) || datumDo.isBefore(LocalDate.now()))) {
-            showAlert("Neplatné dátumy", "Vyberte dátumy z budúcnosti.");
-            return;
-        }
+
 
         Sutaz sutaz = new Sutaz(nazov, datumOd, datumDo);
         if (vybrataSutaz != null) {
@@ -172,11 +177,17 @@ public class SutazEditController {
             vybrataSutaz.setDoDatum(datumDo);
             sutazDao.update(vybrataSutaz);
             for (Porotca porotca : porotcovia) {
+                porotcaDao.insert(porotca);
                 porotcaDao.pridajPorotcuDoSutaze(porotca.getId(), vybrataSutaz.getId());
             }
         } else {
+            if (datumOd != null && datumDo != null && (datumOd.isBefore(LocalDate.now()) || datumDo.isBefore(LocalDate.now()))) {
+                showAlert("Neplatné dátumy", "Vyberte dátumy z budúcnosti.");
+                return;
+            }
             sutazDao.insert(sutaz);
             for (Porotca porotca : porotcovia) {
+                porotcaDao.insert(porotca);
                 porotcaDao.pridajPorotcuDoSutaze(porotca.getId(), sutaz.getId());
             }
         }
@@ -208,8 +219,13 @@ public class SutazEditController {
 
             confirmDeleteAlert.showAndWait().ifPresent(buttonType -> {
                 if (buttonType == deleteButton) {
-                    porotcovia.remove(vybranyPorotca);
-                    porotcaDao.delete(vybranyPorotca);
+                    if(!porotcaDao.existingUser(vybranyPorotca.getUzivatelskeMeno())) {
+                        porotcovia.remove(vybranyPorotca);
+                    } else {
+                        porotcovia.remove(vybranyPorotca);
+                        porotcaDao.delete(vybranyPorotca);
+                    }
+
                     porotaListView.getItems().remove(vybranyPorotca);
 
                     Alert successAlert = new Alert(Alert.AlertType.INFORMATION);

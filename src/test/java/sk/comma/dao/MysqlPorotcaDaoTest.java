@@ -1,14 +1,19 @@
 package sk.comma.dao;
 
-import javafx.beans.property.BooleanProperty;
+import org.junit.After;
+
+import org.junit.Before;
 import junit.framework.TestCase;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import sk.comma.entity.Porotca;
 
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class MysqlPorotcaDaoTest extends TestCase {
+
 
     private PorotcaDao porotcaDao = DaoFactory.INSTANCE.getPorotcaDao();
 

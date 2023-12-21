@@ -122,8 +122,11 @@ public class HodnoteniePorotaController {
                     existujeTeleso = true;
                 }
             }
+        } else {
+            showAlert("Prázdne pole ID", "Prosím, zadajte ID tanečného telesa.");
+            return;
         }
-        if (bodyString.isEmpty()) {
+        if (bodyString.isEmpty() ) {
             showAlert("Zlé zadanie bodov", "Prosím, zadajte hodnotenie od 0 do 10.");
         }
 
@@ -141,6 +144,8 @@ public class HodnoteniePorotaController {
             }
 
         }
+
+
 
 
 

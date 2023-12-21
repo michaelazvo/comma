@@ -5,7 +5,6 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 public class Hashovanie {
 
     public static String hashovanie(String heslo, String sol) {
-        String pwHash = BCrypt.hashpw(heslo, sol);
-        return pwHash;
+        return BCrypt.hashpw(heslo, sol);
     }
 }
