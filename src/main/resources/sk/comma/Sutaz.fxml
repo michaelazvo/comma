@@ -39,7 +39,7 @@
                   <Font name="Calibri" size="18.0" />
                </font>
             </Text>
-            <Label layoutX="48.0" layoutY="293.0" prefHeight="26.0" prefWidth="143.0" text="Id tanečného telesa : " textFill="#464646">
+            <Label layoutX="48.0" layoutY="293.0" prefHeight="26.0" prefWidth="143.0" text="ID tanečného telesa : " textFill="#464646">
                <font>
                   <Font name="Calibri" size="14.0" />
                </font>

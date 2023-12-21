@@ -51,10 +51,6 @@ public class MysqlPorotcaDao implements PorotcaDao {
 
     }
 
-    @Override
-    public List<Porotca> findAll() {
-        return null;
-    }
 
     @Override
     public Porotca insert(Porotca porotca) {
