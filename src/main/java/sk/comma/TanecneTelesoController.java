@@ -168,6 +168,11 @@ public class TanecneTelesoController {
             String selectedVelkostnaSkupina = velkostnaSkupinaCombobox.getValue();
             String selectedVekovaSkupina = vekCombobox.getValue();
 
+            if (teleso.getNazov().isEmpty() || teleso.getHudba().isEmpty() || teleso.getKlub().isEmpty() || teleso.getEmail().isEmpty() || teleso.getTanecnici().isEmpty()) {
+                showAlert("Chýbajúce údaje", "Prosím, vyplňte všetky povinné údaje.");
+                return;
+            }
+
             if (!isValidEmail(teleso.getEmail())) {
                 showAlert("Nesprávny formát emailu", "Prosím, zadajte platný email.");
                 return;
@@ -179,10 +184,7 @@ public class TanecneTelesoController {
                 return;
             }
 
-            if (teleso.getNazov().isEmpty() || teleso.getHudba().isEmpty() || teleso.getKlub().isEmpty() || teleso.getEmail().isEmpty() || teleso.getTanecnici().isEmpty()) {
-                showAlert("Chýbajúce údaje", "Prosím, vyplňte všetky povinné údaje.");
-                return;
-            }
+
 
             //pouzitie metody na vyhladanie id kategorie
             teleso.setKategoriaId(getKategoriaId(selectedStyl, selectedVelkostnaSkupina, selectedVekovaSkupina));

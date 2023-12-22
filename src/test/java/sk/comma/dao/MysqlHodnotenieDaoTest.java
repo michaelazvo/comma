@@ -22,10 +22,6 @@ public class MysqlHodnotenieDaoTest {
 
     }
 
-    @Before
-    public void setUp() {
-
-    }
 
     @After
     public void tearDown() {
@@ -47,7 +43,7 @@ public class MysqlHodnotenieDaoTest {
 
         Hodnotenie result = hodnotenieDao.findById(id);
 
-        Assert.assertNull(result);
+        assertNull(result);
     }
 
 
