@@ -46,12 +46,12 @@ public class TanecneTeleso {
         this.tanecnici = tanecnici;
     }
 
-    /*
+
     @Override
     public String toString() {
         return nazov;
     }
-    */
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

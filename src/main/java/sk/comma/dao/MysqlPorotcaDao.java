@@ -92,11 +92,7 @@ public class MysqlPorotcaDao implements PorotcaDao {
         return jdbcTemplate.query(query, new Object[]{idSutaze}, new PorotcaRowMapper());
     }
 
-    @Override
-    public void vymazPorotcuZoSutaze(Long porotcaId, int sutazId) {
-        String query = "DELETE FROM sutaz_porotca WHERE porotca_id = ? AND sutaz_id = ?";
-        jdbcTemplate.update(query, porotcaId, sutazId);
-    }
+
 
     @Override
     public void pridajPorotcuDoSutaze(Long porotcaId, int sutazId) {

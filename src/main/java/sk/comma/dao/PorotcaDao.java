@@ -15,8 +15,6 @@ public interface PorotcaDao {
 
     List<Porotca> getPorotcoviaPreSutaz(int idSutaze);
 
-    void vymazPorotcuZoSutaze(Long porotcaId, int sutazId);
-
     void update(Porotca porotca);
 
     boolean delete(Porotca porotca);

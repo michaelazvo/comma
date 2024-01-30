@@ -12,8 +12,6 @@ import java.util.List;
 public class OverviewManagerImpl implements OverviewManager {
 
 
-    //tu bude potrebne prepocitat hodnotenia od porotcov a zaroven urcit umiestnenie
-
     @Override
     public List<vysledkyOverview> getOverviews(Kategoria kategoria, Sutaz sutaz) {
         HodnotenieDao hodnotenieDao = DaoFactory.INSTANCE.getHodnotenieDao();

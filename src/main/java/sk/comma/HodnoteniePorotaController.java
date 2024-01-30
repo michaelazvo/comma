@@ -1,12 +1,10 @@
 package sk.comma;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import sk.comma.dao.DaoFactory;
 import sk.comma.dao.HodnotenieDao;
 import sk.comma.dao.KategoriaDao;
@@ -21,14 +19,27 @@ import java.util.List;
 
 public class HodnoteniePorotaController {
 
-    @FXML
-    private TextField idTanecnehoTelesaTextField;
-
-    @FXML
-    private Label nazovTelesaLabel;
 
     @FXML
     private TextField pocetBodovTextField;
+
+
+    @FXML
+    private Button hladatTelesaButton;
+
+
+    @FXML
+    private ComboBox<TanecneTeleso> zoznamTeliesCombobox;
+
+    @FXML
+    private ComboBox<String> stylCombobox;
+
+    @FXML
+    private ComboBox<String> vekCombobox;
+
+    @FXML
+    private ComboBox<String> velkostCombobox;
+
 
     @FXML
     private Button ulozitHodnotenieButton;
@@ -39,6 +50,9 @@ public class HodnoteniePorotaController {
     private List<Hodnotenie> hodnotenia = new ArrayList<>();
 
     private Hodnotenie savedHodnotenie;
+    private KategoriaDao kategoriaDao = DaoFactory.INSTANCE.getKategoriaDao();
+
+    private List<Kategoria> kategorie;
 
 
     // aktualna sutaz
@@ -53,6 +67,64 @@ public class HodnoteniePorotaController {
 
     public void setPorotcaId(long porotcaId) {
         this.porotcaId = porotcaId;
+    }
+
+    @FXML
+    void initialize() {
+        stylCombobox.getItems().addAll(Kategoria.getStylTypes());
+        vekCombobox.getItems().addAll(Kategoria.getVekovaSkupinaTypes());
+        velkostCombobox.getItems().addAll(Kategoria.getVelkostnaSkupinaTypes());
+
+        stylCombobox.getSelectionModel().selectFirst();
+        vekCombobox.getSelectionModel().selectFirst();
+        velkostCombobox.getSelectionModel().selectFirst();
+
+        kategorie = kategoriaDao.findAll();
+        reloadList();
+
+    }
+
+    private void reloadList() {
+        String selectedStyl = stylCombobox.getValue();
+        String selectedVelkostnaSkupina = velkostCombobox.getValue();
+        String selectedVekovaSkupina = vekCombobox.getValue();
+        long kategoriaId = getKategoriaId(selectedStyl, selectedVelkostnaSkupina, selectedVekovaSkupina);
+
+        List<TanecneTeleso> telesaList = tanecneTelesoDao.findAllBySutazIdKategoriaId(sutazId, kategoriaId);
+        ObservableList<TanecneTeleso> telesaObservableList = FXCollections.observableArrayList(telesaList);
+        zoznamTeliesCombobox.setItems(telesaObservableList);
+    }
+
+    private long getKategoriaId(String styl, String velkostnaSkupina, String vekovaSkupina) {
+        long kategoriaId = 0;
+        boolean existing = false;
+        if (kategorie.isEmpty()) {
+            Kategoria kategoriaNova = new Kategoria();
+            kategoriaNova.setStyl(styl);
+            kategoriaNova.setVekovaSkupina(vekovaSkupina);
+            kategoriaNova.setVelkostnaSkupina(velkostnaSkupina);
+
+            kategoriaId = kategoriaNova.getId();
+            return kategoriaId;
+        }
+        for (Kategoria kategoria : kategorie) {
+            if (kategoria.getStyl().equals(styl) && kategoria.getVelkostnaSkupina().equals(velkostnaSkupina) && kategoria.getVekovaSkupina().equals(vekovaSkupina)) {
+                existing = true;
+                kategoriaId = kategoria.getId();
+                break;
+            }
+        }
+        if (existing) {
+            return kategoriaId;
+        } else {
+            Kategoria kategoriaNova = new Kategoria();
+            kategoriaNova.setStyl(styl);
+            kategoriaNova.setVekovaSkupina(vekovaSkupina);
+            kategoriaNova.setVelkostnaSkupina(velkostnaSkupina);
+            kategoriaDao.insert(kategoriaNova);
+            kategoriaId = kategoriaNova.getId();
+        }
+        return kategoriaId;
     }
 
     private void setHodnotenieByPorotcaIdTelesoId(long porotcaId, long tanecneTelesoId, int body) {
@@ -70,7 +142,68 @@ public class HodnoteniePorotaController {
         }
     }
 
+
     @FXML
+    void hladatTelesaButtonClick(ActionEvent event) {
+        reloadList();
+    }
+
+    @FXML
+    void ulozitHodnotenieNewButtonClick(ActionEvent event) {
+        TanecneTeleso teleso = zoznamTeliesCombobox.getValue();
+
+        if (teleso == null) {
+            showAlert("Žiadne zvolené teleso", "Prosím, vyberte tanečné teleso zo zoznamu.");
+            return;
+        }
+
+        String bodyString = pocetBodovTextField.getText();
+
+        if (bodyString.isEmpty()) {
+            showAlert("Nepridelenie bodov", "Prosím, zadajte hodnotenie od 0 do 10.");
+            return;
+        }
+
+        int body = 0;
+
+        try {
+            body = Integer.parseInt(bodyString);
+
+            // Kontrola rozsahu hodnot
+            if (body < 0 || body > 10) {
+                // Neplatný rozsah hodnôt
+                showAlert("Zlé zadanie bodov", "Hodnotenie musí byť v rozmedzí od 0 do 10.");
+                return;
+            }
+        } catch (NumberFormatException e) {
+            showAlert("Zlé zadanie bodov", "Prosím, zadajte platné hodnotenie.");
+            return;
+        }
+
+        setHodnotenieByPorotcaIdTelesoId(porotcaId, teleso.getId(), body);
+
+        showAlert(Alert.AlertType.INFORMATION, "Úspech", "Bodovanie úspešne uložené", "Bodovanie bolo úspešne pripísané k tanečnému telesu.");
+    }
+
+
+    private void showAlert(String title, String content) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
+
+    private void showAlert(Alert.AlertType alertType, String title, String headerText, String contentText) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(headerText);
+        alert.setContentText(contentText);
+        alert.showAndWait();
+    }
+
+
+/*    @FXML
     void overitNazovButtonClick(ActionEvent event) {
         String s = idTanecnehoTelesaTextField.getText();
         List<TanecneTeleso> telesa = tanecneTelesoDao.findAllBySutazId(sutazId);
@@ -104,6 +237,8 @@ public class HodnoteniePorotaController {
     }
 
 
+
+
     @FXML
     void ulozitHodnotenieButtonClick(ActionEvent event) {
         TanecneTeleso teleso = null;
@@ -126,7 +261,7 @@ public class HodnoteniePorotaController {
             showAlert("Prázdne pole ID", "Prosím, zadajte ID tanečného telesa.");
             return;
         }
-        if (bodyString.isEmpty() ) {
+        if (bodyString.isEmpty()) {
             showAlert("Zlé zadanie bodov", "Prosím, zadajte hodnotenie od 0 do 10.");
         }
 
@@ -146,26 +281,9 @@ public class HodnoteniePorotaController {
         }
 
 
-
-
-
     }
 
+ */
 
-    private void showAlert(String title, String content) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(content);
-        alert.showAndWait();
-    }
-
-    private void showAlert(Alert.AlertType alertType, String title, String headerText, String contentText) {
-        Alert alert = new Alert(alertType);
-        alert.setTitle(title);
-        alert.setHeaderText(headerText);
-        alert.setContentText(contentText);
-        alert.showAndWait();
-    }
 }
 
