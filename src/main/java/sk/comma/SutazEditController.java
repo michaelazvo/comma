@@ -90,7 +90,7 @@ public class SutazEditController {
                         menoPorotcuTextField.setText(newValue.getMeno());
                         priezviskoPorotcuTextField.setText(newValue.getPriezvisko());
                         uzivatelskeMenoTextField.setText(newValue.getUzivatelskeMeno());
-                        hesloTextField.setText(newValue.getHeslo());
+
                     }
                 }
             });
@@ -133,18 +133,24 @@ public class SutazEditController {
 
     @FXML
     void pridatPorotcuButtonClick(ActionEvent event) {
-
+        Porotca vybratyPorotca = porotaListView.getSelectionModel().getSelectedItem();
         String meno = menoPorotcuTextField.getText().trim();
         String priezvisko = priezviskoPorotcuTextField.getText().trim();
         String uzivatelskeMeno = uzivatelskeMenoTextField.getText().trim();
         String heslo = hesloTextField.getText().trim();
         String sol = BCrypt.gensalt();
-        Porotca porotca = new Porotca(meno, priezvisko, uzivatelskeMeno, Hashovanie.hashovanie(heslo, sol), false, sol);
 
-        if ((porotcovia.contains(porotca) || porotcaDao.existingUser(uzivatelskeMeno))) {
-            porotcaDao.update(porotca);
+
+        if (vybratyPorotca!=null || porotcaDao.existingUser(uzivatelskeMeno)) {
+            vybratyPorotca.setMeno(meno);
+            vybratyPorotca.setPriezvisko(priezvisko);
+            vybratyPorotca.setUzivatelskeMeno(uzivatelskeMeno);
+            vybratyPorotca.setHeslo(Hashovanie.hashovanie(heslo, sol));
+            vybratyPorotca.setSol(sol);
+            porotcaDao.update(vybratyPorotca);
             return;
         } else {
+            Porotca porotca = new Porotca(meno, priezvisko, uzivatelskeMeno, Hashovanie.hashovanie(heslo, sol), false, sol);
             porotcaDao.insert(porotca);
             porotcovia.add(porotca);
 
